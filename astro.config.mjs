@@ -71,112 +71,20 @@ export default defineConfig({
         {
           label: "0. Introduction",
           collapsed: true,
-          items: [
-            {
-              label: "Overview",
-              link: "book/0-introduction/0-overview",
-            },
-            {
-              label: "Panorama",
-              collapsed: true,
-              autogenerate: {
-                directory:
-                  "book/0-introduction/0-panorama",
-                collapsed: true,
-              },
-            },
-            {
-              label: "Guided Tour",
-              collapsed: true,
-              autogenerate: {
-                directory:
-                  "book/0-introduction/1-tour",
-                collapsed: true,
-              },
-            },
-            {
-              label: "Trailside Stop",
-              collapsed: true,
-              autogenerate: {
-                directory:
-                  "book/0-introduction/2-trailside",
-                collapsed: true,
-              },
-            },
-            {
-              label: "Go Exploring",
-              collapsed: true,
-              autogenerate: {
-                directory:
-                  "book/0-introduction/3-explore",
-                collapsed: true,
-              },
-            },
-            {
-              label: "Campsite Reflection",
-              collapsed: true,
-              autogenerate: {
-                directory:
-                  "book/0-introduction/4-camp",
-                collapsed: true,
-              },
-            },
-          ],
+          autogenerate: {
+            directory:
+              "book/0-introduction",
+            collapsed: true,
+          },
         },
         {
           label: "1. Digital Electronics",
           collapsed: true,
-          items: [
-            {
-              label: "Overview",
-              link: "book/1-electronics/0-overview",
-            },
-            {
-              label: "Panorama",
-              collapsed: true,
-              autogenerate: {
-                directory:
-                  "book/1-electronics/0-panorama",
-                collapsed: true,
-              },
-            },
-            {
-              label: "Guided Tour",
-              collapsed: true,
-              autogenerate: {
-                directory:
-                  "book/1-electronics/1-tour",
-                collapsed: true,
-              },
-            },
-            {
-              label: "Trailside Stop",
-              collapsed: true,
-              autogenerate: {
-                directory:
-                  "book/1-electronics/2-trailside",
-                collapsed: true,
-              },
-            },
-            {
-              label: "Go Exploring",
-              collapsed: true,
-              autogenerate: {
-                directory:
-                  "book/1-electronics/3-explore",
-                collapsed: true,
-              },
-            },
-            {
-              label: "Campsite Reflection",
-              collapsed: true,
-              autogenerate: {
-                directory:
-                  "book/1-electronics/4-camp",
-                collapsed: true,
-              },
-            },
-          ],
+          autogenerate: {
+            directory:
+              "book/1-electronics",
+            collapsed: true,
+          },
         },
 
         // {
