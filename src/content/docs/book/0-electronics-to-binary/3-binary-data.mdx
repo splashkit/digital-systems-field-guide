@@ -95,4 +95,9 @@ Want a challenge? See if your friend can decode a character that requires multip
 
 To wrap up this section, let's see some other common ways of encoding information within numbers (specifically binary, so we can store them in computers).
 
-Any data you have worked with in a computer has had someone work out how to represent those as values in binary. Integer numbers are relatively easy, but you need to think about how to [represent negative values](https://www.geeksforgeeks.org/representation-of-negative-binary-numbers). Real numbers can be represented using [floating point numbers](https://www.geeksforgeeks.org/introduction-of-floating-point-representation/). Things like 
+Any data you have worked with in a computer has had someone work out how to represent those as values in binary. Integer numbers are relatively easy, but you need to think about how to [represent negative values](https://www.geeksforgeeks.org/representation-of-negative-binary-numbers). Real numbers can be represented using [floating point numbers](https://www.geeksforgeeks.org/introduction-of-floating-point-representation/). In each of these cases, the binary digits within the values are meaningful.
+
+This is the same with things like representing colors. The most common color scheme would use a 32-bit value that internally contains 8 bits for red, green, blue, and an opacity (alpha) - known as [RBGA](https://en.wikipedia.org/wiki/RGBA_color_model). Images can then be created by arranging sequences of these color values into a grid of picture elements (pixels).
+
+As you can see, in each case the goal is to use some systematic way to relate binary values with the information we are trying to capture. This can either be by mapping through a lookup table as with text, or by giving different part of the binary value different meanings and using these to allow these values to be manipulated by code that runs within the computer.
+
