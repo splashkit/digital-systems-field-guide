@@ -1,0 +1,98 @@
+---
+title: Binary Data
+---
+
+Now that we know how we can use current to represent data within a digital system, the next step is to think about how to start using these ideas to work with different things we want to represent. For this we will look at common ways of representing binary in a shorter format, and then using binary to represent text. Similar ideas can then be applied to representing other things like colours, images, sounds, and so on.
+
+## Binary to Hexadecimal
+
+Working with the binary digits can become tiresome quickly, as you need may digits to represent values you are likely to work with. To help address this, we can go back to think about the use of number systems. While binary (base 2) is what we need within our digital circuits, when we need to work with binary data it may be useful to have a shorter form.
+
+With binary, we are working with a base-2 system (only 2 different digits: 0 and 1). If we combined two of these digits, that would give us 4 different combinations, three digits would give us 8 different combinations, and four digits would give us 16 different combinations. Unfortunately none of these map nicely to decimal (base-10) which we are used to dealing with. So it is common in computing for binary values to be represented using base-16, known as hexadecimal.
+
+Hexadecimal involves 16 different digits: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, and F. This gives us a new number system that can be used to represent any value. The good thing for us is that one hexadecimal digit maps to four binary digits.
+
+- `0` --> `0000` --> 0 in decimal
+- `1` --> `0001` --> 1 in decimal
+- `2` --> `0010` --> 2 in decimal
+- `3` --> `0011` --> 3 in decimal
+- `4` --> `0100` --> 4 in decimal
+- `5` --> `0101` --> 5 in decimal
+- `6` --> `0110` --> 6 in decimal
+- `7` --> `0111` --> 7 in decimal
+- `8` --> `1000` --> 8 in decimal
+- `9` --> `1001` --> 9 in decimal
+- `A` --> `1010` --> 10 in decimal
+- `B` --> `1011` --> 11 in decimal
+- `C` --> `1100` --> 12 in decimal
+- `D` --> `1101` --> 13 in decimal
+- `E` --> `1110` --> 14 in decimal
+- `F` --> `1111` --> 15 in decimal
+
+Two hexadecimal digits can then represent eight binary digits (a byte in computing) which has a range of 0 to 255 (256 values - `00` to `FF`).
+
+:::tip
+
+When working with binary data, you will often see it represented in hexadecimal rather than being fully expressed in binary digits. The key is to remember that each hexadecimal digit maps to four binary digits.
+
+:::
+
+There are many articles on the web that can help you explore this topic. For example, you can read about [converting hexadecimal to binary](https://byjus.com/maths/convert-hexadecimal-to-binary/). There are also [hexadecimal to decimal](https://www.rapidtables.com/convert/number/hex-to-decimal.html) converters that you can use to do the calculations for you.
+
+## Representing Text
+
+Now that we can represent numbers, by utilising the binary number system, how can we represent other kinds of data that we want to work with?
+
+To explore this, let's have a look at how we can represent text.
+
+In order to represent text, we need a way of mapping a number to a character. This is achieved using a mapping table, with the most common scheme being Unicode Transformation Format-8 referred to as UTF-8. This provides a scheme that uses variable byte lengths to represent different characters, with 1 byte being used to refer to the most common characters.
+
+The [UTF-8 code page](https://www.charset.org/utf-8) provides a list of character mappings. For the moment, we can focus on just a few characters: 0 to 9, A to Z, a to z, space, and a few others.
+
+Here are a few mappings:
+- 48 --> 0
+- 49 --> 1
+- 57 --> 9
+- 65 --> A
+- 66 --> B
+- 90 --> Z
+- 97 --> a
+- 98 --> b
+- 122 --> z
+
+Then there are mappings like:
+- 10 --> line feed (new line)
+- 32 --> space
+- 33 --> !
+
+The UTF-8 code page also includes the hexadecimal values for the characters. These can be useful when you want to think about the binary representation of these.
+
+For example, A has a UTF-8 Hexadecimal value of `41` being `0100 0001` in binary.
+
+With digits representing individual characters, you can create words by stringing a sequence of these characters together. So "Hi" would be represented as the character H (`48`) followed by the character i (`69`) giving the sequence `48 69` being `0100 1000 0110 1001`.
+
+Sentences extend this, adding spaces (`20`) and punctuation such as a full stop (`2E`) within the sequence.
+
+:::tip[Give it a try]
+
+What does this say?
+
+`57 65 6c 6c 20 64 6f 6e 65 21`
+
+:::
+
+Now have a go at creating a message using your 8-bit visualisation machine you created on the [Electronics and Binary](/book/0-introduction/2-electronics-data) page.
+
+:::tip[Activity]
+
+Get together with a friend and take it in turn to encode, and transmit, a few characters using your 8-bit visualisation machines.
+
+Want a challenge? See if your friend can decode a character that requires multiple bytes. Each character has a unique sequence, some just need more than one byte to represent them.
+
+:::
+
+## Numbers, colors, and others
+
+To wrap up this section, let's see some other common ways of encoding information within numbers (specifically binary, so we can store them in computers).
+
+Any data you have worked with in a computer has had someone work out how to represent those as values in binary. Integer numbers are relatively easy, but you need to think about how to [represent negative values](https://www.geeksforgeeks.org/representation-of-negative-binary-numbers). Real numbers can be represented using [floating point numbers](https://www.geeksforgeeks.org/introduction-of-floating-point-representation/).
