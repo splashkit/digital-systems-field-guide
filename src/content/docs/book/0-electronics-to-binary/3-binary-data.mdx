@@ -50,6 +50,7 @@ In order to represent text, we need a way of mapping a number to a character. Th
 The [UTF-8 code page](https://www.charset.org/utf-8) provides a list of character mappings. For the moment, we can focus on just a few characters: 0 to 9, A to Z, a to z, space, and a few others.
 
 Here are a few mappings:
+
 - 48 --> 0
 - 49 --> 1
 - 57 --> 9
@@ -61,6 +62,7 @@ Here are a few mappings:
 - 122 --> z
 
 Then there are mappings like:
+
 - 10 --> line feed (new line)
 - 32 --> space
 - 33 --> !
@@ -101,3 +103,131 @@ This is the same with things like representing colors. The most common color sch
 
 As you can see, in each case the goal is to use some systematic way to relate binary values with the information we are trying to capture. This can either be by mapping through a lookup table as with text, or by giving different part of the binary value different meanings and using these to allow these values to be manipulated by code that runs within the computer.
 
+
+## Learning Goals
+
+By the end of this module you should be able to:
+
+- Understand how electric current in circuits represents "on" (1) and "off" (0) in binary
+- Explore binary and hexadecimal number systems and their use in digital communication
+- Learn how ASCII encoding represents characters as numbers
+- Create a working circuit using LEDs and a breadboard to represent code words
+
+## Required Materials
+
+For the activities in this module, you will need:
+
+- Breadboard
+- Jumper wires
+- 8 LEDs (any colour)
+- 8 Resistors (220 ohms for each LED)
+- 9V battery with battery clip (preferred)/ 5V power supply
+- 8 Push-button switches
+- Worksheets with binary-to-decimal, hexadecimal, and ASCII tables
+
+## Understanding Binary Systems
+
+Let's start by exploring how computers communicate using binary. The fundamental concept is simple:
+
+Electric current can represent two states:
+
+- "ON" (1)
+- "OFF" (0)
+
+:::tip[Think About It]
+What if we use 5 LEDs to send a message in binary? Can we create letters using lights?
+:::
+
+### Building Your First Binary Display
+
+1. Connect 5 LEDs in parallel rows on the breadboard, each with a resistor in series
+2. Use jumper wires to connect each LED to the power supply via separate inputs (push buttons)
+3. Leave the negative ends of the LEDs connected to the ground
+4. Manually turn each LED ON/OFF to verify the connections
+
+## Binary to Hexadecimal Conversion
+
+### Understanding Bit Positions
+
+Each LED represents a specific bit position:
+
+- LED1 (rightmost) = 2^0 = 1
+- LED2 = 2^1 = 2
+- LED3 = 2^2 = 4
+- LED4 = 2^3 = 8
+- LED5 = 2^4 = 16
+- LED6 = 2^5 = 32
+
+### Binary Number Examples
+
+Lighting LEDs in specific patterns represents binary numbers:
+
+```
+00000001 = 1
+00000011 = 3
+00010101 = 21
+```
+
+:::note
+When converting binary to hexadecimal, remember that each hex digit represents 4 binary digits. For example: 10101 (binary) = 0x15 (hex)
+:::
+
+## ASCII Encoding and Message Transmission
+
+### Understanding ASCII
+
+The ASCII system assigns numerical values to characters:
+
+- Letters (A-Z, a-z)
+- Numbers (0-9)
+- Special characters
+
+:::tip[Activity]
+Try representing "Hi" using LEDs:
+
+1. Convert "H" (ASCII 72) to binary: 01001000
+2. Convert "i" (ASCII 73) to binary: 01001001
+3. Display each pattern using your LED setup
+   :::
+
+## Advanced Concepts in Digital Electronics
+
+In modern digital electronics, binary values are represented by different voltage levels:
+
+- Logical "1" or "ON": 3.3V or 5V
+- Logical "0" or "OFF": Close to 0V
+
+:::note
+In a 5V system:
+
+- 3.5V-5V = logical "1"
+- 0V-1.5V = logical "0"
+- 1.5V-3.5V = undefined (avoided in normal operation)
+  :::
+
+## Discussion Points
+
+Consider these questions for deeper understanding:
+
+1. How does current (ON/OFF) in LEDs relate to information in computers?
+2. Why is binary important for computers?
+3. How do ASCII and Hexadecimal help simplify binary data?
+
+:::tip[Group Activity]
+Pair up with another student and:
+
+- Take turns sending binary messages using your LED display
+- Practice converting between decimal, binary, and hexadecimal
+- Try encoding and decoding simple ASCII messages
+  :::
+
+## Resources
+
+- [ASCII Table](https://www.ascii-code.com/)
+- [ASCII To BINARY converter](https://www.rapidtables.com/convert/number/ascii-to-binary.html)
+
+![LED Circuit Setup](../images-common/binary-circuit-setup.png)
+
+:::note
+Remember to always verify your connections before applying power to the circuit. Double-check your resistor values to protect your LEDs.
+:::
