@@ -33,7 +33,7 @@ export default defineConfig({
     site: "https://digital-systems-guide.netlify.app",
     integrations: [
         starlight({
-            title: "Field Guide",
+            title: "",
             head: [
                 // {
                 //     tag: "script",
@@ -42,14 +42,14 @@ export default defineConfig({
                 //         src: "https://www.googletagmanager.com/gtag/js?id=G-M004BNHE32",
                 //     },
                 // },
-        //         {
-        //             tag: "script",
-        //             content: `
-        //   window.dataLayer = window.dataLayer || [];
-        //   function gtag(){dataLayer.push(arguments);}
-        //   gtag('js', new Date());
-        //   gtag('config', 'G-M004BNHE32');`,
-        //         },
+                //         {
+                //             tag: "script",
+                //             content: `
+                //   window.dataLayer = window.dataLayer || [];
+                //   function gtag(){dataLayer.push(arguments);}
+                //   gtag('js', new Date());
+                //   gtag('config', 'G-M004BNHE32');`,
+                //         },
             ],
             customCss: [
                 // Relative path to your custom CSS file
@@ -69,7 +69,7 @@ export default defineConfig({
             ],
             sidebar: [
                 {
-                    label: "0. Electronics to Binary",
+                    label: "I. Electronics to Binary and Beyond",
                     collapsed: true,
                     autogenerate: {
                         directory:
@@ -78,7 +78,7 @@ export default defineConfig({
                     },
                 },
                 {
-                    label: "1. Logic Gates to Memory",
+                    label: "II. Logic Gates, Chips and Memory",
                     collapsed: true,
                     autogenerate: {
                         directory:
@@ -87,7 +87,7 @@ export default defineConfig({
                     },
                 },
                 {
-                    label: "2. Computer Architecture",
+                    label: "III. Computer Architecture (Coming soon)",
                     collapsed: true,
                     autogenerate: {
                         directory:
@@ -96,7 +96,7 @@ export default defineConfig({
                     },
                 },
                 {
-                    label: "3. Connecting Systems",
+                    label: "IV. Connecting Digital System and Operating System (Coming Soon)",
                     collapsed: true,
                     autogenerate: {
                         directory:
@@ -105,7 +105,7 @@ export default defineConfig({
                     },
                 },
                 {
-                    label: "4. Networks",
+                    label: "V. Computer Networks and Network Security (Coming soon)",
                     collapsed: true,
                     autogenerate: {
                         directory:
