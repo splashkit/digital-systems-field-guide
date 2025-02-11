@@ -1,5 +1,5 @@
 ---
-title: Binary Data
+title: Data conversions
 ---
 
 
@@ -12,28 +12,24 @@ With binary, we are working with a base-2 system (only 2 different digits: 0 and
 
 Hexadecimal involves 16 different digits: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, and F. This gives us a new number system that can be used to represent any value. The good thing for us is that one hexadecimal digit maps to four binary digits.
 
-- `0` --> `0000` --> 0 in decimal
-- `1` --> `0001` --> 1 in decimal
-- `2` --> `0010` --> 2 in decimal
-- `3` --> `0011` --> 3 in decimal
-- `4` --> `0100` --> 4 in decimal
-- `5` --> `0101` --> 5 in decimal
-- `6` --> `0110` --> 6 in decimal
-- `7` --> `0111` --> 7 in decimal
-- `8` --> `1000` --> 8 in decimal
-- `9` --> `1001` --> 9 in decimal
-- `A` --> `1010` --> 10 in decimal
-- `B` --> `1011` --> 11 in decimal
-- `C` --> `1100` --> 12 in decimal
-- `D` --> `1101` --> 13 in decimal
-- `E` --> `1110` --> 14 in decimal
-- `F` --> `1111` --> 15 in decimal
+| Hex | Binary | Decimal | | Hex | Binary | Decimal |
+|-----|--------|---------|---|-----|--------|---------|
+| `0` | `0000` | 0 | | `8` | `1000` | 8 |
+| `1` | `0001` | 1 | | `9` | `1001` | 9 |
+| `2` | `0010` | 2 | | `A` | `1010` | 10 |
+| `3` | `0011` | 3 | | `B` | `1011` | 11 |
+| `4` | `0100` | 4 | | `C` | `1100` | 12 |
+| `5` | `0101` | 5 | | `D` | `1101` | 13 |
+| `6` | `0110` | 6 | | `E` | `1110` | 14 |
+| `7` | `0111` | 7 | | `F` | `1111` | 15 |
+
+:::note
+
+When working with binary data, you will often see it represented in hexadecimal rather than being fully expressed in binary digits. The key is to remember that each hexadecimal digit maps to four binary digits.
 
 Two hexadecimal digits can then represent eight binary digits (a byte in computing) which has a range of 0 to 255 (256 values - `00` to `FF`).
 
-:::tip
-
-When working with binary data, you will often see it represented in hexadecimal rather than being fully expressed in binary digits. The key is to remember that each hexadecimal digit maps to four binary digits.
+**This representation of data is the most widely recognized and used in modern programming and technical documentation.**
 
 :::
 
@@ -51,15 +47,17 @@ The [UTF-8 code page](https://www.charset.org/utf-8) provides a list of characte
 
 Here are a few mappings:
 
-- 48 --> 0
-- 49 --> 1
-- 57 --> 9
-- 65 --> A
-- 66 --> B
-- 90 --> Z
-- 97 --> a
-- 98 --> b
-- 122 --> z
+| Decimal | Character |
+|---------|-----------|
+| 48 | 0 |
+| 49 | 1 |
+| 57 | 9 |
+| 65 | A |
+| 66 | B |
+| 90 | Z |
+| 97 | a |
+| 98 | b |
+| 122 | z |
 
 Then there are mappings like:
 
@@ -75,21 +73,11 @@ With digits representing individual characters, you can create words by stringin
 
 Sentences extend this, adding spaces (`20`) and punctuation such as a full stop (`2E`) within the sequence.
 
-:::tip[Give it a try]
+:::tip[Activity: Give it a try]
 
 What does this say?
 
 `57 65 6c 6c 20 64 6f 6e 65 21`
-
-:::
-
-Now have a go at creating a message using your 8-bit visualisation machine you created on the [Electronics and Binary](/book/0-electronics-to-binary/2-understanding-electronics) page.
-
-:::tip[Activity]
-
-Get together with a friend and take it in turn to encode, and transmit, a few characters using your 8-bit visualisation machines.
-
-Want a challenge? See if your friend can decode a character that requires multiple bytes. Each character has a unique sequence, some just need more than one byte to represent them.
 
 :::
 
@@ -103,60 +91,11 @@ This is the same with things like representing colors. The most common color sch
 
 As you can see, in each case the goal is to use some systematic way to relate binary values with the information we are trying to capture. This can either be by mapping through a lookup table as with text, or by giving different part of the binary value different meanings and using these to allow these values to be manipulated by code that runs within the computer.
 
-
-## Required Materials
-
-For the activities in this module, you will need:
-
-- Breadboard 
-- Jumper wires
-- 8 LEDs (any colour)
-- 8 Resistors (220 ohms for each LED)
-- 9V battery with battery clip (preferred)/ 5V power supply
-- 8 Push-button switches
-- Worksheets with binary-to-decimal, hexadecimal, and ASCII tables
-
-:::tip[Think About It]
-What if we use 5 LEDs to send a message in binary? Can we create letters using lights?
-:::
-
-### Building Your First Binary Display
-
-1. Connect 5 LEDs in parallel rows on the breadboard, each with a resistor in series
-2. Use jumper wires to connect each LED to the power supply via separate inputs (push buttons)
-3. Leave the negative ends of the LEDs connected to the ground
-4. Manually turn each LED ON/OFF to verify the connections
-
-## Binary to Hexadecimal Conversion
-
-### Understanding Bit Positions
-
-Each LED represents a specific bit position:
-
-- LED1 (rightmost) = 2^0 = 1
-- LED2 = 2^1 = 2
-- LED3 = 2^2 = 4
-- LED4 = 2^3 = 8
-- LED5 = 2^4 = 16
-- LED6 = 2^5 = 32
-
-### Binary Number Examples
-
-Lighting LEDs in specific patterns represents binary numbers:
-
-```
-00000001 = 1
-00000011 = 3
-00010101 = 21
-```
-
 :::note
 When converting binary to hexadecimal, remember that each hex digit represents 4 binary digits. For example: 10101 (binary) = 0x15 (hex)
 :::
 
 ## ASCII Encoding and Message Transmission
-
-### Understanding ASCII
 
 The ASCII system assigns numerical values to characters:
 
@@ -164,52 +103,15 @@ The ASCII system assigns numerical values to characters:
 - Numbers (0-9)
 - Special characters
 
-:::tip[Activity]
-Try representing "Hi" using LEDs:
+:::tip[Activity: Understanding ASCII]
+Try representing "Hi" using LEDs in previous activity. Add more LEDs if needed:
 
 1. Convert "H" (ASCII 72) to binary: 01001000
 2. Convert "i" (ASCII 73) to binary: 01001001
 3. Display each pattern using your LED setup
-   :::
 
-## Advanced Concepts in Digital Electronics
-
-In modern digital electronics, binary values are represented by different voltage levels:
-
-- Logical "1" or "ON": 3.3V or 5V
-- Logical "0" or "OFF": Close to 0V
-
-:::note
-In a 5V system:
-
-- 3.5V-5V = logical "1"
-- 0V-1.5V = logical "0"
-- 1.5V-3.5V = undefined (avoided in normal operation)
-  :::
-
-## Discussion Points
-
-Consider these questions for deeper understanding:
-
-1. How does current (ON/OFF) in LEDs relate to information in computers?
-2. Why is binary important for computers?
-3. How do ASCII and Hexadecimal help simplify binary data?
-
-:::tip[Group Activity]
-Pair up with another student and:
-
-- Take turns sending binary messages using your LED display
-- Practice converting between decimal, binary, and hexadecimal
-- Try encoding and decoding simple ASCII messages
-  :::
-
-## Resources
-
-- [ASCII Table](https://www.ascii-code.com/)
-- [ASCII To BINARY converter](https://www.rapidtables.com/convert/number/ascii-to-binary.html)
-
-![LED Circuit Setup](../images-common/binary-circuit-setup.png)
 
 :::note
 Remember to always verify your connections before applying power to the circuit. Double-check your resistor values to protect your LEDs.
+:::
 :::

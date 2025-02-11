@@ -25,6 +25,14 @@ Electric current can represent two states:
 - "ON" (1)
 - "OFF" (0)
 
+:::note
+In a 5V system such as RPi or modern computers:
+
+- 3.5V-5V = logical "1"
+- 0V-1.5V = logical "0"
+- 1.5V-3.5V = undefined (avoided in normal operation)
+  :::
+
 This becomes interestingly useful when you think of the **binary number system**. This system uses only two digits: 0 and 1. These can be combined to make any number. So by *thinking* of this presence of current as 1 and absence of current as 0, then we have the basis of creating a system that can represent information.
 
 **This is the foundation of all digital systems!**
@@ -35,24 +43,60 @@ Read about the [Binary Number System](https://www.mathsisfun.com/binary-number-s
 
 The next step is to think about how to start using these ideas to work with different things we want to represent. For this we will look at common ways of representing binary in a shorter format, and then using binary to represent text. Similar ideas can then be applied to representing other things like colours, images, sounds, and so on.
 
-## An 8-bit Visualisation
+## A 5-bit Visualization
 
-In computing a single binary digit is called a bit. So, let's create a simple 8-bit visualisation using the electronics we reviewed in the last page. Connect up 8 LEDs to switches so that you can turn each LED on or off individually. You can then use this to visualise binary values by thinking of each LED as a binary digit. When the LED is on, then the digit is 1, when it is off, then the digit is a 0.
+:::tip[Activity: A 5-bit visualizer]
 
-You will need:
+In computing a single binary digit is called a bit. So, let's create a simple 5-bit visualization using the electronics we reviewed in the last page. Connect up to 5 LEDs to switches so that you can turn each LED on or off individually. You can then use this to visualise binary values by thinking of each LED as a binary digit. When the LED is on, then the digit is 1, when it is off, then the digit is a 0.
 
-- Breadboard
-- Breadboard wires
-- 8 LEDs (any colour)
-- 8 Resistors (220 ohms for each LED)
+### Required Materials
+
+For the activity in this module, you will need:
+
+- Breadboard 
+- Jumper wires
+- 5 LEDs (any colour)
+- 5 Resistors (220 ohms for each LED)
 - 9V battery with battery clip (preferred)/ 5V power supply
-- 8 Push-button switches
+- 5 Push-button switches
 
-Wire up LED to its own button, then try counting through a few of the values. Use some values from the [Binary Number System](https://www.mathsisfun.com/binary-number-system.html) page.
+### Resources
+- [ASCII Table](https://www.ascii-code.com/)
+- [ASCII To BINARY converter](https://www.rapidtables.com/convert/number/ascii-to-binary.html)
 
-:::tip[Activity]
 
-Get a friend and take it in turns to send and decode values.
+### Steps
+1. Connect 5 LEDs in parallel rows on the breadboard, each with a resistor in series
+2. Use jumper wires to connect each LED to the power supply via separate inputs (push buttons)
+3. Leave the negative ends of the LEDs connected to the ground
+4. Manually turn each LED ON/OFF to verify the connections
+
+You can use the 9V battery provided to setup the power. Your circuit should look like this:
+![LED Circuit Setup](../images-common/binary-circuit-setup.png)
+
+### Understanding Bit Positions
+
+Each LED represents a specific bit position:
+
+- LED1 (rightmost) = 2^0 = 1
+- LED2 = 2^1 = 2
+- LED3 = 2^2 = 4
+- LED4 = 2^3 = 8
+- LED5 = 2^4 = 16
+
+### Binary Number Examples
+
+Lighting LEDs in specific patterns represents different binary numbers:
+
+- 00001 = 1
+- 00011 = 3
+- 10101 = 21
+
+**Activity:** Take turn in groups to send and decode values. Use some values from the [Binary Number System](https://www.mathsisfun.com/binary-number-system.html) page. 
+
+:::note
+Remember to always verify your connections before applying power to the circuit. Double-check your resistor values to protect your LEDs.
+:::
 
 :::
 
@@ -63,3 +107,5 @@ In this activity you may encounter an interesting issue of which light is the fi
 :::
 
 Now that we have a way of representing numbers using binary digits, let's move on to consider how to use this to represent things.
+
+

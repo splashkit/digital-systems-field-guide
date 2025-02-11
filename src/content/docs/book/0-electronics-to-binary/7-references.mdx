@@ -2,13 +2,54 @@
 title: References and Extra Reading
 ---
 
-## Further Resources
+## Number Systems in Digital Electronics
 
-For deeper understanding:
-- Digital logic simulators
-- Online conversion tools
-- Circuit design software
+### Binary (Base-2)
+
+The fundamental number system in digital electronics:
+
+- Uses only 0 and 1
+- Position values are powers of 2 (2⁰, 2¹, 2², 2³, etc.)
+
+:::note[Example Calculation]
+Converting binary 1101 to decimal:
+- 1×2³ + 1×2² + 0×2¹ + 1×2⁰
+- 8 + 4 + 0 + 1 = 13 decimal
+:::
+
+### Hexadecimal (Base-16)
+
+A more compact representation of binary data:
+
+- Uses digits 0-9 and letters A-F
+- Each hex digit represents 4 binary digits
+- Common in programming and debugging
 
 :::note
-Remember to always verify your calculations and understand the reasoning behind each conversion process.
+Example conversion:
+Hex 1F = 1×16¹ + 15×16⁰ = 31 decimal = 0001 1111 binary
+:::
+## Data Representation
+
+### ASCII Encoding
+
+The standard system for representing text in digital form:
+
+- Basic ASCII: 7 bits (128 characters)
+- Extended ASCII: 8 bits (256 characters)
+
+Common ASCII values:
+```
+'A' = 65 (decimal) = 41 (hex) = 01000001 (binary)
+'a' = 97 (decimal) = 61 (hex) = 01100001 (binary)
+'1' = 49 (decimal) = 31 (hex) = 00110001 (binary)
+```
+
+:::note[Digital Communication Process]
+When you type 'H' on your keyboard:
+1. Keyboard registers 'H'
+2. Converts to ASCII (72 decimal)
+3. Transmits as binary (01001000)
+4. Often displayed as hex (48) for readability
+5. Receiving device converts back to 'H'
 :::
