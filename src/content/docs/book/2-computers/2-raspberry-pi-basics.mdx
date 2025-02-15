@@ -1,0 +1,83 @@
+---
+title: Getting Started with Raspberry Pi
+sidebar:
+    label: "Raspberry Pi Basics"
+---
+
+## Introduction to Raspberry Pi
+
+The Raspberry Pi is a small, affordable computer that helps us understand how computers work. It has all the basic components we discussed but in a more accessible format.
+
+### Components of Raspberry Pi
+
+![Raspberry Pi 4B components](../images-common/raspberry-pi-4b-board-layout-top-view.png)
+
+- Processor (CPU)
+- GPIO pins for input/output
+- USB ports for peripherals
+- HDMI output
+- SD card slot for storage
+- Network connectivity
+
+:::note[Hardware Setup]
+Before starting:
+1. Make sure your SD card is properly formatted or have a working operating system.
+2. Connect display via HDMI.
+3. Connect keyboard and mouse.
+4. Power up using appropriate power supply.
+:::
+
+## Basic GPIO Projects
+
+### Project 1: LED Control
+:::tip[Activity: LED Blinking]
+
+Materials needed:
+- LED
+- 220Ω resistor
+- Jumper wires
+- Breadboard
+
+Steps:
+1. Connect LED to GPIO pin 18
+2. Add resistor in series
+3. Connect ground
+4. Run the following Python code:
+```python
+import RPi.GPIO as GPIO
+import time
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(18, GPIO.OUT)
+
+while True:
+    GPIO.output(18, GPIO.HIGH)
+    time.sleep(1)
+    GPIO.output(18, GPIO.LOW)
+    time.sleep(1)
+```
+:::
+
+### Project 2: Input and Output
+:::tip[Activity]
+**Button-Controlled LED**
+Build upon the previous project by:
+1. Adding a push button
+2. Using button press to control LED
+3. Implementing different lighting patterns
+:::
+
+## Understanding Data Flow
+
+### Analog to Digital Conversion
+```python
+# Example using an analog sensor
+import RPi.GPIO as GPIO
+import time
+
+# Setup code here
+```
+
+:::note[Important Concept]
+Computers work with digital data, but many real-world signals are analog. The conversion process is crucial for interfacing with the physical world.
+:::
