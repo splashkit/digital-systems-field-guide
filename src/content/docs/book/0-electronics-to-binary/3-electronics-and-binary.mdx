@@ -2,9 +2,7 @@
 title: Electronics and Binary
 ---
 
-The ingenious idea of computing is the use of electronic circuits to represent information. By coming up with a way of representing information, we have been able to create machines that operate on this information.
-
-So, to get to digital systems, we need a way of representing information in data that electronics can understand or represent.
+The fundamental concept of computing is using electronic circuits to represent and process information. By developing a method to represent information, we have enabled the creation of machines that can process and utilise it. To get to digital systems, we need a way of representing information in data that electronics can understand or represent.
 
 How does this happen?
 
@@ -33,9 +31,11 @@ In a 5V system such as RPi or modern computers:
 - 1.5V-3.5V = undefined (avoided in normal operation)
   :::
 
-This becomes interestingly useful when you think of the **binary number system**. This system uses only two digits: 0 and 1. These can be combined to make any number. So by *thinking* of this presence of current as 1 and absence of current as 0, then we have the basis of creating a system that can represent information.
+This becomes useful when you think of the **binary number system**. This system uses only two digits: 0 and 1. These can be combined to make any number. So by *thinking* of this presence of current as 1 and absence of current as 0, then we have the basis of creating a system that can represent information. 
 
 **This is the foundation of all digital systems!**
+
+Digital systems only understand 1s and 0s. 
 
 :::note
 Read about the [Binary Number System](https://www.mathsisfun.com/binary-number-system.html) on Maths is Fun to familiarise yourself with this way of expressing values.
@@ -78,21 +78,30 @@ You can use the 9V battery provided to setup the power. Your circuit should look
 
 ### Understanding Bit Positions
 
-Each LED represents a specific bit position:
+Binary numbers are essential in computer science and digital electronics because they can be easily represented and processed in electronic circuits. As you have noticed already, The binary number system is a base-2 numerical system that consists of only two symbols: 0 and 1. 
+Each LED in your circuit represents a specific bit position:
 
 - LED1 (rightmost) = 2^0 = 1
 - LED2 = 2^1 = 2
 - LED3 = 2^2 = 4
 - LED4 = 2^3 = 8
-- LED5 = 2^4 = 16
+- LED5 (leftmost) = 2^4 = 16
 
 ### Binary Number Examples
 
 Lighting LEDs in specific patterns represents different binary numbers:
 
-- 00001 = 1
+- 0 0 0 0 1 = 1
+  
+  Working => 16 X 0 + 8 X 0 + 4 X 0 + 2 X 0 + 1 X 1 = 0 + 0 + 0 + 0 + 1 = 1 
+
 - 00011 = 3
+  
+  Working => 16 X 0 + 8 X 0 + 4 X 0 + 2 X 1 + 1 X 1 = 0 + 0 + 0 + 2 + 1 = 3
+
 - 10101 = 21
+  
+  Working => 16 X 1 + 8 X 0 + 4 X 1 + 2 X 0 + 1 X 1 = 16 + 0 + 4 + 0 + 1 = 21 
 
 **Activity:** Take turn in groups to send and decode values. Use some values from the [Binary Number System](https://www.mathsisfun.com/binary-number-system.html) page. 
 
@@ -108,6 +117,6 @@ In this activity you may encounter an interesting issue of which light is the fi
 
 :::
 
-Now that we have a way of representing numbers using binary digits, let's move on to consider how to use this to represent things.
+Now that we have a way of representing numbers using binary digits, let's move on to consider how to use this to represent other things.
 
 

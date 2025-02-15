@@ -2,11 +2,9 @@
 title: Data conversions
 ---
 
-
-
 ## Binary to Hexadecimal
 
-Working with the binary digits can become tiresome quickly, as you need may digits to represent values you are likely to work with. To help address this, we can go back to think about the use of number systems. While binary (base 2) is what we need within our digital circuits, when we need to work with binary data it may be useful to have a shorter form.
+Working with the binary digits can become tiresome quickly, as you need more digits to represent values you are likely to work with. To help address this, we can go back to think about the use of number systems. While binary (base 2) is what we need within our digital circuits, when we need to work with binary data it may be useful to have a shorter form.
 
 With binary, we are working with a base-2 system (only 2 different digits: 0 and 1). If we combined two of these digits, that would give us 4 different combinations, three digits would give us 8 different combinations, and four digits would give us 16 different combinations. Unfortunately none of these map nicely to decimal (base-10) which we are used to dealing with. So it is common in computing for binary values to be represented using base-16, known as hexadecimal.
 
@@ -33,7 +31,7 @@ Two hexadecimal digits can then represent eight binary digits (a byte in computi
 
 :::
 
-There are many articles on the web that can help you explore this topic. For example, you can read about [converting hexadecimal to binary](https://byjus.com/maths/convert-hexadecimal-to-binary/). There are also [hexadecimal to decimal](https://www.rapidtables.com/convert/number/hex-to-decimal.html) converters that you can use to do the calculations for you.
+Hexadecimals are also used in colour codes (in web design), memory addresses, and debugging programs. There are many articles on the web that can help you explore this topic. For example, you can read about [converting hexadecimal to binary](https://byjus.com/maths/convert-hexadecimal-to-binary/). There are also [hexadecimal to decimal](https://www.rapidtables.com/convert/number/hex-to-decimal.html) converters that you can use to do the calculations for you.
 
 ## Representing Text
 
@@ -41,7 +39,24 @@ Now that we can represent numbers, by utilising the binary number system, how ca
 
 To explore this, let's have a look at how we can represent text.
 
-In order to represent text, we need a way of mapping a number to a character. This is achieved using a mapping table, with the most common scheme being Unicode Transformation Format-8 referred to as UTF-8. This provides a scheme that uses variable byte lengths to represent different characters, with 1 byte being used to refer to the most common characters.
+## ASCII Encoding and Message Transmission
+
+In order to represent text, we need a way of mapping a number to a character. ASCII (American Standard Code for Information Interchange) assigns a unique number to each character.
+- Letters (A-Z, a-z)
+- Numbers (0-9)
+- Special characters
+
+For example, 
+- 'A' = 65 in ASCII
+- 'a' = 97 in ASCII
+- ' ' (space) = 32 in ASCII
+
+ASCII system is used in programming, and data storage. 
+
+
+## UTF-8 code
+
+ASCII is limited to 128 characters, which is not enough for all languages and represent all the special characters. This limitation was overcome by introducing the most common scheme currently being used, Unicode Transformation Format-8 referred to as UTF-8. This provides a scheme that uses variable byte lengths to represent different characters, with 1 byte being used to refer to the most common characters (remember one byte is 8 bits). UTF-8 is used to represent thousands of characters from languages worldwide, including emojis 😂, mathematical symbols, and special characters. UTF-8 is used in many modern applications including web development and email communication.  
 
 The [UTF-8 code page](https://www.charset.org/utf-8) provides a list of character mappings. For the moment, we can focus on just a few characters: 0 to 9, A to Z, a to z, space, and a few others.
 
@@ -75,7 +90,7 @@ Sentences extend this, adding spaces (`20`) and punctuation such as a full stop 
 
 :::tip[Activity: Give it a try]
 
-What does this say?
+What do these UTF-8 Hexadecimals say?
 
 `57 65 6c 6c 20 64 6f 6e 65 21`
 
@@ -95,16 +110,17 @@ As you can see, in each case the goal is to use some systematic way to relate bi
 When converting binary to hexadecimal, remember that each hex digit represents 4 binary digits. For example: 10101 (binary) = 0x15 (hex)
 :::
 
-## ASCII Encoding and Message Transmission
 
-The ASCII system assigns numerical values to characters:
-
-- Letters (A-Z, a-z)
-- Numbers (0-9)
-- Special characters
 
 :::tip[Activity: Understanding ASCII]
-Try representing "Hi" using LEDs in previous activity. Add more LEDs if needed:
+
+Part 1: Discussion 
+
+Are there any similarities between ASCII codes and UTF-8 codes? 
+
+Part 2: ASCII in elctronics  circuit 
+
+Try representing "Hi" in ASCII using LEDs in previous activity. Add more LEDs if needed:
 
 1. Convert "H" (ASCII 72) to binary: 01001000
 2. Convert "i" (ASCII 73) to binary: 01001001
