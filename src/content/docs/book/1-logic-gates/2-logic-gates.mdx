@@ -2,9 +2,32 @@
 title: Logic Gates with Transistors
 ---
 
-Watch [How Computers Work: Circuits & Logic](https://www.youtube.com/watch?v=ZoqMiFKspAA&ab_channel=Code.org) to understand how computers use circuits or logic gates to perform complex tasks.
+import { YouTube } from 'astro-embed';
 
-## NOT Gate (Inverter)
+In Chapter I, you built a simple circuit where a manual switch turns an LED on and off. Then in the previous section you replace that switch with a transistor, where a transistor control the LED using electricity. This is the first step toward automation where signals, instead of physical actions, determine how circuits behave. But what if we want to build something more complex than just turning a LED on or off?
+
+Let's say you have two switches instead of one and you want to set up a rule where the LED only turns on if Switch 1 **and** Switch 2 are pressed at the same time. You want to build a circuit to make a logical decision. This is exactly how an AND gate works in digital electronics. Instead of manual switches, we use transistors to control the flow of electricity, creating a simple logic circuit.
+
+By combining multiple transistors in different ways, we can create logic gates—the basic decision-makers of every digital system. Logic gates form the foundation of processors, memory, and automation, enabling everything from simple calculations to complex AI algorithms. Just as letters form words and words create sentences, transistors form logic gates, and logic gates build the circuits that make up computers.
+
+Watch the following video to explore how computers use circuits and how these logic gates are used to perform complex tasks.
+
+<div class="not-content">
+  <YouTube id="ZoqMiFKspAA" params="fs=1&modestbranding=1&rel=0&autoplay=1"/>
+</div>
+
+There are different types of logic gates that we can use to perform different functions. Logic gates have different outputs depending on the input it receives. To list all the possible combinations of inputs and their corresponding outputs, we can create a simple table. This table is called **A Truth Table**. 
+The truth table explains how the output changes with different input logic level combinations. 
+
+Watch the following video to learn about different types of logic gates and their truth tables.
+
+<div class="not-content">
+  <YouTube id="INEtYZqtjTo" params="fs=1&modestbranding=1&rel=0&autoplay=1"/>
+</div>
+
+:::tip[Activity: Building a Simple Logic Gate with a Transistor]
+
+In this activity, you are building a simple NOT Gate (Inverter) with a transistor and understand its behaviour. 
 
 Required components:
 
@@ -19,17 +42,18 @@ Build steps:
 2. Connect LED to collector with 220Ω resistor
 3. Test operation: Input HIGH → LED OFF
 
-:::tip[Think About It]
+Discuss:
+
 When the input is HIGH (button pressed), why does the LED turn OFF? How does this relate to the NOT gate's truth table?
 :::
 
-## OR Gate
+:::tip[Activity: Building an OR Gate]
 
 Required components:
 
 - 2 NPN transistors
 - 1 LED
-- Resistors (2x 1kΩ, 220Ω)
+- Resistors
 - 2 Push-button switches
 
 Build steps:
@@ -38,17 +62,4 @@ Build steps:
 2. Connect each base to a separate switch
 3. Verify: LED ON if either/both buttons pressed
 
-## AND Gate
-
-Required components:
-
-- 2 NPN transistors
-- 1 LED
-- Resistors (2x 1kΩ, 220Ω)
-- 2 Push-button switches
-
-Build steps:
-
-1. Connect transistors in series
-2. Connect each base to a separate switch
-3. Verify: LED ON only when both switches pressed
+:::
