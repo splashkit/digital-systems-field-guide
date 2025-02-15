@@ -44,7 +44,7 @@ Your half-adder circuit should look like this:
 
 ![Half Adder](../images-common/half-adder/half-adder-circuit.png)
 
-The half adder is built using a **XOR gate** and a **AND gate**. You can build a **XOR gate** directly using 6 transistors but we will be further dividing it. An **XOR gate** can be built using an **AND gate** and **OR gate**. The **XOR gate** is used to calculate the **sum** and the extra **AND gate** is used to calculate the **carry**.
+The half adder is built using a **XOR gate** and a **AND gate**. You can build a **XOR gate** directly using minimum 6 transistors for output but we will be further dividing it into the basic logic gates discussed previously. An **XOR gate** can be built using an **AND gate** and **OR gate**. The **XOR gate** is used to calculate the **sum** and the extra **AND gate** is used to calculate the **carry**.
 ![Half Adder](../images-common/half-adder/half-adder-components.png)
 
 Below are the few scenarios and the expected outputs when you vary the signals. **Think about how these compare to the truth table provided above**
@@ -57,6 +57,15 @@ Below are the few scenarios and the expected outputs when you vary the signals. 
 
 Fantastic, now we know how computers add two binary numbers. But computers don’t just add numbers. The computers store and process data, make decisions, and execute instructions. To handle these tasks efficiently, we group logic circuits together on a single chip—an integrated circuit (IC). A single chip can contain millions or even billions of transistors working together, enabling everything from simple memory storage to powerful processors that run our modern devices.
 
+:::note[Did you know?]
+
+<div style='display: flex; gap: 10px;'>
+  <div style='width: 300px'>![7846](../images-common/7846-quad-xor-gate-ic.png)</div>
+  <div style='width: 300px'>![quad xor](../images-common/quad-xor-gate.png)</div>
+</div>
+
+There are many ICs developed that specialize in performing certain tasks. For example, the 7846 (also known as 74LS86 or 74HC86) is a quadruple 2-input XOR gate integrated circuit. This means it contains **4 XOR gates** internally. This IC is commonly used in Digital comparators (for comparing two binary numbers). Assuming each **XOR gate** is built from **6-10** transistors, this one single IC contains around **24-40** transistors.
+:::
 :::tip[Exercise: Thinking beyond]
 
 If a single logic gate can make a simple decision, how do millions of gates working together in a chip enable a computer to run complex applications like video games, AI, or even self-driving cars?
