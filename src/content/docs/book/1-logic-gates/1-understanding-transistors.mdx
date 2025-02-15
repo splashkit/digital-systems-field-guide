@@ -2,9 +2,21 @@
 title: Understanding Transistors
 ---
 
+import { YouTube } from 'astro-embed';
+
+In the previous Chapter, we have seen that circuits relied on manual switches to control the flow of electricity. When you turned on a LED, you had to physically press a switch to complete the circuit. However, modern digital systems, from computers to smartphones, require switching at speeds far beyond human capability. 
+
+This is where transistors come in. A transistor acts as an electronic switch, allowing current to flow when a small voltage is applied to its control terminal. By replacing manual switches with transistors, we can automate control the current, enabling the creation of logic circuits, processors, and entire digital systems. In addition to its switching function, transistors can also amplify the signals. Understanding transistors is the key to unlocking how computers think, process information, and make decisions without human intervention.
+
 ## Basic Transistor Structure
 
-A transistor has three essential parts:
+Watch the following video to learn about how transistors work, the basic functions, different types of transistors. 
+
+<div class="not-content">
+  <YouTube id="J4oO7PT_nzQ" params="fs=1&modestbranding=1&rel=0&autoplay=1"/>
+</div>
+
+As explained in the above video transistor has three essential parts which we need to know to build your own circuits with transistors. The three parts of the transistor are: 
 
 1. Base: Controls the switch
 
@@ -22,6 +34,8 @@ A transistor has three essential parts:
    - Outputs current flow
    - Releases majority carriers
    - Usually connected to ground
+  
+
 
 :::tip[Important Concept]
 Think of a transistor as a water valve where a small amount of water (base current) controls a much larger flow (collector-emitter current).
@@ -34,7 +48,7 @@ Think of a transistor as a water valve where a small amount of water (base curre
 3. Observe how a small base current controls the LED
 
 :::note
-Even when "off", transistors have a tiny leakage current (Iceo or Icbo), typically in the nanoamp range. While usually negligible, this becomes important in:
+Even when "off", transistors have a tiny leakage current, typically in the nanoampere (nA) range. While usually negligible, this becomes important in:
 
 - Low power designs
 - High precision measurements
