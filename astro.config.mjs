@@ -87,7 +87,7 @@ export default defineConfig({
                     },
                 },
                 {
-                    label: "III. Computer Architecture (Coming soon)",
+                    label: "III. Computer Architecture",
                     collapsed: true,
                     autogenerate: {
                         directory:
