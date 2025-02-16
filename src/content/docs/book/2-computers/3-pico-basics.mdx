@@ -1,0 +1,50 @@
+---
+title: Working with Raspberry Pi Pico
+---
+
+## Introduction to Pico
+
+The Raspberry Pi Pico is a microcontroller that's perfect for learning about:
+- Direct hardware control
+- Real-time operations
+- Embedded systems
+- Basic computer architecture
+
+:::note[Pico vs Raspberry Pi]
+While the Raspberry Pi is a complete computer, the Pico is a microcontroller designed for specific tasks and direct hardware interaction.
+:::
+
+## Getting Started with Pico
+
+### Setup
+1. Install MicroPython on your Pico
+2. Connect to your computer
+3. Set up Thonny IDE
+4. Test basic functionality
+
+### Basic LED Project
+```python
+from machine import Pin
+import time
+
+led = Pin(25, Pin.OUT)    # Onboard LED on GPIO 25
+
+while True:
+    led.toggle()
+    time.sleep(0.5)
+```
+
+## Connecting Pico to Raspberry Pi
+
+### Communication Methods
+1. USB Serial
+2. I2C
+3. SPI
+4. UART
+
+:::tip[Project Idea]
+Create a weather station:
+- Pico collects sensor data
+- Sends to Raspberry Pi
+- Pi displays on web interface
+:::
