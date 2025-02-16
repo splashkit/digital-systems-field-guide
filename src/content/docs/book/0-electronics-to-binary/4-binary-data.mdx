@@ -56,9 +56,9 @@ ASCII system is used in programming, and data storage.
 
 ## UTF-8 code
 
-ASCII is limited to 128 characters, which is not enough for all languages and represent all the special characters. This limitation was overcome by introducing the most common scheme currently being used, Unicode Transformation Format-8 referred to as UTF-8. This provides a scheme that uses variable byte lengths to represent different characters, with 1 byte being used to refer to the most common characters (remember one byte is 8 bits). UTF-8 is used to represent thousands of characters from languages worldwide, including emojis 😂, mathematical symbols, and special characters. UTF-8 is used in many modern applications including web development and email communication.  
+ASCII is limited to 128 characters, which is not enough to represent all languages and special characters. This limitation was addressed by introducing a scheme, the most commonly used being Unicode Transformation Format-8 (UTF-8). UTF-8 uses variable byte lengths to represent different characters, with 1 byte being used to represent the most common characters (remember one byte is 8 bits). UTF-8 is used to represent thousands of characters from languages worldwide, including emojis 😂, mathematical symbols, and special characters. It is widely used in modern applications, such as web development and email communication.  
 
-The [UTF-8 code page](https://www.charset.org/utf-8) provides a list of character mappings. For the moment, we can focus on just a few characters: 0 to 9, A to Z, a to z, space, and a few others.
+The [UTF-8 code page](https://www.charset.org/utf-8) provides a list of character mappings. For the moment, let's focus on a few basic characters: 0 to 9, A to Z, a to z, space, and a few others.
 
 Here are a few mappings:
 
@@ -80,17 +80,17 @@ Then there are mappings like:
 - 32 --> space
 - 33 --> !
 
-The UTF-8 code page also includes the hexadecimal values for the characters. These can be useful when you want to think about the binary representation of these.
+The UTF-8 code page also includes the hexadecimal values for characters, which can be useful when thinking about their binary representation.
 
-For example, A has a UTF-8 Hexadecimal value of `41` being `0100 0001` in binary.
+For example, A has a UTF-8 Hexadecimal value of `41` which correcponds to `0100 0001` in binary.
 
-With digits representing individual characters, you can create words by stringing a sequence of these characters together. So "Hi" would be represented as the character H (`48`) followed by the character i (`69`) giving the sequence `48 69` being `0100 1000 0110 1001`.
+Representing each character as a digit, you can create words by stringing a sequence of these characters together. So "Hi" would be represented by the character H (`48`) followed by the character i (`69`) resulting in the sequence `48 69`, or `0100 1000 0110 1001` in binary.
 
-Sentences extend this, adding spaces (`20`) and punctuation such as a full stop (`2E`) within the sequence.
+Sentences extend this pattern by adding spaces (`20`) and punctuation, like a full stop (`2E`), into the sequence.
 
 :::tip[Activity: Give it a try]
 
-What do these UTF-8 Hexadecimals say?
+Can you decode these UTF-8 Hexadecimal values?
 
 `57 65 6c 6c 20 64 6f 6e 65 21`
 
@@ -98,13 +98,13 @@ What do these UTF-8 Hexadecimals say?
 
 ## Numbers, colors, and others
 
-To wrap up this section, let's see some other common ways of encoding information within numbers (specifically binary, so we can store them in computers).
+To wrap up this section, let's explore other common ways of encoding information using numbers specifically binary, to store data in computers.
 
-Any data you have worked with in a computer has had someone work out how to represent those as values in binary. Integer numbers are relatively easy, but you need to think about how to [represent negative values](https://www.geeksforgeeks.org/representation-of-negative-binary-numbers). Real numbers can be represented using [floating point numbers](https://www.geeksforgeeks.org/introduction-of-floating-point-representation/). In each of these cases, the binary digits within the values are meaningful.
+Any data you work with on a computer has been converted into binary values. While representing integer numbers is relatively straightforward, it is more complex to [represent negative values](https://www.geeksforgeeks.org/representation-of-negative-binary-numbers). Real numbers are represented using [floating point numbers](https://www.geeksforgeeks.org/introduction-of-floating-point-representation/). In both cases, the binary digits within the values carry specific meaning.
 
-This is the same with things like representing colours. The most common colour scheme would use a 32-bit value that internally contains 8 bits for red, green, blue, and an opacity (alpha) - known as [RBGA](https://en.wikipedia.org/wiki/RGBA_color_model). Images can then be created by arranging sequences of these colour values into a grid of picture elements (pixels).
+This principle also applies to things like colors. A common color scheme uses a 32-bit value with 8 bits each for red, green, blue, and opacity (alpha) - known as [RBGA](https://en.wikipedia.org/wiki/RGBA_color_model). Images are then created by arranging sequences of these color values into a grid of picture elements (pixels).
 
-As you can see, in each case the goal is to use some systematic way to relate binary values with the information we are trying to capture. This can either be by mapping through a lookup table as with text, or by giving different part of the binary value different meanings and using these to allow these values to be manipulated by code that runs within the computer.
+As you can see, the goal is to use some systematic way to relate binary values to the information we are trying to capture. This can be achieved by mapping through a lookup table, as with text encoding, or by assigning different meanings to various parts of the binary value, and manipulate these by code that runs within the computer.
 
 :::note
 When converting binary to hexadecimal, remember that each hex digit represents 4 binary digits. For example: 10101 (binary) = 0x15 (hex)
@@ -118,9 +118,9 @@ Part 1: Discussion
 
 Are there any similarities between ASCII codes and UTF-8 codes? 
 
-Part 2: ASCII in elctronics circuit 
+Part 2: ASCII in electronic  circuits 
 
-Try representing "Hi" in ASCII using LEDs in previous activity. Add more LEDs if needed:
+Try displaying the word "Hi" in ASCII using the LEDs from the previous activity. Add more LEDs if needed:
 
 1. Convert "H" (ASCII 72) to binary: 01001000
 2. Convert "i" (ASCII 73) to binary: 01001001
@@ -128,6 +128,6 @@ Try representing "Hi" in ASCII using LEDs in previous activity. Add more LEDs if
 
 
 :::note
-Remember to always verify your connections before applying power to the circuit. Double-check your resistor values to protect your LEDs.
+Remember to always verify your connections before applying power to the circuit. Double-check your resistor values to protect your LEDs from damage.
 :::
 :::

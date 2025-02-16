@@ -8,15 +8,15 @@ How does this happen?
 
 ## Thinking about Current
 
-The LED circuit with the button is a great starting point when thinking about this. We want a way to represent information, and the button circuit shows that you can have electronic components that behave differently in the presence or absence of current.
+The LED circuit with the button is a great starting point for thinking about this. The button circuit is great for demonstrating that electronic components behave differently depending on the presence or absence of current.
 
 Think of the LED. When there is current, the LED is on. When there is no current, the LED if off.
 
-Can this be used somehow to create information?
+Can this behaviour be used somehow to create information?
 
 ## Understanding Binary Systems
 
-The fundamental concept of communication between computers using binary is simple:
+The fundamental concept behind communication between computers using binary is simple:
 
 Electric current can represent two states:
 
@@ -24,7 +24,7 @@ Electric current can represent two states:
 - "OFF" (0)
 
 :::note
-In a 5V system such as RPi or modern computers:
+In a 5V system such as Raspberry Pi (RPi) or modern computers:
 
 - 3.5V-5V = logical "1"
 - 0V-1.5V = logical "0"
@@ -32,19 +32,19 @@ In a 5V system such as RPi or modern computers:
 
   :::
 
-This becomes useful when you think of the **binary number system**. This system uses only two digits: 0 and 1. These can be combined to make any number. So by _thinking_ of this presence of current as 1 and absence of current as 0, then we have the basis of creating a system that can represent information.
+The binary number system is key to digital communication. It uses only two digits: 0 and 1. These can be combined to represent any number. By _thinking_ of the presence of current as 1 and the absence of current as 0, we have the basis for creating a system that can represent information.
 
 **This is the foundation of all digital systems!**
 
 Digital systems only understand 1s and 0s.
 
 :::note
-Read about the [Binary Number System](https://www.mathsisfun.com/binary-number-system.html) on Maths is Fun to familiarise yourself with this way of expressing values.
+Read about the [Binary Number System](https://www.mathsisfun.com/binary-number-system.html) on Maths is Fun to familiarise yourself with the binary number system.
 
 Watch [How Computers Work: Binary & Data](https://www.youtube.com/watch?v=USCBCmwMCDA&ab_channel=Code.org) from Code.org to understand how computers and binary work together.
 :::
 
-The next step is to think about how to start using these ideas to work with different things we want to represent. For this we will look at common ways of representing binary in a shorter format, and then using binary to represent text. Similar ideas can then be applied to representing other things like colours, images, sounds, and so on.
+The next step is to explore how to use these binary concepts to represent various types of information. We will start by looking at common ways of representing binary in shorter formats, and then using learn how to use binary to represent text. These ideas extended to represent other types of data, like colours, images, sounds, and more.
 
 ## A 5-bit Visualization
 
@@ -106,18 +106,18 @@ Lighting LEDs in specific patterns represents different binary numbers:
 
   Working => 16 X 1 + 8 X 0 + 4 X 1 + 2 X 0 + 1 X 1 = 16 + 0 + 4 + 0 + 1 = 21
 
-**Activity:** Take turn in groups to send and decode values. Use some values from the [Binary Number System](https://www.mathsisfun.com/binary-number-system.html) page.
+**Activity:** Take turns in groups to send and decode values. Use some values from the [Binary Number System](https://www.mathsisfun.com/binary-number-system.html) page.
 
 :::note
-Remember to always verify your connections before applying power to the circuit. Double-check your resistor values to protect your LEDs.
+Remember to always verify your connections before applying power to the circuit. Double-check your resistor values to protect your LEDs from damage.
 :::
 
 :::
 
 :::note
 
-In this activity you may encounter an interesting issue of which light is the first digit. This is also an issue in computing known as [endianness](https://www.techtarget.com/searchnetworking/definition/big-endian-and-little-endian#:~:text=The%20term%20endianness%20describes%20the,to%20the%20value%20stored%20first.). So there is no right or wrong way to read these values, the main thing is that you read it in an agreed order.
+In this activity you may encounter an interesting issue: determining which light represents the first digit. This is also an issue in computing known as [endianness](https://www.techtarget.com/searchnetworking/definition/big-endian-and-little-endian#:~:text=The%20term%20endianness%20describes%20the,to%20the%20value%20stored%20first.). There is no right or wrong way to read these values, the key is to agree on an order before you begin. 
 
 :::
 
-Now that we have a way of representing numbers using binary digits, let's move on to consider how to use this to represent other things.
+Now that we have a way of representing numbers using binary digits, let's consider how to use this system to represent other types of information.
