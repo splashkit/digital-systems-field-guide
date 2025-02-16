@@ -6,19 +6,19 @@ import { YouTube } from 'astro-embed';
 
 ## Storing the Digital World
 
-So far, we have seen how logic gates can make simple decisions and how chips combine millions of these gates to process information. However, processing alone is not enough to perform the functions of modern digital systems. Computers also need a way to store and recall information. Yes, we use memory. 
+So far, we have seen how logic gates can make simple decisions and how chips combine millions of these gates to process information. However, processing alone is not enough to perform the functions of modern digital systems. Computers also need a way to store and recall information. Yes, we use memory.
 
 Computers face the same challenges as we do when it comes to performing tasks. Like we take notes and write down the steps, computer need to store the steps and data. Computers need memory circuits to store data temporarily while working on a task (such as in Random Access Memory, RAM) and to keep important information even when powered off (such as in hard drives or portable storage).
 
-Computer memory are circuits built from logic gates which we have studied. In the previous sections, we explored combinational logic, which determines outputs solely based on current inputs, without retaining any memory of past operations. For a computer to perform a memory task, it needs sequential logic.
+Computer memory are circuits built from logic gates which we have studied. In the previous sections, we explored combinational logic, which determines outputs solely based on current inputs without retaining any memory of past operations. For a computer to perform a memory task, it needs sequential logic.
 
 ## Sequential Logic, Clock and Flip-Flop
 
 Sequential logic incorporates time-dependent elements that store past information, making it fundamental for memory and system state in a computer. It operates under the control of a clock signal, which dictates when values should be updated—similar to turning a page in a book to reveal the next step. This mechanism enables the computer to track its progress in a process, much like remembering your place in a count. Flip-flops and latches are types of memory circuits in electronics. The key distinction between them lies in their response to input changes. A latch updates its output immediately when its input changes, making it always ready to react. A flip-flop updates its output only at specific moments.
 
-Another concept that important in understanding memory is the clock. Like we have our clock, the computers need a clock too. The lapse of time in computers is represented by a master clock. Flip-flops are more useful in applications where you need to synchronise changes with a clock signal. 
+Another concept that important in understanding memory is the clock. Like we have our clock, the computers need a clock too. The lapse of time in computers is represented by a master clock. Flip-flops are more useful in applications where you need to synchronise changes with a clock signal.
 
-First, watch the following video (you can start the video at 0.17s) to understand how the computer clock works. 
+First, watch the following video (you can start the video at 0.17s) to understand how the computer clock works.
 
 <div class="not-content">
   <YouTube id="wx0NyUfpm48" params="fs=1&modestbranding=1&rel=0&autoplay=1"/>
@@ -26,7 +26,7 @@ First, watch the following video (you can start the video at 0.17s) to understan
 
 ### Flip-flop
 
-A flip-flop circuit (can be made of NAND or NOR gates) is a fundamental building block of memory, which performs sequential logic. This simple circuit can store a single bit—either a 0 or a 1 until it is changed by a new input. 
+A flip-flop circuit (can be made of NAND or NOR gates) is a fundamental building block of memory, which performs sequential logic. This simple circuit can store a single bit—either a 0 or a 1 until it is changed by a new input.
 
 Watch the following video to understand how a flip-flop circuit works.
 
@@ -42,16 +42,17 @@ A register is a small, high-speed memory unit that stores multiple bits (typical
 
 However, computers need to handle far more than just a few numbers at a time. This is where memory hierarchy comes into play. Registers are at the fastest and smallest level of this hierarchy, followed by cache memory, Random Access Memory (RAM), and long-term storage like Solid State Drives (SSDs) and hard drives which store data using more advanced memory technologies, such as flash memory and magnetic storage.
 
-Watch the following video to learn about how registers and RAMs are built using a simple memory circuit that scales up to perform large operations. 
+Watch the following video to learn about how registers and RAMs are built using a simple memory circuit that scales up to perform large operations.
 
 <div class="not-content">
   <YouTube id="fpnE6UAfbtU" params="fs=1&modestbranding=1&rel=0&autoplay=1"/>
 </div>
 
-:::tip[Activity: Discussing Different Memory Types] 
+:::tip[Activity: Discussing Different Memory Types]
 
 Discuss the following questions in your table (you can provide a self discussion if you are working on this on your own)
 
 - Explain the difference between temporary (volatile) and permanent (non-volatile) memory.
 
-- Can you categorise the following memory types into volatile and non-volatile memory?  Registers, Cache, RAM, SSD, and Hard drives 
+- Can you categorise the following memory types into volatile and non-volatile memory?  Registers, Cache, RAM, SSD, and Hard drives.
+  
