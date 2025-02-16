@@ -1,6 +1,7 @@
 ---
 title: Working with Raspberry Pi Pico
 ---
+import { YouTube } from 'astro-embed';
 
 ## Introduction to Pico
 
@@ -83,10 +84,17 @@ While the Raspberry Pi is a complete computer, the Pico is a microcontroller des
 1. Install MicroPython on your Pico (follow the steps on [this blog post](https://www.raspberrypi.com/documentation/microcontrollers/micropython.html))
 
 2. Connect to your computer (in our case, we are using the RPi 4B)
-3. Set up Thonny IDE
+3. Set up Thonny IDE (watch the video below)
+
+<div class='not-content'>
+  <YouTube id='_ouzuI_ZPLs' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
+</div>
+
 4. Test basic functionality
 
 ### Basic LED Project
+
+Follow the blogpost at [this link](https://projects.raspberrypi.org/en/projects/getting-started-with-the-pico/0). You should be able to get the LED blinking in the Pico.
 
 ```python
 from machine import Pin
