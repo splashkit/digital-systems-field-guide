@@ -1,20 +1,24 @@
 ---
 title: Understanding Computer Fundamentals
 ---
-Now that we've explored transistors, logic gates, chips, and memory, it's time to step back and ask: How do all these individual components come together to create a working computer?
 
-We started with transistors, tiny switches that control the flow of electricity. We saw how they combine to form logic gates, which perform basic decision-making tasks. These gates then build circuits, like adders and multiplexers, which become the foundation for computer chips.
+import { YouTube } from 'astro-embed';
 
-But a computer isn’t just a collection of chips. It needs a way to store and process information. That’s where memory comes in—registers and RAM hold the instructions and data needed for computation.
+Now that we have explored transistors, logic gates, chips, and memory, It is time to step back and ask, how do all these individual components come together to create a working computer?
 
-At this point, you might be wondering:
-💡 How does a computer decide which instruction to execute next?
-💡 Where does software fit into all of this?
-💡 How do different components—CPU, memory, and input/output devices—communicate seamlessly?
+We started our digital systems discussions with transistors that control the flow of electricity in digital circuits. We explored how transistors are combined to form logic gates, which perform basic decision-making tasks. These gates then build circuits, like half-adders and adders, which become the foundation for computer chips.
 
-These questions take us into the world of computer architecture, where we examine how a computer is structured, how it processes information, and how all the components we've learned about so far work together to create the powerful machines we use every day.
+We then looked at a way to store and process information using the fundamental building blocks we learned. We learned about how computer memory is formed from basic concepts of flip-flop circuits to RAM to hold the instructions and data needed for computation.
 
-In the next section, we will break down the key parts of computer architecture, explore how a processor executes instructions, and even write Python code on a Raspberry Pi to interact with hardware—bridging the gap between electronics and real-world computing! 
+:::note[Think about It: Thinking beyond what we have learnt]
+
+- How does a computer decide which instruction to execute?
+- Where does software fit into all of this?
+- How do different components—Central Processing Unit (CPU), memory, and input/output devices—communicate seamlessly?
+  
+:::
+
+Next, we are going to find answers to above question by exploring the world of computer architecture, where we examine how a computer is structured, how it processes information, and how all the components we have learned about so far work together to create the powerful machines we use every day.
 
 ## What is a Computer?
 
@@ -24,34 +28,30 @@ A computer is a machine that processes information through four main operations:
 3. Storing information
 4. Providing output
 
-:::note[Think About It]
-Computers aren't just laptops and desktops. Many everyday devices are actually computers in disguise! Watch [How Computers Work](https://www.youtube.com/watch?v=DKGZlaPlVLY&ab_channel=Code.org) to understand how all these operations work together.
+:::note[Think about It]
+Computers come in different forms that are not just laptops and desktops. Many everyday devices are actually computers including smart home devices and kitchen appliances.
 :::
 
-## Computers in Daily Life
+ Watch the following video to understand how all these operations work together.
 
-### Common Examples
-- Smartphones
-- Gaming consoles
-- Smart home devices
-- Digital watches
-- Car computers
-- Kitchen appliances
+<div class='not-content'>
+  <YouTube id='mCq8-xTH7jA' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
+</div>
 
-### Activity: Computer Hunt
-:::tip[Activity: **Computer Scavenger Hunt**]
-1. Walk around your home
-2. List every device that might be a computer
-3. For each device, identify:
-   - Input methods
-   - Output methods
-   - What kind of processing it does
-   - Where it stores information
+:::tip[Activity: Computer Scavenger Hunt]
+
+- Walk around the room/ your home and list every device that might be a computer
+- For each device, identify:
+  -  Input methods
+  -  Output methods
+  -  What kind of processing it does
+  -  Where it stores information
 :::
 
 ## Basic Computer Components
 
 ### Hardware Components
+
 1. **Input Devices**
    - Keyboard
    - Mouse
@@ -76,6 +76,7 @@ Computers aren't just laptops and desktops. Many everyday devices are actually c
    - LEDs
 
 ### Software Components
+
 1. **System Software**
    - Operating System
    - Device Drivers
@@ -86,11 +87,14 @@ Computers aren't just laptops and desktops. Many everyday devices are actually c
    - Games
    - Web Browsers
 
-:::note[Discussion Points]
+:::tip[Exercise: Discussion Points]
+Discuss the following points in your table or all by yourself,
+
 - How do these components work together?
 - What happens when one component fails?
 - How have these components evolved over time?
 - Why do computers need all these different parts?
 - How is a smartphone similar to a desktop computer?
 - What makes some computers faster than others?
+  
 :::
