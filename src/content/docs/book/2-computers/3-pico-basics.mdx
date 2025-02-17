@@ -204,3 +204,44 @@ timer.init(freq=2, mode=Timer.PERIODIC, callback=blink)
 5. To stop, click the "Stop" button in Thonny
 
    ![Thony](../2-computers/images/pico/capture/pico-python-blink.png)
+
+**Congratulations! You have just controlled an LED on a microcontroller from another computer.** This might seem like a simple achievement, but you've actually accomplished several important concepts in embedded systems:
+
+1. **Cross-Device Development**: You've used the Raspberry Pi 4B as a development platform to program the Pico 2W, demonstrating a real-world embedded development workflow.
+
+2. **Hardware Control**: Through simple Python code, you've directly manipulated hardware by controlling the GPIO pins that interface with the LED.
+
+3. **Real-time Programming**: Your program uses a timer and callback function to create precise timing for the LED blinking, introducing you to real-time control concepts.
+
+This foundational exercise opens the door to more complex projects. You can now:
+* Control multiple LEDs to create light patterns
+* Add sensors to make the LED respond to environmental changes
+* Use the wireless capabilities to control the LED remotely
+* Build more complex embedded systems using the same principles
+
+**Remember:** Every sophisticated embedded system, from smart home devices to industrial controllers, builds upon these same basic concepts of hardware control and programming that you've just mastered!
+:::
+
+
+:::note[Think about it!]
+
+While both activites (this and the one in last task) involved LED control, there are important differences between the results:
+
+1. **Hardware Level**: 
+   * Pi 4B uses Linux-based GPIO control
+   * Pico uses direct microcontroller register access
+
+2. **Programming Environment**:
+   * Pi 4B uses full Python
+   * Pico uses MicroPython, optimized for microcontrollers
+
+3. **Memory Usage**:
+   * Pi 4B has abundant RAM and storage
+   * Pico has limited resources, requiring efficient code
+
+4. **Operating System**:
+   * Pi 4B runs a full OS
+   * Pico runs bare metal code
+
+Understanding these differences helps grasp the distinction between general-purpose computers and microcontrollers in embedded systems.
+:::
