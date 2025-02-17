@@ -6,19 +6,21 @@ import { YouTube } from 'astro-embed';
 
 ## Storing the Digital World
 
-So far, we have seen how logic gates can make simple decisions and how chips combine millions of these gates to process information. However, processing alone is not enough to perform the functions of modern digital systems. Computers also need a way to store and recall information. Yes, we use memory.
+So far, we have seen how logic gates can make simple decisions and how chips combine millions of these gates to process information. However, processing alone is not enough to perform the functions of modern digital systems. Computers also need a way to store and recall information. This is where memory comes in.
 
-Computers face the same challenges as we do when it comes to performing tasks. Like we take notes and write down the steps, computer need to store the steps and data. Computers need memory circuits to store data temporarily while working on a task (such as in Random Access Memory, RAM) and to keep important information even when powered off (such as in hard drives or portable storage).
+Computers face similar challenges as humans when performing tasks. Just as we we take notes to keep track of steps, computer must store instructions and data. They use memory circuits to temporarily hold data while working on a task (such as in Random Access Memory, RAM) and to retain important information even when powered off (such as in hard drives or portable storage).
 
-Computer memory are circuits built from logic gates which we have studied. In the previous sections, we explored combinational logic, which determines outputs solely based on current inputs without retaining any memory of past operations. For a computer to perform a memory task, it needs sequential logic.
+Computer memory is built from the logic gates we have studied. In previous sections, we explored combinational logic, which determines outputs solely based on current inputs without remembering any past operations. However, for a computer to store information, it needs sequential logic.
 
 ## Sequential Logic, Clock and Flip-Flop
 
-Sequential logic incorporates time-dependent elements that store past information, making it fundamental for memory and system state in a computer. It operates under the control of a clock signal, which dictates when values should be updated—similar to turning a page in a book to reveal the next step. This mechanism enables the computer to track its progress in a process, much like remembering your place in a count. Flip-flops and latches are types of memory circuits in electronics. The key distinction between them lies in their response to input changes. A latch updates its output immediately when its input changes, making it always ready to react. A flip-flop updates its output only at specific moments.
+Sequential logic incorporates time-dependent elements that store past information, making it essential for memory and tracking a system state. It operates under the control of a clock signal, which dictates when values should be updated—similar to turning a page in a book to reveal the next step. This mechanism enables the computer to track its progress in a process, much like remembering your place while counting. 
 
-Another concept that important in understanding memory is the clock. Like we have our clock, the computers need a clock too. The lapse of time in computers is represented by a master clock. Flip-flops are more useful in applications where you need to synchronise changes with a clock signal.
+Two fundamental types of memory circuits are latches and flip-flops. The key distinction between them lies in their response to input changes. A latch updates its output immediately as its input changes, always ready to respond. A flip-flop updates its output only at specific moments.
 
-First, watch the following video (you can start the video at 0.17s) to understand how the computer clock works.
+Another concept that is important in understanding memory is the clock. The lapse of time in computers is represented by a master clock. Flip-flops are useful in applications where changes need to be synchronised with a clock signal.
+
+Watch the following video (you can start the video at 0.17s) to understand how the computer clock works.
 
 <div class="not-content">
   <YouTube id="wx0NyUfpm48" params="fs=1&modestbranding=1&rel=0&autoplay=1"/>
@@ -26,7 +28,7 @@ First, watch the following video (you can start the video at 0.17s) to understan
 
 ### Flip-flop
 
-A flip-flop circuit (can be made of NAND or NOR gates) is a fundamental building block of memory, which performs sequential logic. This simple circuit can store a single bit—either a 0 or a 1 until it is changed by a new input.
+A flip-flop circuit (can be made of NAND or NOR gates) is a fundamental building block of memory and performs sequential logic. This circuit can store a single bit—either a 0 or a 1—until a new input changes its state.
 
 Watch the following video to understand how a flip-flop circuit works.
 
@@ -36,7 +38,7 @@ Watch the following video to understand how a flip-flop circuit works.
 
 ## Registers and Other Memory Types
 
-We have seen how flip-flops that built from simple logic gates and can store a single bit of data—either a 0 or a 1. However, a single bit is not enough to do much on its own. To handle larger amounts of data, computers group multiple flip-flops together into registers.
+We have seen how flip-flops, built from simple logic gates and can store a single bit of data—either a 0 or a 1. However, a single bit is not enough to accomplish much on its own. To handle larger amounts of data, computers group multiple flip-flops together into registers.
 
 A register is a small, high-speed memory unit that stores multiple bits (typically 8, 16, 32, or 64). Registers allow a processor to temporarily hold data that it is actively working with. For example, when you type a number into a calculator app, that number is first stored in a register before any calculations happen.
 
