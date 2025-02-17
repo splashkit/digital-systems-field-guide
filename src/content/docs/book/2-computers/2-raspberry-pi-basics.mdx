@@ -84,9 +84,9 @@ Before starting:
 2. Connect display via HDMI.
 3. Connect keyboard and mouse.
 4. Power up using appropriate power supply.
+
+If you want to refresh your memory on how to do the hardware setup, you can refer to [Build my Raspberry Pi in Programmer's Field Guide](https://programmers.guide/book/appendix/0-installation/2-2-pi-computer/)
 :::
-
-
 
 ### Project 1: LED Control
 :::tip[Activity: LED Blinking]
@@ -100,6 +100,10 @@ Materials needed:
 - Breadboard
 
 Steps: Follow the steps given in the [blog post here](https://thepihut.com/blogs/raspberry-pi-tutorials/27968772-turning-on-an-led-with-your-raspberry-pis-gpio-pins)
+
+We will use GPIO 18 to connect the LED. Please check [the Raspberry Pi GPIO pinout] (https://raspberrytips.com/raspberry-pi-gpio-pinout/) before you build the circuit and the circuit should look like this:
+
+![Raspberry Pi LED connect](../images-common/rpi-led.png)
 
 Run the following Python code:
 ```python
@@ -116,11 +120,7 @@ while True:
     time.sleep(1)
 ```
 
-The circuit should look like this:
-
-![Raspberry Pi LED connect](../images-common/rpi-led.png)
-
-Your LED should start blinking. Congratulations, you have successfully controlled an external component using the GPIO pins.
+Once you run the code, your LED should start blinking. Congratulations, you have successfully controlled an external component using the GPIO pins.
 
 :::
 
