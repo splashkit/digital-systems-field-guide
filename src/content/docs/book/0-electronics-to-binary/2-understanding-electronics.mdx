@@ -56,9 +56,16 @@ For this you will need:
 
 Connect the battery to the resistor, then to the LED, and back to the battery. The [Simple LED Circuit](https://circuitdigest.com/electronic-circuits/simplle-led-circuit-diagram) instructions on Circuit Digest can guide you through this. The final circuit should look similar to this:
 
-![First Circuit](../images-common/first-circuit.JPG)
+<div style={{ color: 'red' }}>
+  **Warning:** Always use the Ohm's Law to calculate the resistance needed to be used in the circuit when working with LEDs. Components can be damaged if you provide more power than needed.
+</div>
+
+
 ![First Circuit](../images-common/simple-circuit.png)
 
+:::note
+Most LED work safely with 20mA current. Considering we have a 9V battery, the expected resistance is around 450ohm (R=V/I by Ohm's Law). We have 220ohm resistors, so we will be using 2 resistors in series to achieve 440ohm resistance across the circuits as shown in the circuit above. This will ensure that the components are not damaged.
+:::
 :::
 
 ## Controlled Circuit
@@ -67,7 +74,6 @@ Connect the battery to the resistor, then to the LED, and back to the battery. T
 
 Now, let's add in a push button or switch to control when the light is active. The [Push Button LED Circuit](https://circuitdigest.com/electronic-circuits/push-button-led-circuit) will guide you through these steps. You can either use the push button or the switch provided.
 
-![Second Circuit](../images-common/second-circuit.JPG)
 ![Second Circuit](../images-common/controlled-circuit.png)
 
 :::

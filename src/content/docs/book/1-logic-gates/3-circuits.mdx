@@ -24,9 +24,16 @@ Remember to always use current-limiting resistors with LEDs and base resistors f
 
 :::tip[Activity: Building a Half-Adder]
 
-In this activity you will build a half adder circuit that adds two binary bits (A and B) to produce a Sum and Carry.
+A Half Adder is a fundamental digital circuit that performs binary addition. Let's break down its construction and operation in detail.
 
-Truth Table:
+#### Understanding the Half Adder
+
+A Half Adder performs binary addition of two single bits (A and B), producing:
+
+- Sum output (result of adding bits)
+- Carry output (overflow when both inputs are 1)
+
+#### Truth Table
 
 ```text
 A  B  Sum  Carry
@@ -36,34 +43,90 @@ A  B  Sum  Carry
 1  1   0     1
 ```
 
-Note:
+#### Circuit Components
 
-The half-adder combines **XOR gate** for Sum output and **AND gate** for Carry output
+The Half Adder consists of two main logic gates:
 
-Building Steps:
+- **XOR gate** - Generates the Sum output
+- **AND gate** - Generates the Carry output
 
-1. Build XOR gate using combination of basic gates
-2. Build AND gate for Carry
-3. Connect inputs A and B via pushbuttons
-4. Use LEDs to display Sum and Carry
-5. Test all input combinations
+#### Required Materials
 
-Your half-adder circuit should look like this:
+- Breadboard
+- 6 NPN Transistors
+- 2 LEDs (Sum and Carry)
+- Multiple 220 ohm Resistors
+- 2 Push slide switches for inputs
+- 9V battery with alligator clip
+- Jumper wires (various colors)
 
-![Half Adder](../images-common/half-adder/half-adder-breadboard.png)
+#### Detailed Construction Steps
 
-**Developing the circuit one step at a time will help improve your understanding. A tinkercad circuit diagram along with different sub-gates that make up a half-adder circuit is presented below.**
+##### 1. Building the XOR Gate for Sum
 
-![Half Adder](../images-common/half-adder/half-adder-circuit.png)
+- XOR can be constructed using basic gates
+- Requires combination of AND and OR gates
+- Output is 1 when inputs are different
+- Output is 0 when inputs are same
 
-The half adder is built using a **XOR gate** and a **AND gate**. While a **XOR gate** can be built directly using minimum 6 transistors, we will instead break it down into the basic logic gates discussed earlier. An **XOR gate** can be built using a combination of **AND gate** and **OR gate**. In the half-adder, the **XOR gate** calculates the **sum**, while the additional **AND gate** determines the **carry**.
-![Half Adder](../images-common/half-adder/half-adder-components.png)
+##### 2. Building the AND Gate for Carry
+
+- Simpler construction than XOR
+- Uses two transistors in series
+- Output is 1 only when both inputs are 1
+- Determines when number carries over
+
+##### 3. Input Setup
+
+- Connect slide switches for inputs A and B
+- Connect both the inputs to all the 3 logic gates (2 x AND gates and a OR gate)
+- Connect to power rail and ground through current-limiting resistors
+
+##### 4. Output Display
+
+- Connect LEDs with appropriate current-limiting resistors
+- Sum LED shows result of XOR operation
+- Carry LED shows result of AND operation
+
+**Developing the circuit one step at a time will help improve your understanding. A tinkercad circuit diagram along with different sub-gates that make up a half-adder circuit is presented below. The logical implementation of Half adder is also shown in the below diagram.**
+
+![Half Adder Logical](../1-logic-gates/images/half-adder/half-adder-logical.jpeg)
+
+![Half Adder](../1-logic-gates/images/half-adder/half-adder.png)
+
+The half adder is built using a **XOR gate** and an **AND gate**. While a **XOR gate** can be built directly using minimum 6 transistors, we will instead break it down into the basic logic gates discussed earlier. An **XOR gate** can be built using a combination of **AND gate** and **OR gate**. In the half-adder, the **XOR gate** calculates the **sum**, while the additional **AND gate** determines the **carry**.
+![Half Adder](../1-logic-gates/images/half-adder/half-adder-annoted.png)
+
+#### Testing Scenarios
 
 Below are a few scenarios and their expected outputs when you vary the signals. **Consider how these compare to the truth table provided above**
 
-![Half Adder Signal A](../images-common/half-adder/half-adder-signal-a.png)
-![Half Adder Signal B](../images-common/half-adder/half-adder-signal-b.png)
-![Half Adder Signal both](../images-common/half-adder/half-adder-both-signal.png)
+#### Scenario 1: Only Signal A Active
+
+![Half Adder](../1-logic-gates/images/half-adder/a-active.png)
+
+- Input A = 1, Input B = 0
+- Expected outputs:
+  - Sum = 1 (XOR output)
+  - Carry = 0 (AND output)
+
+#### Scenario 2: Only Signal B Active
+
+![Half Adder](../1-logic-gates/images/half-adder/b-active.png)
+
+- Input A = 0, Input B = 1
+- Expected outputs:
+  - Sum = 1 (XOR output)
+  - Carry = 0 (AND output)
+
+#### Scenario 3: Both Signals Active
+
+![Half Adder](../1-logic-gates/images/half-adder/both-active.png)
+
+- Input A = 1, Input B = 1
+- Expected outputs:
+  - Sum = 0 (XOR output)
+  - Carry = 1 (AND output)
 
 :::
 
@@ -78,7 +141,8 @@ Fantastic! Now we know how computers add two binary numbers. But computers do mu
 
 There are ICs that specialize in performing specific tasks. For example, the 7846 (also known as 74LS86 or 74HC86) is a quadruple 2-input XOR gate integrated circuit. This means it contains **4 XOR gates** internally. This IC is commonly used in digital comparators (for comparing two binary numbers). Assuming each **XOR gate** is built from **6-10** transistors, this single IC contains around **24-40** transistors.
 :::
-:::tip[Exercise: Thinking beyond]
+
+:::note[Exercise: Thinking beyond]
 
 If a single logic gate can make a simple decision, how do millions of gates working together in a chip power complex applications like video games, AI, or even self-driving cars?
 

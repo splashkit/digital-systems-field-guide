@@ -35,22 +35,44 @@ As explained in the above video, a transistor has three essential parts, to buil
    - Releases majority carriers
    - Tipically connected to ground
 
-:::Note
+:::note
 Think of a transistor like a water valve: just a small amount of water (base current) can control a much larger flow (collector-emitter current), a transistor regulates electrical current.
+
+**We are using NPN transistors in our activities. This means the current flows from Collector to the Emitter.**
+![NPN Transistor](../images-common/NPN-resistor.png)
 :::
 
 :::tip[Activity: Building Your First Transistor Circuit]
+In digital electronics, transistors are fundamental components that can act as electronic switches. This is particularly important as these switches can be controlled electronically without the need for physical intervention. Let's create a simple transistor circuit to understand this concept.
 
-1. Connect the LED and resistor to the collector and power supply.
-2. Connect the base of the transistor to a manual switch (You can use a high resistance resistor for base to limit the current that flows through the base).
-3. Observe how a small base current controls the LED.
+#### Required Materials
+
+For building this transistor circuit, you will need:
+* Breadboard
+* Jumper wires
+* NPN Transistor
+* LED
+* Resistors (3 x 220Ω)
+* 9V battery with alligator clips
+* Push-button or slide switch
+
+#### Circuit Construction
+
+1. Place the NPN transistor on the breadboard, ensuring proper orientation (C-B-E pins).
+2. Connect the power rail (marked with red line) to the positive terminal of the battery.
+3. Install current-limiting resistors to protect both the LED and transistor.
+4. Connect the LED with correct polarity.
+5. Add the ground connections to complete the circuit.
 
 Your circuit should look similar to this:
-
-![Simple Transistor Circuit](../images-common/transistor-basic.JPG)
 ![Simple Transistor Circuit](../images-common/first-transistor.png)
 
-The LED should be off by default. When the switch is turned on, the LED should turn on.
+#### How It Works
+The LED should be off by default. The transistor in this circuit operates as follows:
+* When voltage is applied to the base (B) pin through a resistor, current flows from collector (C) to emitter (E). This turns the LED on.
+* Note that without base voltage, the transistor stops conducting, and the LED remains off.
+
+
 
 :::
 

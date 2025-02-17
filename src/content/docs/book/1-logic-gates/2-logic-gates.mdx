@@ -25,46 +25,92 @@ Watch the following video to learn about different types of logic gates and thei
   <YouTube id='INEtYZqtjTo' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
 </div>
 
-:::tip[Activity: Building a Simple NOT Logic Gate]
+:::tip[Activity: Building a NOT Logic Gate]
 
-In this activity, you are building a simple NOT Gate (Inverter) with a transistor to understand its behaviour.
+A NOT gate, also known as an inverter, is one of the fundamental logic gates in digital electronics. It performs a basic but crucial function: inverting an input signal to produce its opposite output.
 
-Required components:
+#### What is a NOT Gate?
 
-- 1 NPN transistor
-- 1 LED
-- 2 Resistors
-- 1 Push-button or switch
+A NOT gate performs logical inversion:
 
-**Setup the circuit as shown below. A tinkercad circuit diagram is provided to help you easily replicate it.**
+- When the input is HIGH (1), the output is LOW (0)
+- When the input is LOW (0), the output is HIGH (1)
 
-![NOT Gate](../images-common/NOT-gate.png)
-![NOT Gate circuit](../images-common/NOT-gate-tinkercad.png)
+#### Required Materials
+
+To build this NOT gate circuit, you'll need:
+
+- Breadboard
+- NPN Transistor
+- LED
+- Resistors (3 x 220 ohm)
+- 9V battery with alligatorclip
+- Jumper wires
+
+#### Circuit Construction
+
+1. Set up the power rails on the breadboard (red line for positive, black for ground).
+2. Place the NPN transistor, ensuring correct C-B-E pin orientation.
+3. Connect the collector through a resistor to the positive power supply. Collector should also connect to the positive end of the LED.
+4. Add the input resistor to the transistor's base.
+5. Complete ground connections as shown in the image to the emitter and the negative end of the LED.
+
+**A tinkercad circuit diagram is provided to help you easily replicate it. Test the circuit by sliding the switch on and off.**
+
+![NOT Gate circuit](../1-logic-gates/images/NOT-gate-tinkercad.png)
 
 **Discuss:**
 
-When the input is HIGH (button pressed/ switch turned on), why does the LED turn OFF? How does this relate to the NOT gate's truth table?
+- When the input is HIGH (switch turned on), why does the LED turn OFF?
+
+- How does this relate to the NOT gate's truth table?
 :::
 
-:::tip[Activity: Building an OR Gate]
+:::tip[Activity: Building an OR Logic Gate]
 
-In this activity, you are building a simple OR Gate with two transistors to understand its behaviour.
+An OR gate is a digital logic gate that implements logical disjunction. In this activity, you are building a simple OR Gate with two transistors to understand its behaviour.
 
-Required components:
+#### What is an OR Gate?
 
-- 2 NPN transistors
-- 1 LED
-- 3 Resistors
-- 2 Push-button switches
+An OR gate performs the following logical operation:
+* Outputs HIGH (1) if any input is HIGH (1)
+* Outputs LOW (0) only when all inputs are LOW (0)
+* Used extensively in digital circuits for decision making
 
-**Setup the circuit as shown below. A tinkercad circuit diagram is provided to help you easily replicate it.**
+## Required Materials
 
-![OR Gate](../images-common/OR-gate.png)
-![OR Gate circuit on](../images-common/OR-gate-on.png)
+To build this OR gate circuit, you'll need:
+* Breadboard
+* 2 NPN Transistors
+* LED for output indication
+* Resistors (4 x 220 ohms)
+* 2 Switches for inputs A and B
+* 9V battery with alligator clip
+* Jumper wires
+
+#### Circuit Construction Steps
+
+1. Set up the power rails (red line for positive, black for ground)
+2. Place both NPN transistors on the breadboard
+3. Connect Input A switch to the first transistor
+4. Connect Input B switch to the second transistor
+5. Wire the collectors to the positive power supply.
+5. Connect the emitters to the positive end of the LED.
+6. Add a 2 x 220 ohm resistor connection to the ground from the negative end of the LED.
+7. Add input resistors to protect the transistor bases.
+8. Connect the positive end of the LED to ground through a resistor as well.
+
+**Setup the circuit as shown below. A tinkercad circuit diagram with different scenarios is provided to help you easily replicate it.**
+
+![OR Gate circuit](../1-logic-gates/images/OR-gate.png)
+![OR Gate circuit B switch turned on](../1-logic-gates/images/OR-gate-b-on.png)
+![OR Gate circuit both switches turned on](../1-logic-gates/images/OR-gate-both-on.png)
 
 **Discuss:**
 
-What does the OR gate do? How does its truth table coincide with its functioning? Where can we use a OR gate?
+* What does the OR gate do? 
+* How does its truth table coincide with its functioning? 
+* Where can we use a OR gate?
 
 :::
 
