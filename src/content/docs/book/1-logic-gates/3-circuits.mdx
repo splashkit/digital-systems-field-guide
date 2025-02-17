@@ -4,15 +4,15 @@ title: Logic Gates and Circuits
 
 import { YouTube } from 'astro-embed';
 
-Now that we understand logic gates, we can start combining them to build more powerful circuits. A single AND, OR, or NOT gate can make simple decisions, but real-world computing requires multiple gates working together to process and manipulate data. This is where we need to combine multiple logic gates in one circuit to perform complex operations.
+Now that we know what logic gates are and how they work, we can start combining them to build more powerful circuits. A single AND, OR, or NOT gate can make simple decisions, but real-world computing requires multiple gates working together to process and manipulate data. To perform complex operations, we need to combine multiple logic gates within a single circuit.
 
-One of the simple circuits that uses multiple logic gates to perform a simple arithmetic operation is called the half adder. This circuit provides a fundamental step toward building a computer’s ability to perform calculations. Next, we are going to explore this circuit.
+One of the simplest circuits that use multiple logic gates to perform a simple arithmetic operation is the half adder. This circuit is a fundamental step toward enablingcomputers to perform calculations. Next, we will explore it works.
 
-Imagine you want to add two binary numbers, 0 + 1 or 1 + 1. A half adder is a simple circuit that uses an XOR gate and an AND gate to calculate the sum and carry-over, just like how we carry numbers when adding in decimal. This is the foundation of arithmetic in computers. When we combine multiple adders, we can create a full adder, which then scales up to an ALU (Arithmetic Logic Unit)—a core part of the computer’s processor.
+Imagine you want to add two binary numbers, 0 + 1 or 1 + 1. A half adder is a simple circuit that uses an XOR gate and an AND gate to calculate the sum and carry-over, just like how carrying numbers when adding in decimal. This forms the foundation of arithmetic in computers. By combining multiple adders, we can create a full adder, which then scales up to an Arithmetic Logic Unit (ALU)—a core component of the computer’s processor.
 
-Read the page on [Half Adder Circuit – How it Works](https://www.build-electronic-circuits.com/half-adder/) for more details on the half-adder circuit before the next activity.
+Read the page on [Half Adder Circuit – How it Works](https://www.build-electronic-circuits.com/half-adder/) for more details on the half-adder circuit before proceeding to the next activity.
 
-To understand more on how to add binary number, watch the following video.
+To learn more about adding binary numbers, watch the following video.
 
 <div class='not-content'>
   <YouTube id='RgklPQ8rbkg' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
@@ -20,7 +20,7 @@ To understand more on how to add binary number, watch the following video.
 
 :::tip[Activity: Building a Half-Adder]
 
-In this activity you will build a half adder circuit which adds two binary bits (A and B) to produce a Sum and Carry.
+In this activity you will build a half adder circuit that adds two binary bits (A and B) to produce a Sum and Carry.
 
 Truth Table:
 
@@ -48,14 +48,14 @@ Your half-adder circuit should look like this:
 
 ![Half Adder](../images-common/half-adder/half-adder-breadboard.png)
 
-**Developing the circuit one step at a time will help improve your understanding. A tinkercad circuit diagram along with different sub-gates that make up a half-adder circuit is provided below.**
+**Developing the circuit one step at a time will help improve your understanding. A tinkercad circuit diagram along with different sub-gates that make up a half-adder circuit is presented below.**
 
 ![Half Adder](../images-common/half-adder/half-adder-circuit.png)
 
-The half adder is built using a **XOR gate** and a **AND gate**. You can build a **XOR gate** directly using minimum 6 transistors for output but we will be further dividing it into the basic logic gates discussed previously. An **XOR gate** can be built using an **AND gate** and **OR gate**. The **XOR gate** is used to calculate the **sum** and the extra **AND gate** is used to calculate the **carry**.
+The half adder is built using a **XOR gate** and a **AND gate**. While a **XOR gate** can be built directly using minimum 6 transistors, we will instead break it down into the basic logic gates discussed earlier. An **XOR gate** can be built using a combination of **AND gate** and **OR gate**. In the half-adder, the **XOR gate** calculates the **sum**, while the additional **AND gate** determines the **carry**.
 ![Half Adder](../images-common/half-adder/half-adder-components.png)
 
-Below are the few scenarios and the expected outputs when you vary the signals. **Think about how these compare to the truth table provided above**
+Below are a few scenarios and their expected outputs when you vary the signals. **Consider how these compare to the truth table provided above**
 
 ![Half Adder Signal A](../images-common/half-adder/half-adder-signal-a.png)
 ![Half Adder Signal B](../images-common/half-adder/half-adder-signal-b.png)
@@ -63,7 +63,7 @@ Below are the few scenarios and the expected outputs when you vary the signals. 
 
 :::
 
-Fantastic, now we know how computers add two binary numbers. But computers don’t just add numbers. The computers store and process data, make decisions, and execute instructions. To handle these tasks efficiently, we group logic circuits together on a single chip—an integrated circuit (IC). A single chip can contain millions or even billions of transistors working together, enabling everything from simple memory storage to powerful processors that run our modern devices.
+Fantastic! Now we know how computers add two binary numbers. But computers do much more than additions, they store and process data, make decisions, and execute instructions. To handle these tasks efficiently, logic circuits are grouped together on a single chip, known as an integrated circuit (IC). A single chip can contain millions or even billions of transistors working together, powering everything from simple memory storage to the advanced processors that run our modern devices.
 
 :::note[Did you know?]
 
@@ -72,10 +72,10 @@ Fantastic, now we know how computers add two binary numbers. But computers don�
   <div style='width: 300px'>![quad xor](../images-common/quad-xor-gate.png)</div>
 </div>
 
-There are many ICs developed that specialize in performing certain tasks. For example, the 7846 (also known as 74LS86 or 74HC86) is a quadruple 2-input XOR gate integrated circuit. This means it contains **4 XOR gates** internally. This IC is commonly used in Digital comparators (for comparing two binary numbers). Assuming each **XOR gate** is built from **6-10** transistors, this one single IC contains around **24-40** transistors.
+There are ICs that specialize in performing specific tasks. For example, the 7846 (also known as 74LS86 or 74HC86) is a quadruple 2-input XOR gate integrated circuit. This means it contains **4 XOR gates** internally. This IC is commonly used in digital comparators (for comparing two binary numbers). Assuming each **XOR gate** is built from **6-10** transistors, this single IC contains around **24-40** transistors.
 :::
 :::tip[Exercise: Thinking beyond]
 
-If a single logic gate can make a simple decision, how do millions of gates working together in a chip enable a computer to run complex applications like video games, AI, or even self-driving cars?
+If a single logic gate can make a simple decision, how do millions of gates working together in a chip power complex applications like video games, AI, or even self-driving cars?
 
 :::
