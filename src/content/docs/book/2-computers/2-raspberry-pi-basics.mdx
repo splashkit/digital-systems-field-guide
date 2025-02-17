@@ -3,6 +3,7 @@ title: Bringing the Computer Architecture to Life with a Raspberry Pi
 sidebar:
     label: "Raspberry Pi Basics"
 ---
+import { YouTube } from 'astro-embed';
 
 So far, we have explored the building blocks of computer architecture including memory, processors, and the components that make up a functioning computer. We have discussed how data moves through a system, how instructions are processed, and how a computer executes tasks. Though we understand these concepts now, the best way to grasp how a computer works is to interact with one at its core level—beyond the user interface.  
 
@@ -161,16 +162,20 @@ except KeyboardInterrupt:
     GPIO.cleanup()  # Reset all GPIO pins
 ```
 
-##### Running the Program
+##### Running the Program (Watch the following video for basics on running a python code in RPi)
 
-1. Save the code in a file (e.g., `led_blink.py`)
+1. Save the code in a file (e.g., `led_blink.py`). You can copy the code in Thonny Python IDE which is pre-installed in Raspbian OS.
 2. Open terminal on Raspberry Pi
 3. Navigate to file location
 4. Run with command: `python3 led_blink.py`
 5. Press Ctrl+C to stop program
 
+<div class='not-content'>
+  <YouTube id='uYTIs6cw520' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
+</div>
+
 ##### Discuss and Expand
-* Why do we need only one resistor to rpevent damage to the components? We used two resistors with LED in previous activites. Think about what changed.
+* Why do we need only one resistor to prevent damage to the components? We used two resistors with LED in previous activites. Think about what changed.
 
 Try modifying the code to:
 * Change blink speed
