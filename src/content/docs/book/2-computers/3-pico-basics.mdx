@@ -1,108 +1,206 @@
 ---
-title: Working with Raspberry Pi Pico
+title: Getting Started with Raspberry Pi Pico 2W
 ---
+
 import { YouTube } from 'astro-embed';
 
-## Introduction to Pico
+After exploring the Raspberry Pi 4B as a single-board computer, let's dive into the world of microcontrollers with the Raspberry Pi Pico 2W. While the Pi 4B is a complete computer system, the Pico 2W is a microcontroller board designed for specific tasks and embedded applications. This makes it perfect for learning about low-level programming and hardware control.
 
-![Raspberry Pi pico](../images-common/pico.png)
+### What Makes It Special?
 
-The Raspberry Pi Pico 2 W, represents a significant upgrade to the Pico family, bringing enhanced wireless capabilities and performance improvements. There are many core components improvements in the new pico:
+The Raspberry Pi Pico 2W is a powerful microcontroller board that builds upon the success of the original Pico. What sets it apart is:
 
-- **RP2040 Microcontroller**:
+- **RP2040 Microcontroller**: Custom-designed by Raspberry Pi, featuring dual ARM Cortex-M0+ cores
+- **Wireless Connectivity**: Built-in 2.4GHz wireless capabilities for WiFi and Bluetooth
+- **Low Power Consumption**: Perfect for battery-powered projects
+- **Affordable**: Typically costs around $6-8
+- **Programmable in MicroPython or C/C++**: Flexibility in programming approaches
 
-  - Dual-core ARM Cortex M0+ still at heart, but with optimized performance
-  - Clock speed maintained at 133MHz
-  - Same reliable architecture as original Pico
+### Key Applications
 
-- **Memory**:
-  - 264KB of SRAM
-  - 16MB of Flash storage (8x more than original Pico W)
-  - Significant storage upgrade for more complex applications
+The Pico 2W excels in:
 
-- **Infineon CYW43439 Wireless Chip**:
-  - 2.4GHz WiFi 4 (802.11n)
-  - Bluetooth 5.2 support
-  - Enhanced wireless range compared to Pico W
-  - Lower power consumption during wireless operations
+- **IoT Projects**: Its wireless capabilities make it perfect for Internet of Things applications
+- **Embedded Systems**: Ideal for standalone control systems and automation
+- **Educational Projects**: Great for learning microcontroller programming and electronics
+- **Sensor Networks**: Can collect and process data from various sensors
+- **Remote Control**: Can be controlled wirelessly through its WiFi capabilities
 
-- **USB 1.1 Port**:
+### Components of Raspberry Pi Pico 2W
 
-  - For programming and power delivery
-  - Can act as USB host or device
-  - Supports CircuitPython and MicroPython
+![Raspberry Pi pico](../2-computers/images/pico/pico.png)
 
-- **GPIO and Interfaces**:
+Key components include:
 
-  - 26 multi-function GPIO pins
-  - 2× UART, 2× SPI, 2× I2C
-  - 16× PWM channels
-  - 4× ADC channels
+1. **RP2040 Microcontroller**
 
-- **Power Management**:
-  - Improved power efficiency
-  - Better sleep mode capabilities
-  - USB power or battery operation
+   - Dual-core ARM Cortex-M0+ processor running at up to 133 MHz
+   - 264KB of SRAM
+   - 16MB of Flash storage (8x more than original Pico W)
 
-### Applications
+2. **GPIO Pins**
 
-- **IoT Devices**: Perfect for connected sensor networks and smart home devices
-- **Wireless Control Systems**: Remote control applications and robotics
-- **Data Logging**: Capable of storing more data with larger flash memory
-- **Mesh Networks**: Can be used in Bluetooth mesh networking
-- **Educational Projects**: Enhanced capabilities while maintaining ease of use
+   - 26 multi-function GPIO pins
+   - 2 SPI, 2 I2C, 2 UART controllers
+   - 3 ADC inputs
+   - 16 PWM channels
 
-### Development Environment
+3. **USB 1.1 Controller**
 
-- RPi Pico 2 W now supports multiple programming languages:
+   - Micro USB port for power and programming
+   - Can appear as a USB drive for easy programming
+
+4. **Wireless Module**
+
+   - 2.4GHz wireless interface
+   - Supports IEEE 802.11b/g/n
+   - Bluetooth 5.2
+
+5. **Built-in LED**
+   - Programmable LED for testing and status indication
+   - Additional WS2812 RGB LED
+
+### Why to use Pico 2W?
+
+- RPi Pico 2 W supports multiple programming languages:
   - MicroPython
   - CircuitPython
   - C/C++
   - Arduino IDE support
-- Extensive documentation and community support
-- Compatible with existing Pico libraries and most hardware
+- RPi Pico 2 W has extensive documentation and community support
+- RPi Pico 2 W is compatible with existing Pico libraries and most hardware
 
-:::note
+### Getting Started with Pico
 
-The Raspberry Pi Pico is a microcontroller that's perfect for learning about:
+#### Pre-Setup: Installing MicroPython
 
-- Direct hardware control
-- Real-time operations
-- Embedded systems
-- Basic computer architecture
+Before we can start programming the Pico 2W, we need to install MicroPython. Unlike the Raspberry Pi 4B, the Pico 2W comes with no operating system or interpreter installed. Follow these steps carefully:
 
+1. **Prepare the Pico 2W for Installation**
+
+   - Locate the BOOTSEL button on your Pico 2W
+   - Hold down the BOOTSEL button while connecting the USB cable
+   - Ignore any pop-up dialogs about opening file explorer when connecting the Pico 2W.
+
+   ![Hold BOOTSEL button while connecting USB](../2-computers/images/pico/reset.png)
+   _Press and hold the BOOTSEL button while connecting the Micro USB cable_
+
+2. **Open Thonny IDE**
+
+   - Thonny comes pre-installed on Raspberry Pi OS
+     ![Thonny IDE initial screen](../2-computers/images/pico/capture/1thony-ui.png)
+
+3. **Access Interpreter Settings**
+
+   - Click on the interpreter name in the bottom-right corner
+   - Look for "Install MicroPython" option
+
+   ![Thonny interpreter selection](../2-computers/images/pico/capture/2thony-interpretor.png)
+
+   - If you don't see it, disconnect and reconnect while holding BOOTSEL
+
+![Thonny interpreter selection](../2-computers/images/pico/capture/3thony-install.png)
+
+4. **Install MicroPython**
+   :::note
+
+   You will need internet connection on the RPi 4B in order to perform this step. The latest version of the micropython is downloaded and installed for the hardware that you selected.
+
+   :::
+
+- Select "Install MicroPython" from the menu
+- Verify that the target volume shows as "RPxxxx"
+- Choose "RP2" as the MicroPython family
+- Select "Pico 2 W" as the variant
+- Click Install
+
+![MicroPython installation dialog](../2-computers/images/pico/capture/4micropython-install.png)
+
+- Once it downloads and complets the installation, the Pico 2W should automatically reset and you should see a successful message. Close the dialog.
+
+![MicroPython verification](../2-computers/images/pico/capture/5micropython-done.png)
+
+5. **Verify Installation**
+
+   - After installation, click the interpreter name again
+   - Select "MicroPython (Raspberry Pi Pico)". If you don't see the option, repeats the steps 1-4 again.
+   - You should see the MicroPython version and hardware info in the shell
+
+   ![MicroPython verification](../2-computers/images/pico/capture/6pico-interpretor.png)
+   ![MicroPython verification](../2-computers/images/pico/capture/7pico-python.png)
+   _Successful MicroPython installation showing version information_
+
+6. **Test Installation**
+   
+   - Once all the steps are completed, you can test the interpretor by running a basic Hello World python code in Thonny IDE.
+
+   ![Hello World](../2-computers/images/pico/capture/8pico-python-hello.png)
+
+:::note[Important Note]
+The Pico 2W's flash memory does not persist your Python files permanently. Always save your code on the Raspberry Pi 4B, not on the Pico. If you need to reinstall MicroPython, follow these setup steps again.
 :::
 
-:::note[Pico vs Raspberry Pi]
-While the Raspberry Pi is a complete computer, the Pico is a microcontroller designed for specific tasks and direct hardware interaction.
-:::
+**Congratulations, you have successfully setup your Pico 2W and can now start developing!** We have installed the MicroPython interpreter that helps us:
 
-## Getting Started with Pico
+- Translate Python code into instructions the Pico can understand
+- Directly interact with the Pico's hardware through simple Python commands
+- Test and debug code in real-time using the Thonny shell
+- Access special MicroPython libraries designed for microcontroller operations
 
-### Setup
+This means you can now write Python code to control LEDs, read sensors, create displays, and build all sorts of exciting embedded projects. The interpreter acts as a bridge between your code and the Pico's hardware, making it much easier to program compared to traditional bare-metal programming.
 
-1. Install MicroPython on your Pico (follow the steps on [this blog post](https://www.raspberrypi.com/documentation/microcontrollers/micropython.html))
+{/* Follow the blogpost at [this link](https://projects.raspberrypi.org/en/projects/getting-started-with-the-pico/0). You should be able to get the LED blinking in the Pico. */}
 
-2. Connect to your computer (in our case, we are using the RPi 4B)
-3. Set up Thonny IDE (watch the video below)
+:::tip[Activity: Controlling LED on Pico 2W]
 
-<div class='not-content'>
-  <YouTube id='_ouzuI_ZPLs' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
-</div>
+In this activity, we'll use the Raspberry Pi 4B as our development platform to program the Pico 2W. This setup demonstrates how we can use one computer to program another device, a common practice in embedded systems development.
 
-4. Test basic functionality
+Before starting, make sure you have:
 
-### Basic LED Project
+1. Raspberry Pi 4B with Raspberry Pi OS installed
+2. Raspberry Pi Pico 2W
+3. Micro USB cable
+4. Thonny IDE (pre-installed on Raspberry Pi OS)
 
-Follow the blogpost at [this link](https://projects.raspberrypi.org/en/projects/getting-started-with-the-pico/0). You should be able to get the LED blinking in the Pico.
+##### Setup Steps
+
+1. **Connect the Hardware**
+
+   - Plug the Micro USB cable into the Pico W 2
+   - Connect the other end to the Raspberry Pi 4B
+
+2. **Prepare the IDE**
+   - Open Thonny on the Raspberry Pi
+   - Go to Tools → Options → Interpreter
+   - Select "MicroPython (Raspberry Pi Pico)"
+   - Click OK
+   - If you don't see the interpretor, follow the steps in the previous task again to reinstall micropython on Pico 2W
+
+##### The Code
 
 ```python
-from machine import Pin
-import time
+# Import necessary classes for hardware control
+from machine import Pin, Timer
+# Create a Pin object for the onboard LED
+led = machine.Pin("LED", machine.Pin.OUT)
+# Create a timer object for periodic execution
+timer = Timer()
 
-led = Pin(25, Pin.OUT)    # Onboard LED on GPIO 25
-
-while True:
+# Define the function that will be called by the timer
+def blink(timer):
+    # Switch the LED state between on and off
     led.toggle()
-    time.sleep(0.5)
+
+# Initialize the timer with 2Hz frequency (blinks twice per second)
+timer.init(freq=2, mode=Timer.PERIODIC, callback=blink)
 ```
+
+##### Running the Program
+
+1. Open Thonny IDE and choose the Pico 2W micropython interpretor in Thonny
+2. Copy and paste the code
+3. Click the "Run" button
+4. The onboard LED should start blinking
+5. To stop, click the "Stop" button in Thonny
+
+   ![Thony](../2-computers/images/pico/capture/pico-python-blink.png)

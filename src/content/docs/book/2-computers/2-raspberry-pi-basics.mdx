@@ -66,7 +66,7 @@ The Raspberry Pi 4 Model B board consists of all the components needed for a ful
    - CSI Camera Port for Raspberry Pi camera modules
    - 3.5mm 4-Pole Composite Audio-Video Output
 
-You can read the full specifications of the RPi 4B at this [datacapturecontrol blog post](https://datacapturecontrol.com/articles/io-devices/single-board-computers/raspberry-pi-4b) and [RPi official documentation](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/specifications/).
+{/*You can read the full specifications of the RPi 4B at this [datacapturecontrol blog post](https://datacapturecontrol.com/articles/io-devices/single-board-computers/raspberry-pi-4b) and [RPi official documentation](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/specifications/).*/}
 
 :::tip[Activity: Identify the Components]
 Open the cover of the Raspberry Pi and identify the components. Take a picture and label the GPIO Pins, CPU, RAM, WiFi module, and other input and output ports.
@@ -91,44 +91,90 @@ If you want to refresh your memory on how to do the hardware setup, you can refe
 ### Project 1: LED Control
 :::tip[Activity: LED Blinking]
 
-We will be controlling an LED using the GPIO pins on the RPi.
+This activity demonstrates how to control an LED using a Raspberry Pi's GPIO pins. 
 
-Materials needed:
-- LED
-- 220Ω resistor
-- Jumper wires
-- Breadboard
+##### Required Materials
 
+* Raspberry Pi 4B
+* Breadboard
+* LED (any color)
+* 220Ω resistor
+* 2 jumper wires
+* Python 3 installed on your Pi
+
+##### Circuit Construction
+
+1. Insert the LED into the breadboard
+   * Long leg (anode) goes to GPIO pin 18 via jumper wire
+   * Short leg (cathode) connects to ground
+
+2. Connect the 220Ω resistor
+   * One end to LED's cathode
+   * Other end to ground rail
+
+3. Connect jumper wires
+   * GPIO 18 to LED's anode
+   * Ground pin to breadboard's ground rail
+
+{/*
 Steps: Follow the steps given in the [blog post here](https://thepihut.com/blogs/raspberry-pi-tutorials/27968772-turning-on-an-led-with-your-raspberry-pis-gpio-pins)
 
 We will use GPIO 18 to connect the LED. Please check [the Raspberry Pi GPIO pinout] (https://raspberrytips.com/raspberry-pi-gpio-pinout/) before you build the circuit and the circuit should look like this:
 
+*/}
+
+Your circuit should look like this:
+
 ![Raspberry Pi LED connect](../images-common/rpi-led.png)
 
-Run the following Python code:
+##### Run the following Python code:
+
 ```python
-import RPi.GPIO as GPIO
-import time
+# Import required libraries
+import RPi.GPIO as GPIO  # Library for GPIO control
+import time  # Library for time-related functions
 
+# Set GPIO mode to BCM numbering system
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(18, GPIO.OUT)
 
-while True:
-    GPIO.output(18, GPIO.HIGH)
-    time.sleep(1)
-    GPIO.output(18, GPIO.LOW)
-    time.sleep(1)
+# Define the GPIO pin number for LED
+LED_PIN = 18
+
+# Setup GPIO pin as output
+GPIO.setup(LED_PIN, GPIO.OUT)
+
+try:
+    while True:  # Infinite loop
+        # Turn LED on by setting pin to HIGH
+        GPIO.output(LED_PIN, GPIO.HIGH)
+        # Wait for 1 second
+        time.sleep(1)
+        
+        # Turn LED off by setting pin to LOW
+        GPIO.output(LED_PIN, GPIO.LOW)
+        # Wait for 1 second
+        time.sleep(1)
+
+except KeyboardInterrupt:
+    # Clean up when program is stopped with Ctrl+C
+    print("\nProgram stopped by user")
+    GPIO.cleanup()  # Reset all GPIO pins
 ```
 
-Once you run the code, your LED should start blinking. Congratulations, you have successfully controlled an external component using the GPIO pins.
+##### Running the Program
 
-:::
+1. Save the code in a file (e.g., `led_blink.py`)
+2. Open terminal on Raspberry Pi
+3. Navigate to file location
+4. Run with command: `python3 led_blink.py`
+5. Press Ctrl+C to stop program
 
-### Project 2: Input and Output
-:::tip[Activity]
-**Button-Controlled LED**
-Build upon the previous project by:
-1. Adding a push button
-2. Using button press to control LED
-3. Implementing different lighting patterns
+##### Discuss and Expand
+* Why do we need only one resistor to rpevent damage to the components? We used two resistors with LED in previous activites. Think about what changed.
+
+Try modifying the code to:
+* Change blink speed
+* Create different blinking patterns
+* Add multiple LEDs and use multiple GPIO pins to control them
+
 :::
