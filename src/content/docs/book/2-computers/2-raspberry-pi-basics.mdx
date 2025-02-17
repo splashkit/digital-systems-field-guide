@@ -1,20 +1,22 @@
 ---
-title: Getting Started with Raspberry Pi
+title: Bringing the Computer Architecture to Life with a Raspberry Pi
 sidebar:
     label: "Raspberry Pi Basics"
 ---
 
-## Introduction to Raspberry Pi
+So far, we have explored the building blocks of computer architecture including memory, processors, and the components that make up a functioning computer. We have discussed how data moves through a system, how instructions are processed, and how a computer executes tasks. Though we understand these concepts now, the best way to grasp how a computer works is to interact with one at its core level—beyond the user interface.  
 
-The Raspberry Pi is a remarkable piece of technology that revolutionized the world of computing education and DIY electronics. This credit card-sized computer packs all the essential components of a full-sized computer onto a single circuit board, making it a perfect learning tool and platform for creative projects.
+Yes, we are going to use Raspberry Pi. Unlike a traditional desktop or laptop, a Raspberry Pi is a compact, programmable computer that gives us direct access to the fundamental parts of a computing system. This credit card-sized computer packs all the essential components of a full-sized computer onto a single circuit board, making it a perfect learning tool and platform for creative projects.
 
-## What Makes It Special?
+### What Makes It Special?
 
-Unlike traditional computers that spread their components across multiple boards and parts, the Raspberry Pi is what's known as a Single Board Computer (SBC). Imagine having your processor, memory, graphics, and input/output connections all integrated onto one compact board - that's what makes the Pi special. This all-in-one design not only keeps costs down (typically ranging from $35-75) but also makes it easier to understand how different computer components work together.
+Unlike traditional computers that spread their components across multiple boards and parts, the Raspberry Pi is what is known as a Single Board Computer (SBC). Imagine having your processor, memory, graphics, and input/output connections all integrated onto one compact board, that is what makes the Pi special. This all-in-one design not only keeps costs down (typically ranging from $35-75) but also makes it easier to understand how different computer components work together.
 
-## Versatility and Applications
+With the Raspberry Pi we can connect and control hardware components like LEDs, buttons, and sensors to see how input and output devices work, interact with memory and processor by writing programs that manipulate data, execute commands, and perform calculations and explore operating systems and networking to understand how a computer manages processes and connects to other devices.
 
-What truly sets the Raspberry Pi apart is its versatility. You can use it as:
+### Some Applications
+
+You can use the Raspberry Pi as,
 
 * **Desktop Computer**: Perfect for basic computing tasks like web browsing, document editing, and email management. Its compact size makes it ideal for creating space-efficient workstations.
 
@@ -22,7 +24,7 @@ What truly sets the Raspberry Pi apart is its versatility. You can use it as:
 
 * **Project Hub**: Serves as the brain for countless DIY projects, from home automation systems to weather stations. Its GPIO pins allow direct interaction with sensors, motors, and other electronic components.
 
-* **Media Center**: Can transform any TV into a smart entertainment system, capable of streaming media, running retro games, and managing digital content libraries.
+* **Media Centre**: Can transform any TV into a smart entertainment system, capable of streaming media, running retro games, and managing digital content libraries.
 
 ### Components of Raspberry Pi
 
@@ -66,6 +68,16 @@ The Raspberry Pi 4 Model B board consists of all the components needed for a ful
 
 You can read the full specifications of the RPi 4B at this [datacapturecontrol blog post](https://datacapturecontrol.com/articles/io-devices/single-board-computers/raspberry-pi-4b) and [RPi official documentation](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/specifications/).
 
+:::tip[Activity: Identify the Components]
+Open the cover of the Raspberry Pi and identify the components. Take a picture and label the GPIO Pins, CPU, RAM, WiFi module, and other input and output ports.
+:::
+
+## Basic GPIO Projects
+
+In our earlier activity, we used transistors to control LEDs, turning it on and off by controlling the flow of current. This demonstrated an essential principle of digital electronics where transistors form the foundation of computing by controlling electrical signals.
+
+Now, we will use a Raspberry Pi to control the LED programmatically. This transition helps us understand how modern computers automate tasks using logic and code.
+
 :::note[Hardware Setup]
 Before starting:
 1. Make sure your SD card is properly formatted or have a working operating system.
@@ -74,7 +86,7 @@ Before starting:
 4. Power up using appropriate power supply.
 :::
 
-## Basic GPIO Projects
+
 
 ### Project 1: LED Control
 :::tip[Activity: LED Blinking]
