@@ -5,33 +5,36 @@ sidebar:
 ---
 import { YouTube } from 'astro-embed';
 
-So far, we have explored the building blocks of computer architecture including memory, processors, and the components that make up a functioning computer. We have discussed how data moves through a system, how instructions are processed, and how a computer executes tasks. Though we understand these concepts now, the best way to grasp how a computer works is to interact with one at its core level—beyond the user interface.  
+So far, we have explored the building blocks of computer architecture including memory, processors, and the components that make up a functioning computer. We have discussed how data moves through a system, how instructions are processed, and how a computer executes tasks. Though we now understand these concepts, the best way to grasp how a computer works is to interact with one at its core level—beyond the user interface.  
 
 Yes, we are going to use Raspberry Pi. Unlike a traditional desktop or laptop, a Raspberry Pi is a compact, programmable computer that gives us direct access to the fundamental parts of a computing system. This credit card-sized computer packs all the essential components of a full-sized computer onto a single circuit board, making it a perfect learning tool and platform for creative projects.
 
 ### What Makes It Special?
 
-Unlike traditional computers that spread their components across multiple boards and parts, the Raspberry Pi is what is known as a Single Board Computer (SBC). Imagine having your processor, memory, graphics, and input/output connections all integrated onto one compact board, that is what makes the Pi special. This all-in-one design not only keeps costs down (typically ranging from $35-75) but also makes it easier to understand how different computer components work together.
+Unlike traditional computers that spread their components across multiple boards and parts, the Raspberry Pi is an exmple of a Single Board Computer (SBC). Imagine having your processor, memory, graphics, and input/output connections all integrated onto one compact board, that's what makes the Pi special. This all-in-one design not only keeps costs down (typically ranging from $35-$75) but also makes it easier to understand how different computer components work together.
 
-With the Raspberry Pi we can connect and control hardware components like LEDs, buttons, and sensors to see how input and output devices work, interact with memory and processor by writing programs that manipulate data, execute commands, and perform calculations and explore operating systems and networking to understand how a computer manages processes and connects to other devices.
+With the Raspberry Pi we can:
+* **Connect and control** hardware components like LEDs, buttons, and sensors to see how input and output devices work. 
+* **Interact with memory and the processor** by writing programs that manipulate data, execute commands, and perform calculations. 
+* **Explore operating systems and networking** to understand how a computer manages processes and connects to other devices.
 
 ### Some Applications
 
 You can use the Raspberry Pi as,
 
-* **Desktop Computer**: Perfect for basic computing tasks like web browsing, document editing, and email management. Its compact size makes it ideal for creating space-efficient workstations.
+* **A Desktop Computer**: Perfect for basic computing tasks like web browsing, document editing, and email management. Its compact size makes it ideal for creating space-efficient workstations.
 
-* **Learning Platform**: An excellent tool for learning programming languages, understanding electronics, and exploring computer science concepts. The hands-on nature of the Pi makes abstract computing concepts tangible.
+* **A Learning Platform**: An excellent tool for learning programming languages, understanding electronics, and exploring computer science concepts. The hands-on nature of the Pi makes abstract computing concepts tangible.
 
-* **Project Hub**: Serves as the brain for countless DIY projects, from home automation systems to weather stations. Its GPIO pins allow direct interaction with sensors, motors, and other electronic components.
+* **Project Hub**: Serves as the brain for countless DIY projects, from home automation systems to weather stations. Its General Purpose Input/Output (GPIO) pins allow direct interaction with sensors, motors, and other electronic components.
 
-* **Media Centre**: Can transform any TV into a smart entertainment system, capable of streaming media, running retro games, and managing digital content libraries.
+* **A Media Centre**: Can transform any TV into a smart entertainment system, capable of streaming media, running retro games, and managing digital content libraries.
 
 ### Components of Raspberry Pi
 
 ![Raspberry Pi 4B components](../images-common/raspberry-pi-4b-board-layout-top-view.png)
 
-The Raspberry Pi 4 Model B board consists of all the components needed for a fully functioning computer:
+The Raspberry Pi 4 Model B board includes all the essential components needed for a fully functioning computer:
 
 1. **Broadcom BCM2711 SoC (System on Chip)**
    - The brain of the Raspberry Pi
@@ -75,7 +78,7 @@ Open the cover of the Raspberry Pi and identify the components. Take a picture a
 
 ## Basic GPIO Projects
 
-In our earlier activity, we used transistors to control LEDs, turning it on and off by controlling the flow of current. This demonstrated an essential principle of digital electronics where transistors form the foundation of computing by controlling electrical signals.
+In our earlier activity, we used transistors to control LEDs, turning it on and off by controlling the flow of current. This demonstrated an essential principle of digital electronics, where transistors form the foundation of computing by controlling electrical signals.
 
 Now, we will use a Raspberry Pi to control the LED programmatically. This transition helps us understand how modern computers automate tasks using logic and code.
 
@@ -174,10 +177,10 @@ except KeyboardInterrupt:
 </div>
 
 ##### Discuss and Expand
-* Why do we need only one resistor to prevent damage to the components? We used two resistors with LED in previous activites. Think about what changed.
+* Why do we need only one resistor to prevent damage to the components? We used two resistors with a LED in previous activities. Think about what changed.
 
 Try modifying the code to:
-* Change blink speed
+* Change the blink speed
 * Create different blinking patterns
 * Add multiple LEDs and use multiple GPIO pins to control them
 
