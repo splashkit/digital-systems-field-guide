@@ -1,0 +1,64 @@
+---
+title: Communication Protocols
+---
+
+
+For digital systems to work together, they need standardized ways to communicate. These standardized methods are called **communication protocols**.
+
+### Serial vs. Parallel Communication
+
+| Serial Communication                          | Parallel Communication             |
+| --------------------------------------------- | ---------------------------------- |
+| Sends data one bit at a time                  | Sends multiple bits simultaneously |
+| Requires fewer wires                          | Requires multiple data lines       |
+| Can achieve higher speeds over long distances | Faster over short distances        |
+| Examples: UART, SPI, I²C, USB                 | Examples: PATA, PCI, Memory bus    |
+
+
+![Serial vs Parallel Communication](../2-computers/images/pico/pico.png)
+_Serial communication uses a single data line, while parallel uses multiple lines_
+
+### Common Serial Protocols
+
+#### UART (Universal Asynchronous Receiver/Transmitter)
+
+- Simple two-wire protocol (TX and RX)
+- No clock signal (asynchronous)
+- Both devices must agree on timing parameters (baud rate)
+- Used for simple device-to-device communication
+
+![UART Communication](../2-computers/images/pico/pico.png)
+_UART uses TX (transmit) and RX (receive) lines between devices_
+
+#### SPI (Serial Peripheral Interface)
+
+- Four-wire protocol (MOSI, MISO, SCLK, CS)
+- Synchronous (uses a clock signal)
+- Can have multiple slave devices with individual chip select lines
+- Higher speed than UART
+- Used for communicating with sensors, displays, SD cards
+
+![SPI Communication](../2-computers/images/pico/pico.png)
+_SPI allows one master to communicate with multiple slave devices_
+
+#### I²C (Inter-Integrated Circuit)
+
+- Two-wire protocol (SDA and SCL)
+- Synchronous (uses a clock signal)
+- Can connect multiple devices with unique addresses
+- Medium speed
+- Used for connecting multiple sensors and devices to a single controller
+
+![I2C Communication](../2-computers/images/pico/pico.png)
+_I²C uses a bus architecture with device addressing_
+
+### Communication Protocol Comparison
+
+| Protocol  | Wires        | Speed         | Multiple Devices        | Complexity | Distance   |
+| --------- | ------------ | ------------- | ----------------------- | ---------- | ---------- |
+| UART      | 2 (TX/RX)    | Low to Medium | No (point-to-point)     | Low        | Short      |
+| SPI       | 4+           | High          | Yes (multiple CS lines) | Medium     | Very Short |
+| I²C       | 2 (SDA/SCL)  | Medium        | Yes (addressing)        | Medium     | Short      |
+| USB       | 4            | Very High     | Yes (through hubs)      | High       | Medium     |
+| Bluetooth | 0 (wireless) | Medium        | Yes (pairing)           | High       | Medium     |
+| WiFi      | 0 (wireless) | Very High     | Yes (networking)        | Very High  | Long       |

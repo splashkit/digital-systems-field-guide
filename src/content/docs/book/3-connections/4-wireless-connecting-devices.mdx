@@ -1,0 +1,473 @@
+---
+title: Wireless connections between devices
+---
+
+
+Now let's explore wireless communication methods between our Raspberry Pi 4B and Pico 2W.
+
+### Method 1: WiFi Communication
+
+The Raspberry Pi Pico 2W comes with built-in WiFi capabilities, allowing it to connect to networks or act as a simple web server.
+
+#### WiFi Setup on Pico 2W
+
+Before we can use WiFi, we need to set up the correct MicroPython libraries:
+
+```python
+# Basic WiFi connection on Pico 2W
+import network
+import time
+
+# WiFi credentials
+ssid = 'YourNetworkName'
+password = 'YourPassword'
+
+# Connect to WiFi
+wlan = network.WLAN(network.STA_IF)
+wlan.active(True)
+wlan.connect(ssid, password)
+
+# Wait for connection
+max_wait = 10
+while max_wait > 0:
+    if wlan.status() < 0 or wlan.status() >= 3:
+        break
+    max_wait -= 1
+    print('Waiting for connection...')
+    time.sleep(1)
+
+# Handle connection result
+if wlan.status() != 3:
+    raise RuntimeError('Network connection failed')
+else:
+    print('Connected')
+    status = wlan.ifconfig()
+    print('IP address:', status[0])
+```
+
+:::tip[Activity: Web Server Temperature Monitor]
+
+In this activity, we'll set up the Pico 2W as a web server that displays its temperature readings. The Raspberry Pi 4B (or any device on the network) can access this web page.
+
+**Step 1: Program the Pico 2W as a Web Server**
+
+```python
+# Save this as main.py on your Pico 2W
+import network
+import socket
+import time
+from machine import Pin, ADC
+
+# Setup the temperature sensor
+sensor_temp = ADC(4)
+conversion_factor = 3.3 / (65535)
+
+# Setup the status LED
+led = Pin("LED", Pin.OUT)
+
+# WiFi credentials
+ssid = 'YourNetworkName'
+password = 'YourPassword'
+
+# Connect to WiFi
+wlan = network.WLAN(network.STA_IF)
+wlan.active(True)
+wlan.connect(ssid, password)
+
+# Wait for connection with status indicator
+max_wait = 10
+while max_wait > 0:
+    if wlan.status() < 0 or wlan.status() >= 3:
+        break
+    max_wait -= 1
+    print('Waiting for connection...')
+    led.toggle()  # Blink LED while connecting
+    time.sleep(1)
+
+# Handle connection result
+if wlan.status() != 3:
+    led.value(0)  # Turn off LED if connection failed
+    raise RuntimeError('Network connection failed')
+else:
+    led.value(1)  # Solid LED on successful connection
+    print('Connected')
+    status = wlan.ifconfig()
+    print('IP address:', status[0])
+
+# Function to read the temperature
+def get_temperature():
+    reading = sensor_temp.read_u16() * conversion_factor
+    temperature = 27 - (reading - 0.706) / 0.001721
+    return temperature
+
+# Create a socket server
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind(('', 80))  # Bind to port 80
+s.listen(5)  # Allow up to 5 connections
+print('Web server started')
+
+# Handle HTTP requests
+while True:
+    try:
+        # Accept connection
+        conn, addr = s.accept()
+        print('Connection from %s' % str(addr))
+
+        # Blink LED on request
+        led.value(0)
+        time.sleep(0.1)
+        led.value(1)
+
+        # Get request
+        request = conn.recv(1024)
+        request = str(request)
+        print('Request:', request)
+
+        # Read current temperature
+        temperature = get_temperature()
+
+        # Create HTML response
+        html = f"""
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <title>Pico W Temperature Server</title>
+                <meta http-equiv="refresh" content="5">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <style>
+                    body {{ font-family: Arial; text-align: center; padding: 20px; }}
+                    .temperature {{ font-size: 48px; margin: 20px 0; }}
+                </style>
+            </head>
+            <body>
+                <h1>Pico W Temperature Monitor</h1>
+                <div class="temperature">{temperature:.2f} &deg;C</div>
+                <p>Last updated: {time.time()}</p>
+                <p>This page refreshes every 5 seconds</p>
+            </body>
+        </html>
+        """
+
+        # Send response
+        conn.send('HTTP/1.0 200 OK\r\nContent-type: text/html\r\n\r\n')
+        conn.send(html)
+
+        # Close connection
+        conn.close()
+
+    except Exception as e:
+        print('Error:', e)
+        conn.close()
+```
+
+**Step 2: Access the Web Server from Raspberry Pi 4B**
+
+1. After uploading the code to the Pico 2W, note the IP address printed in the Thonny shell
+2. Open a web browser on the Raspberry Pi 4B
+3. Enter the IP address of the Pico 2W in the address bar (e.g., `http://192.168.1.100`)
+4. You should see a web page displaying the current temperature from the Pico 2W
+5. The page will automatically refresh every 5 seconds to show updated readings
+
+**Step 3: Enhance the Experience (Optional)**
+
+For a more permanent setup:
+
+1. Set a static IP for your Pico 2W in your router settings
+2. Create a desktop shortcut on the Raspberry Pi to quickly access the temperature monitor
+3. Modify the code to include additional sensors or controls
+
+**What's Happening?**
+
+- The Pico 2W connects to your WiFi network
+- It starts a web server listening on port 80
+- When a browser (from any device on the network) connects to its IP address, it responds with HTML
+- The web page displays the current temperature and auto-refreshes
+- This demonstrates IoT principles with a device providing data over the network
+  :::
+
+### Method 2: Bluetooth Communication
+
+The Raspberry Pi Pico 2W also has Bluetooth capabilities, allowing for direct device-to-device communication without needing a network infrastructure.
+
+#### Bluetooth Setup on Pico 2W
+
+MicroPython on the Pico 2W provides Bluetooth Low Energy (BLE) support. Here's how to set it up:
+
+```python
+# Basic Bluetooth setup on Pico 2W
+import bluetooth
+from ble_simple_peripheral import BLESimplePeripheral
+import time
+
+# Create a Bluetooth Low Energy (BLE) object
+ble = bluetooth.BLE()
+# Create a BLE peripheral
+sp = BLESimplePeripheral(ble)
+
+# LED for status indication
+led = machine.Pin("LED", machine.Pin.OUT)
+
+def on_rx(data):
+    print("Received:", data.decode())
+    if data == b'toggle':
+        led.toggle()
+
+# Wait for connections
+while True:
+    if sp.is_connected():
+        # If connected, wait for instructions
+        sp.on_write(on_rx)
+    else:
+        # If not connected, blink LED slowly
+        led.toggle()
+        time.sleep(0.5)
+```
+
+:::tip[Activity: Bluetooth Control System]
+
+In this activity, we'll set up Bluetooth communication between the Raspberry Pi 4B and Pico 2W. The Pi will send commands that the Pico will execute.
+
+**Prerequisites:**
+
+- The `ble_simple_peripheral.py` file for the Pico 2W. You can download it from the MicroPython documentation or GitHub repositories.
+- Bluez tools installed on the Raspberry Pi 4B: `sudo apt install bluez bluez-tools`
+
+**Step 1: Program the Pico 2W as a BLE Peripheral**
+
+First, upload the `ble_simple_peripheral.py` helper file to your Pico 2W, then create this main program:
+
+```python
+# Save this as main.py on your Pico 2W
+import bluetooth
+from ble_simple_peripheral import BLESimplePeripheral
+from machine import Pin, PWM
+import time
+
+# LED and controls
+led = Pin("LED", Pin.OUT)
+pwm_pin = Pin(15, Pin.OUT)
+pwm = PWM(pwm_pin)
+pwm.freq(1000)  # Set frequency to 1 KHz
+
+# Set initial brightness
+brightness = 0
+pwm.duty_u16(brightness)
+
+# Create BLE object
+ble = bluetooth.BLE()
+sp = BLESimplePeripheral(ble)
+
+# Handle received data
+def on_rx(data):
+    global brightness
+
+    data_str = data.decode().strip()
+    print("Received:", data_str)
+
+    # Process commands
+    if data_str == "on":
+        led.value(1)
+        sp.send("LED turned ON")
+    elif data_str == "off":
+        led.value(0)
+        sp.send("LED turned OFF")
+    elif data_str == "toggle":
+        led.toggle()
+        state = "ON" if led.value() else "OFF"
+        sp.send(f"LED toggled: {state}")
+    elif data_str.startswith("brightness:"):
+        try:
+            # Extract brightness value (0-100)
+            level = int(data_str.split(":")[1])
+            # Convert to 16-bit duty cycle (0-65535)
+            brightness = int((level / 100) * 65535)
+            pwm.duty_u16(brightness)
+            sp.send(f"Brightness set to {level}%")
+        except:
+            sp.send("Invalid brightness command")
+    else:
+        sp.send(f"Echo: {data_str}")
+
+# Main loop
+print("Waiting for Bluetooth connection...")
+while True:
+    if sp.is_connected():
+        # Flash LED rapidly when connected
+        for _ in range(3):
+            led.toggle()
+            time.sleep(0.1)
+        led.value(1)
+
+        # If connected, process commands
+        sp.on_write(on_rx)
+
+        # Send heartbeat periodically
+        last_heartbeat = time.time()
+
+        while sp.is_connected():
+            # Send a status update every 10 seconds
+            if time.time() - last_heartbeat >= 10:
+                sp.send(f"Status: Connected, Brightness: {int((brightness/65535)*100)}%")
+                last_heartbeat = time.time()
+
+            time.sleep(0.1)  # Small delay
+    else:
+        # Slow blink when disconnected
+        led.toggle()
+        time.sleep(0.5)
+```
+
+
+**Step 2: Create a Control Program on the Raspberry Pi 4B**
+
+Create a new file called `bluetooth_controller.py` on your Raspberry Pi:
+
+```python
+import time
+import subprocess
+import re
+import sys
+from bluepy import btle
+
+# Function to find the Pico W device
+def find_pico_device():
+    print("Scanning for Bluetooth devices...")
+    scanner = btle.Scanner()
+    devices = scanner.scan(5.0)  # Scan for 5 seconds
+
+    pico_mac = None
+    for dev in devices:
+        for (adtype, desc, value) in dev.getScanData():
+            if "Pico" in value:
+                pico_mac = dev.addr
+                print(f"Found Pico W: {value} ({pico_mac})")
+                break
+
+    return pico_mac
+
+# Function to connect and interact with the Pico
+def connect_to_pico(mac_address):
+    if not mac_address:
+        print("Pico W device not found. Make sure it's running the BLE peripheral program.")
+        sys.exit(1)
+
+    print(f"Connecting to Pico W at {mac_address}...")
+
+    try:
+        # Connect to device
+        peripheral = btle.Peripheral(mac_address)
+        print("Connected successfully!")
+
+        # Discover services
+        services = peripheral.getServices()
+        uart_service = None
+        rx_char = None
+
+        # Find the UART service
+        for service in services:
+            if service.uuid == btle.UUID("6E400001-B5A3-F393-E0A9-E50E24DCCA9E"):  # UART service UUID
+                uart_service = service
+                break
+
+        if uart_service:
+            # Find the RX characteristic
+            for char in uart_service.getCharacteristics():
+                if char.uuid == btle.UUID("6E400002-B5A3-F393-E0A9-E50E24DCCA9E"):  # RX characteristic UUID
+                    rx_char = char
+                    break
+
+        if not rx_char:
+            print("Could not find the correct service/characteristic.")
+            peripheral.disconnect()
+            sys.exit(1)
+
+        # Interactive control
+        print("\n=== Pico W Bluetooth Control Panel ===")
+        print("Commands:")
+        print("  on           - Turn LED on")
+        print("  off          - Turn LED off")
+        print("  toggle       - Toggle LED state")
+        print("  brightness:X - Set brightness to X% (0-100)")
+        print("  quit         - Exit the program")
+
+        try:
+            while True:
+                command = input("\nEnter command: ")
+
+                if command.lower() == "quit":
+                    break
+
+                # Send the command
+                rx_char.write(command.encode())
+                print("Command sent, wait for response...")
+                time.sleep(0.5)  # Give the Pico time to respond
+
+        except KeyboardInterrupt:
+            print("\nExiting...")
+        finally:
+            peripheral.disconnect()
+
+    except Exception as e:
+        print(f"Error: {e}")
+        print("Connection failed. Make sure the Pico W is in range and running.")
+        sys.exit(1)
+
+# Main program
+if __name__ == "__main__":
+    # Install required package if not already installed
+    try:
+        import bluepy
+    except ImportError:
+        print("Installing required bluepy package...")
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "bluepy"])
+        print("Package installed. Restarting script...")
+        subprocess.check_call([sys.executable] + sys.argv)
+        sys.exit(0)
+
+    # Find and connect to Pico
+    print("Looking for Pico W device...")
+    mac_address = find_pico_device()
+
+    if mac_address:
+        connect_to_pico(mac_address)
+    else:
+        print("No Pico W device found. Make sure it's powered on and running the BLE program.")
+```
+
+
+**Step 3: Run the Bluetooth Communication**
+
+1. First, prepare the Pico 2W:
+
+   - Make sure the `ble_simple_peripheral.py` file is uploaded to the Pico 2W
+   - Upload and run the BLE peripheral code on the Pico 2W
+   - The LED should start blinking slowly, indicating it's waiting for a connection
+
+2. Next, run the controller on the Raspberry Pi 4B:
+
+   - Install any required packages: `sudo apt install python3-pip && pip3 install bluepy`
+   - Run the script: `python3 bluetooth_controller.py`
+   - The script will scan for the Pico, connect to it, and show the command interface
+
+3. Try sending various commands:
+   - Type `on` to turn on the LED
+   - Type `off` to turn it off
+   - Type `toggle` to switch its state
+   - Type `brightness:50` to set LED brightness to 50%
+
+**What's Happening?**
+
+- The Pico 2W advertises itself as a Bluetooth peripheral device
+- The Raspberry Pi discovers it, connects, and sends commands
+- The Pico receives commands wirelessly and executes them
+- This demonstrates how to create a wireless control system for IoT devices
+
+:::note[Troubleshooting]
+If you encounter issues with Bluetooth communication:
+
+1. Make sure Bluetooth is enabled on the Raspberry Pi: `sudo bluetoothctl power on`
+2. Check that the Pico 2W is powered and running the correct program
+3. Try resetting the Pico 2W by disconnecting and reconnecting power
+4. Ensure you have the correct permissions: `sudo setcap 'cap_net_raw,cap_net_admin+eip' $(which python3)`
+5. If the Pico isn't discovered, try reducing the distance between devices
+   :::

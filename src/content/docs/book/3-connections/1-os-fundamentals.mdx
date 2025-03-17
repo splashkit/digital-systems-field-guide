@@ -1,0 +1,107 @@
+---
+title: Understanding Operating Systems
+---
+
+### What is an Operating System?
+
+An operating system (OS) is software that manages computer hardware and provides common services for computer programs. It acts as an intermediary between users, applications, and hardware.
+
+#### Key Functions of an Operating System:
+
+1. **Process Management**: Controls the creation, scheduling, and termination of processes
+2. **Memory Management**: Allocates and deallocates memory space as needed
+3. **File System Management**: Organizes and controls access to files
+4. **Device Management**: Controls input/output devices and peripherals
+5. **User Interface**: Provides ways for users to interact with the computer
+6. **Security**: Controls access to system resources
+
+### Operating Systems in Our Devices
+
+| Device               | Operating System              | Key Characteristics           |
+| -------------------- | ----------------------------- | ----------------------------- |
+| Raspberry Pi 4B      | Raspberry Pi OS (Linux-based) | Full multitasking OS with GUI |
+| Raspberry Pi Pico 2W | No OS (bare metal)            | Direct hardware execution     |
+| Smartphone           | Android/iOS                   | Mobile-optimized OS           |
+| Laptop/Desktop       | Windows/macOS/Linux           | General purpose OS            |
+| Smart Watch          | watchOS/Wear OS               | Resource-constrained OS       |
+
+### Exploring Raspberry Pi OS
+
+Raspberry Pi OS is a Linux-based operating system optimized for the Raspberry Pi hardware. Let's explore some essential concepts:
+
+#### The Linux File System Hierarchy
+
+```
+/
+├── bin/    # Essential command binaries
+├── boot/   # Boot loader files
+├── dev/    # Device files
+├── etc/    # System configuration files
+├── home/   # User home directories
+├── lib/    # Essential shared libraries
+├── media/  # Mount points for removable media
+├── mnt/    # Temporary mount points
+├── opt/    # Optional application software
+├── proc/   # Virtual filesystem for process info
+├── root/   # Home directory for root user
+├── sbin/   # System binaries
+├── sys/    # Virtual filesystem for system info
+├── tmp/    # Temporary files
+├── usr/    # User utilities and applications
+└── var/    # Variable files (logs, etc.)
+```
+
+#### Process Management
+
+In Linux, processes are managed using commands like:
+
+- `ps` - List running processes
+- `top` or `htop` - Monitor system performance and processes
+- `kill` - Terminate a process
+
+:::tip[Activity: Exploring Processes]
+
+1. Open a terminal on your Raspberry Pi 4B
+2. Run `ps aux` to see all running processes
+3. Now run `htop` (install with `sudo apt install htop` if needed)
+4. Observe the processes, CPU usage, and memory usage
+5. Start a new application (like Chromium browser)
+6. Observe how the process list changes
+7. Exit htop with `q`
+
+Questions to consider:
+
+- What processes consume the most resources?
+- What happens when you start multiple applications?
+- How does the OS distribute CPU time among processes?
+  :::
+
+#### Hardware Interaction through the OS
+
+Operating systems provide interfaces to hardware through:
+
+- **Device Drivers**: Software that enables the OS to communicate with hardware
+- **System Calls**: Interfaces that allow programs to request OS services
+- **File System**: Provides consistent access to storage devices
+
+On Raspberry Pi OS, hardware GPIO pins are accessible through the file system:
+
+```bash
+# Access GPIO via the file system
+cd /sys/class/gpio
+echo 17 > export       # Create a file interface for GPIO 17
+cd gpio17
+echo out > direction   # Set GPIO 17 as output
+echo 1 > value         # Set GPIO 17 high
+echo 0 > value         # Set GPIO 17 low
+```
+
+:::note[OS Abstraction]
+Notice how the operating system provides abstractions:
+
+- Processes appear as files in the `/proc` directory
+- Hardware appears as files in the `/sys` directory
+- Physical devices appear as files in the `/dev` directory
+
+This "everything is a file" approach is a fundamental design philosophy in Unix/Linux systems.
+:::
