@@ -2,10 +2,11 @@
 title: Communication Protocols
 ---
 
-
 For digital systems to work together, they need standardized ways to communicate. These standardized methods are called **communication protocols**.
 
 ### Serial vs. Parallel Communication
+
+More information can be found [here](https://www.geeksforgeeks.org/difference-between-serial-and-parallel-transmission/)
 
 | Serial Communication                          | Parallel Communication             |
 | --------------------------------------------- | ---------------------------------- |
@@ -14,8 +15,7 @@ For digital systems to work together, they need standardized ways to communicate
 | Can achieve higher speeds over long distances | Faster over short distances        |
 | Examples: UART, SPI, I²C, USB                 | Examples: PATA, PCI, Memory bus    |
 
-
-![Serial vs Parallel Communication](../2-computers/images/pico/pico.png)
+![Serial vs Parallel Communication](./images/Serial_and_Parallel_Data_Transmission.svg.png)
 _Serial communication uses a single data line, while parallel uses multiple lines_
 
 ### Common Serial Protocols
@@ -27,7 +27,7 @@ _Serial communication uses a single data line, while parallel uses multiple line
 - Both devices must agree on timing parameters (baud rate)
 - Used for simple device-to-device communication
 
-![UART Communication](../2-computers/images/pico/pico.png)
+![UART Communication](./images/uart.png)
 _UART uses TX (transmit) and RX (receive) lines between devices_
 
 #### SPI (Serial Peripheral Interface)
@@ -38,7 +38,7 @@ _UART uses TX (transmit) and RX (receive) lines between devices_
 - Higher speed than UART
 - Used for communicating with sensors, displays, SD cards
 
-![SPI Communication](../2-computers/images/pico/pico.png)
+![SPI Communication](./images/SPI-flow-chart-.png)
 _SPI allows one master to communicate with multiple slave devices_
 
 #### I²C (Inter-Integrated Circuit)
@@ -49,7 +49,7 @@ _SPI allows one master to communicate with multiple slave devices_
 - Medium speed
 - Used for connecting multiple sensors and devices to a single controller
 
-![I2C Communication](../2-computers/images/pico/pico.png)
+![I2C Communication](./images/I2C.jpg)
 _I²C uses a bus architecture with device addressing_
 
 ### Communication Protocol Comparison

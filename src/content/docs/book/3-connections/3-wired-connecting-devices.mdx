@@ -2,7 +2,6 @@
 title: Wired connections between devices
 ---
 
-
 Now let's put theory into practice by connecting our Raspberry Pi 4B to the Pico 2W using different communication methods.
 
 ### Method 1: Direct UART Connection
@@ -19,8 +18,10 @@ UART is one of the simplest ways to connect two devices. We'll establish a seria
 | GPIO 15 (RX)    | GP0 (TX) |
 | GND             | GND      |
 
-![UART Connection](../2-computers/images/pico/pico.png)
+![UART Connection](./images/Raspberry-Pi-4-Pinout.png)
 _UART connection between Raspberry Pi 4B and Pico 2W_
+
+https://timhanewich.medium.com/using-uart-between-a-raspberry-pi-pico-and-raspberry-pi-3b-raspbian-71095d1b259f
 
 :::caution[Important!]
 The Raspberry Pi operates at 3.3V logic levels. Make sure not to connect it to 5V systems without level shifting to avoid damage.
