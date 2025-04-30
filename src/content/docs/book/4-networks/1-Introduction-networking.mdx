@@ -1,2 +1,59 @@
+---
+title: From Connecting Devices to Building Networks: An Introduction to Computer Networking
+---
 
-From Connecting Devices to Building Networks: An Introduction to Computer Networking
+import { YouTube } from 'astro-embed';
+
+Up to this point, We have learned how to connect individual devices such as LEDs or microcontrollers to a computer or each other using wires or serial connections. These direct links help devices communicate and share information in simple ways. But what happens when we need to connect more than just a few devices? What if we want hundreds or even thousands of devices from mobile phones and laptops to smart fridges to share data and work together?
+
+This is where computer networks come in. Instead of connecting every device directly to every other device which would quickly become impossible to manage, we build networks—structured systems that allow devices to communicate, share resources, and stay connected efficiently. Just like cities use roads to connect homes, shops, and offices, computer networks use cables, Wi-Fi, and protocols to connect all kinds of devices.
+
+
+## Understanding How Devices Talk to Each Other: An Analogy to Human Communication
+
+Computer networking is all about enabling a wide range of digital devices such as laptops, smartphones, smartwatches, home automation tools, servers, cameras, and even self-driving cars to share information and communicate with one another to provide a service or getting a work done.
+
+Think of it like a conversation between people. For humans to communicate successfully, two basic things must happen:
+
+- We need to speak a common language.
+
+- We need to hear each other clearly.
+
+If you are speaking to someone in a noisy room, you might have to ask them to repeat what they said. If you do not understand their message, you would likely ask for clarification. We also change how we speak depending on the audience, sometimes addressing a friend casually, other times using more formal language in professional settings. Conversations often begin with greetings and end politely.
+
+Computers communicate in a similar way. They follow specific rules and greetings to ensure messages are sent, received, understood, and if needed re-sent. These rules are called network protocols, and they help devices coordinate how they exchange information.
+
+When we talk about computer networking, we are really referring to the systems and rules that make it possible for all these machines to “talk” to each other efficiently. Just like human interaction, successful digital communication depends on clarity, shared language (protocols), and a structured process.
+
+Computer networking uses models to explain how these protocols operate at different levels, from physical signals to complete messages, ensuring that devices can communicate reliably even in complex, noisy digital environments. 
+
+
+## What is Internet?
+
+The internet is a network of networks and we have different types of networks. The following short video gives a good introduction to Internet. 
+
+<div class='not-content'>
+  <YouTube id='Dxcc6ycZ73M' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
+</div>
+
+Watch the first 4 minutes of the following video to understand different types of networks that make Internet. 
+
+<div class='not-content'>
+  <YouTube id='sMHzfigUxz4' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
+</div>
+
+## How Do Devices Actually Share Information Over a Network?
+
+When a computer or other digital device (called a host) sends or receives information, it doesn’t transmit one giant message all at once. Instead, it breaks that message into smaller units called packets. These packets travel across the network—through cables, Wi-Fi, and other devices like routers—until they reach their destination. Eventually, the receiving host reassembles the original message from those packets.
+
+Now, this sounds simple in theory, but in practice, it’s much more complex (something we’ll explore in greater detail in later modules).
+A key idea to understand right now is that communication links, the paths the packets travel—don’t have unlimited capacity. Imagine them like water pipes. A small pipe can only carry a certain amount of water at a time. Similarly, a network link can only transmit a certain amount of data per second. This capacity is often called bandwidth, link capacity, or transmission rate.
+
+Because of this limitation, only a specific number of packets can travel across a link during a given time. This creates something called transmission delay, which is the time it takes for a packet to move from one end of the link to the other. The longer the packet or the slower the link, the more delay you’ll experience.
+
+To estimate the transmission delay, we use a simple formula:
+
+Transmission delay = L / R
+(where L is the size of the packet in bits, and R is the transmission rate in bits per second)
+
+It’s important to note that this delay can vary depending on whether the link is wireless or wired, and other factors. And how these packets actually travel between devices—that's a complex process involving routing, switching, and protocols, which we'll unpack as we go deeper into networking.
