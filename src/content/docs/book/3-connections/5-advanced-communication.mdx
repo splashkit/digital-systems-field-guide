@@ -1,0 +1,81 @@
+---
+title: Advanced Communication
+----
+
+Now that we've explored the basics of connecting digital systems, let's touch on some more advanced concepts that are important in modern computing systems.
+
+### Network Communication
+
+Modern digital systems frequently communicate over networks. Here are some key concepts:
+
+#### The OSI Model
+
+The OSI (Open Systems Interconnection) model divides network communication into seven layers:
+
+1. **Physical Layer**: Hardware transmission (cables, radio signals)
+2. **Data Link Layer**: Node-to-node connections and error detection
+3. **Network Layer**: Routing and addressing (IP)
+4. **Transport Layer**: End-to-end connections (TCP, UDP)
+5. **Session Layer**: Session establishment and management
+6. **Presentation Layer**: Data translation and encryption
+7. **Application Layer**: Application-specific protocols (HTTP, FTP)
+
+Our Raspberry Pi and Pico 2W are communicating at multiple layers:
+
+- Physical/Data Link: WiFi or Bluetooth radio signals
+- Network/Transport: IP and TCP/UDP protocols
+- Application: Our custom protocols or HTTP
+
+#### Internet Protocols
+
+The most common internet protocols include:
+
+- **IP (Internet Protocol)**: Addressing and routing packets
+- **TCP (Transmission Control Protocol)**: Reliable, ordered data delivery
+- **UDP (User Datagram Protocol)**: Fast, connectionless communication
+- **HTTP (Hypertext Transfer Protocol)**: Web communication
+- **MQTT (Message Queuing Telemetry Transport)**: Lightweight IoT messaging
+
+:::note[MQTT for IoT]
+MQTT is particularly important for IoT projects. It's a lightweight publish/subscribe protocol designed for constrained devices and low-bandwidth, high-latency networks. The Pico 2W can use MQTT to communicate with servers or cloud services with minimal overhead.
+:::
+
+### Real-Time Operating Systems (RTOS)
+
+While the Raspberry Pi 4B runs a full Linux operating system and the Pico 2W typically runs bare-metal code, there's a middle ground: Real-Time Operating Systems (RTOS).
+
+An RTOS is designed to:
+
+- Process data as it comes in, with minimal delay
+- Provide predictable timing for operations
+- Efficiently manage resources on constrained devices
+
+Popular RTOS options for microcontrollers include:
+
+- **FreeRTOS**: Open-source RTOS that can run on the Pico 2W
+- **Zephyr**: Scalable RTOS for connected devices
+- **RIOT**: IoT-focused RTOS
+
+Using an RTOS on the Pico 2W would allow more complex applications with:
+
+- Task scheduling
+- Resource management
+- Timing guarantees
+
+### Buses and Peripheral Communication
+
+Modern computers and embedded systems use various buses to connect internal components and peripherals:
+
+#### Internal Computer Buses
+
+- **Memory Bus**: Connects CPU to RAM
+- **PCI Express (PCIe)**: High-speed computer expansion bus
+- **System Bus**: Connects major computer components
+
+#### External/Peripheral Buses
+
+- **USB (Universal Serial Bus)**: Connects external devices
+- **HDMI**: Audio/video transmission
+- **SATA**: Storage device connection
+
+The Raspberry Pi 4B exposes several of these buses, allowing it to connect to displays, storage, and other peripherals.

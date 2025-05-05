@@ -96,7 +96,7 @@ export default defineConfig({
                     },
                 },
                 {
-                    label: "IV. Connecting Digital System and Operating System (Coming Soon)",
+                    label: "IV. Connecting Digital System and Operating System (Coming soon)",
                     collapsed: true,
                     autogenerate: {
                         directory:

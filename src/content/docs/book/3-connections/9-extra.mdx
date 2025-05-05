@@ -1,0 +1,1011 @@
+---
+title: Extra code
+draft: true
+---
+
+import { YouTube } from 'astro-embed';
+
+## Extra: Building a Complete System
+
+Now that we've explored various ways to connect our Raspberry Pi 4B and Pico 2W, let's integrate these techniques into a more comprehensive project.
+
+:::tip[Capstone Project: Smart Home Monitoring System]
+
+In this project, we'll build a complete IoT system that:
+
+1. Uses the Pico 2W to collect environmental data
+2. Processes and stores that data on the Raspberry Pi 4B
+3. Provides a web interface to monitor and control the system
+
+**System Architecture:**
+
+![Smart Home System Architecture](../2-computers/images/pico/pico.png)
+_System architecture showing data flow between components_
+
+**Components Needed:**
+
+- Raspberry Pi 4B
+- Raspberry Pi Pico 2W
+- DHT22 temperature and humidity sensor
+- LED (already on the Pico 2W)
+- Jumper wires
+
+**Step 1: Setting Up the Pico 2W Sensor Node**
+
+Connect the DHT22 sensor to the Pico 2W:
+
+- VCC to 3.3V (3V3 pin)
+- GND to ground
+- Data to GP28
+
+Program the Pico 2W with this code:
+
+```python
+# sensor_node.py for Pico 2W
+import network
+import socket
+import time
+import json
+import machine
+from machine import Pin
+import dht
+
+# WiFi credentials
+SSID = 'YourNetworkName'
+PASSWORD = 'YourPassword'
+
+# Set up DHT22 sensor
+dht_sensor = dht.DHT22(Pin(28))
+
+# Set up status LED
+led = Pin("LED", Pin.OUT)
+
+# Server details (Raspberry Pi 4B)
+SERVER_IP = '192.168.1.100'  # Replace with your Pi's IP
+SERVER_PORT = 8080
+
+# Connect to WiFi
+def connect_wifi():
+    wlan = network.WLAN(network.STA_IF)
+    wlan.active(True)
+    wlan.connect(SSID, PASSWORD)
+
+    # Wait for connection with timeout
+    max_wait = 10
+    while max_wait > 0:
+        if wlan.status() < 0 or wlan.status() >= 3:
+            break
+        max_wait -= 1
+        print('Waiting for connection...')
+        led.toggle()
+        time.sleep(1)
+
+    if wlan.status() != 3:
+        led.value(0)
+        raise RuntimeError('Network connection failed')
+    else:
+        led.value(1)
+        print('Connected')
+        print('IP address:', wlan.ifconfig()[0])
+
+    return wlan
+
+# Read sensor data
+def read_sensor():
+    try:
+        dht_sensor.measure()
+        temp = dht_sensor.temperature()
+        humidity = dht_sensor.humidity()
+        return {
+            'temperature': temp,
+            'humidity': humidity,
+            'timestamp': time.time(),
+            'device_id': 'pico_sensor_1'
+        }
+    except Exception as e:
+        print('Sensor read error:', e)
+        return None
+
+# Send data to server
+def send_data(data):
+    try:
+        # Create a socket
+        s = socket.socket()
+        # Connect to server
+        s.connect((SERVER_IP, SERVER_PORT))
+        # Convert data to JSON
+        json_data = json.dumps(data)
+        # Send data
+        s.send(json_data.encode())
+        # Receive response
+        response = s.recv(1024).decode()
+        print('Server response:', response)
+        # Close socket
+        s.close()
+        # Blink LED to indicate successful transmission
+        led.value(0)
+        time.sleep(0.1)
+        led.value(1)
+        return True
+    except Exception as e:
+        print('Send error:', e)
+        # Rapid blink to indicate error
+        for _ in range(5):
+            led.toggle()
+            time.sleep(0.1)
+        led.value(1)
+        return False
+
+# Main program
+try:
+    # Connect to WiFi
+    wlan = connect_wifi()
+
+    # Run forever
+    while True:
+        # Read sensor data
+        sensor_data = read_sensor()
+        if sensor_data:
+            # Send data to server
+            send_data(sensor_data)
+
+        # Wait before next reading (every 5 minutes)
+        time.sleep(300)
+
+except KeyboardInterrupt:
+    print('Program stopped')
+```
+
+You'll need to install the DHT library on the Pico 2W:
+
+1. Download `dht.py` from MicroPython libraries
+2. Upload it to the Pico 2W using Thonny
+
+**Step 2: Setting Up the Raspberry Pi 4B Server**
+
+Create a server script on the Raspberry Pi 4B:
+
+```python
+# sensor_server.py for Raspberry Pi 4B
+import socket
+import json
+import time
+import sqlite3
+from datetime import datetime
+import threading
+from flask import Flask, jsonify, render_template
+
+# Database setup
+def setup_database():
+    conn = sqlite3.connect('sensor_data.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS readings (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        device_id TEXT,
+        temperature REAL,
+        humidity REAL,
+        timestamp INTEGER,
+        recorded_at TEXT
+    )
+    ''')
+    conn.commit()
+    conn.close()
+    print("Database initialized")
+
+# Function to store data in database
+def store_data(data):
+    conn = sqlite3.connect('sensor_data.db')
+    cursor = conn.cursor()
+    now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    cursor.execute('''
+    INSERT INTO readings (device_id, temperature, humidity, timestamp, recorded_at)
+    VALUES (?, ?, ?, ?, ?)
+    ''', (
+        data['device_id'],
+        data['temperature'],
+        data['humidity'],
+        data['timestamp'],
+        now
+    ))
+    conn.commit()
+    conn.close()
+    print(f"Data stored: Temp={data['temperature']}°C, Humidity={data['humidity']}%")
+
+# Socket server to receive data from Pico 2W
+def run_socket_server():
+    server_socket = socket.socket()
+    server_socket.bind(('0.0.0.0', 8080))
+    server_socket.listen(5)
+    print("Socket server started on port 8080")
+
+    while True:
+        client, addr = server_socket.accept()
+        print(f"Connection from: {addr}")
+        data = client.recv(1024).decode()
+        try:
+            sensor_data = json.loads(data)
+            print(f"Received data: {sensor_data}")
+            store_data(sensor_data)
+            client.send(b"Data received successfully")
+        except json.JSONDecodeError:
+            print(f"Invalid data: {data}")
+            client.send(b"Error: Invalid data format")
+        except Exception as e:
+            print(f"Error processing data: {e}")
+            client.send(b"Error processing data")
+        finally:
+            client.close()
+
+# Flask web server to display data
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/api/data')
+def get_data():
+    conn = sqlite3.connect('sensor_data.db')
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute('''
+    SELECT * FROM readings ORDER BY timestamp DESC LIMIT 100
+    ''')
+    data = [dict(row) for row in cursor.fetchall()]
+    conn.close()
+    return jsonify(data)
+
+@app.route('/api/latest')
+def get_latest():
+    conn = sqlite3.connect('sensor_data.db')
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute('''
+    SELECT * FROM readings ORDER BY timestamp DESC LIMIT 1
+    ''')
+    data = dict(cursor.fetchone())
+    conn.close()
+    return jsonify(data)
+
+# Main program
+if __name__ == '__main__':
+    # Setup database
+    setup_database()
+
+    # Start socket server in a separate thread
+    socket_thread = threading.Thread(target=run_socket_server)
+    socket_thread.daemon = True
+    socket_thread.start()
+
+    # Start web server
+    print("Starting web server...")
+    app.run(host='0.0.0.0', port=5000, debug=True)
+```
+
+Create a simple HTML template in `templates/index.html`:
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Smart Home Monitoring</title>
+    <meta http-equiv="refresh" content="60" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .reading-card {
+        background-color: #f5f5f5;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      .current-reading {
+        display: flex;
+        justify-content: space-between;
+      }
+      .reading-value {
+        font-size: 48px;
+        font-weight: bold;
+        text-align: center;
+      }
+      .reading-label {
+        font-size: 14px;
+        color: #666;
+        text-align: center;
+      }
+      .temperature {
+        color: #e63946;
+      }
+      .humidity {
+        color: #457b9d;
+      }
+      #chart-container {
+        height: 400px;
+        margin-top: 40px;
+      }
+      h1,
+      h2 {
+        color: #1d3557;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Smart Home Monitoring System</h1>
+
+    <div class="reading-card">
+      <h2>Current Readings</h2>
+      <div class="current-reading">
+        <div>
+          <div id="current-temp" class="reading-value temperature">--°C</div>
+          <div class="reading-label">Temperature</div>
+        </div>
+        <div>
+          <div id="current-humidity" class="reading-value humidity">--%</div>
+          <div class="reading-label">Humidity</div>
+        </div>
+      </div>
+      <p id="last-updated">Last updated: --</p>
+    </div>
+
+    <div class="reading-card">
+      <h2>Historical Data</h2>
+      <div id="chart-container">
+        <canvas id="chart"></canvas>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      // Fetch latest reading
+      fetch('/api/latest')
+        .then((response) => response.json())
+        .then((data) => {
+          document.getElementById('current-temp').textContent = data.temperature.toFixed(1) + '°C';
+          document.getElementById('current-humidity').textContent = data.humidity.toFixed(1) + '%';
+          const date = new Date(data.timestamp * 1000);
+          document.getElementById('last-updated').textContent = 'Last updated: ' + date.toLocaleString();
+        });
+
+      // Fetch historical data and create chart
+      fetch('/api/data')
+        .then((response) => response.json())
+        .then((data) => {
+          // Process data for chart
+          const labels = data
+            .map((item) => {
+              const date = new Date(item.timestamp * 1000);
+              return date.toLocaleTimeString();
+            })
+            .reverse();
+
+          const temperatures = data.map((item) => item.temperature).reverse();
+          const humidities = data.map((item) => item.humidity).reverse();
+
+          // Create chart
+          const ctx = document.getElementById('chart').getContext('2d');
+          const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                  label: 'Temperature (°C)',
+                  data: temperatures,
+                  borderColor: '#e63946',
+                  backgroundColor: 'rgba(230, 57, 70, 0.1)',
+                  tension: 0.3,
+                },
+                {
+                  label: 'Humidity (%)',
+                  data: humidities,
+                  borderColor: '#457b9d',
+                  backgroundColor: 'rgba(69, 123, 157, 0.1)',
+                  tension: 0.3,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                y: {
+                  beginAtZero: false,
+                },
+              },
+            },
+          });
+        });
+    </script>
+  </body>
+</html>
+```
+
+**Step 3: Running the Complete System**
+
+1. Install required packages on the Raspberry Pi 4B:
+
+   ```bash
+   sudo apt update
+   sudo apt install python3-flask python3-sqlite3
+   ```
+
+2. Create the templates directory and save the HTML file:
+
+   ```bash
+   mkdir -p templates
+   # Create the index.html file inside templates directory
+   ```
+
+3. Start the server on the Raspberry Pi 4B:
+
+   ```bash
+   python3 sensor_server.py
+   ```
+
+4. Power up the Pico 2W with the sensor program
+
+5. Open a web browser and navigate to:
+   ```
+   http://[RaspberryPi_IP]:5000
+   ```
+   Where `[RaspberryPi_IP]` is the IP address of your Raspberry Pi 4B
+
+**What You've Accomplished:**
+
+This project integrates nearly all the concepts we've covered in this module:
+
+1. **Operating System Concepts**:
+
+   - Using the OS to manage processes (threading in the server)
+   - File system for storing data (SQLite database)
+   - Network stack for communication
+
+2. **Communication Protocols**:
+
+   - WiFi networking between devices
+   - Socket-based communication
+   - HTTP for the web interface
+
+3. **Sensors and Actuators**:
+
+   - Reading environmental data
+   - Visual feedback through LEDs
+
+4. **Data Management**:
+
+   - Collecting and storing sensor data
+   - Visualizing time-series data
+
+5. **System Integration**:
+   - Connecting multiple devices with different capabilities
+   - Creating a complete end-to-end system
+
+This demonstrates a typical IoT architecture with sensor nodes (Pico 2W) collecting data and sending it to a central hub (Raspberry Pi 4B) that processes, stores, and presents the information to users.
+
+:::
+
+
+
+
+
+
+
+
+
+
+## Exploring Raspberry Pi OS
+
+Now that we understand the general concepts of operating systems, let's dive into [Raspberry Pi OS](https://www.raspberrypi.com/software/), a specialized Linux distribution designed specifically for Raspberry Pi hardware. This exploration will give us hands-on experience with a real operating system and help us understand how operating system concepts apply in practice.
+
+Raspberry Pi OS (formerly called Raspbian) is based on [Debian Linux](https://www.debian.org/) and optimized for the Raspberry Pi's ARM architecture. It serves as an excellent introduction to Linux-based operating systems and provides a platform for learning, experimentation, and project development.
+
+:::note[Think about It: The Role of Specialized OS]
+
+- Why might general-purpose operating systems not be ideal for devices like the Raspberry Pi?
+- What considerations might go into designing an OS for educational purposes?
+- How does hardware specificity impact operating system design?
+- Why would developers create a specialized distribution rather than using standard Linux?
+  
+:::
+
+### Exploring the Desktop Environment
+
+Let's start by taking a closer look at the desktop environment you're already using.
+
+#### Desktop Components
+
+Take some time to identify these key components:
+
+1. **The Menu**: Located in the top-left corner, similar to a Start menu
+2. **The Panel**: The bar at the top containing shortcuts and system indicators
+3. **File Manager**: PCManFM, the default file browser
+4. **Terminal**: The command-line interface
+5. **Customization Options**: Right-click on the desktop or panel for settings
+
+
+
+
+----------------------------
+
+Raspberry Pi OS is a Linux-based operating system optimized for the Raspberry Pi hardware. Open Terminal and run `ls /` command that will list out all the folders and files in the `root` or `/` location. Let's explore some essential concepts:
+
+#### The Linux File System Hierarchy
+
+The Linux File System Hierarchy is a standardized way of organizing files and directories in Linux-based operating systems. This hierarchical structure follows the Filesystem Hierarchy Standard (FHS), which defines the directory structure and directory contents in Unix-like operating systems.
+
+Watch this video to understand the Linux file system structure:
+
+<div class='not-content'>
+  <YouTube id='42iQKuQodW4' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
+</div>
+
+
+#### Process Management
+
+
+#### Hardware Interaction through the OS
+
+Operating systems provide interfaces to hardware through:
+
+- **Device Drivers**: Software that enables the OS to communicate with hardware
+- **System Calls**: Interfaces that allow programs to request OS services
+- **File System**: Provides consistent access to storage devices
+
+On Raspberry Pi OS, hardware GPIO pins are accessible through the file system:
+
+```bash
+# Access GPIO via the file system
+cd /sys/class/gpio
+echo 17 > export       # Create a file interface for GPIO 17
+cd gpio17
+echo out > direction   # Set GPIO 17 as output
+echo 1 > value         # Set GPIO 17 high
+echo 0 > value         # Set GPIO 17 low
+```
+
+:::note[OS Abstraction]
+Notice how the operating system provides abstractions:
+
+- Processes appear as files in the `/proc` directory.
+- Hardware appears as files in the `/sys` directory.
+- Physical devices appear as files in the `/dev` directory.
+
+This "everything is a file" approach is a fundamental design philosophy in Unix/Linux systems.
+:::
+
+
+
+
+:::tip[Activity: Web Server Temperature Monitor]
+
+In this activity, we'll set up the Pico 2W as a web server that displays its temperature readings. The Raspberry Pi 4B (or any device on the network) can access this web page.
+
+**Step 1: Program the Pico 2W as a Web Server**
+
+```python
+# Save this as main.py on your Pico 2W
+import network
+import socket
+import time
+from machine import Pin, ADC
+
+# Setup the temperature sensor
+sensor_temp = ADC(4)
+conversion_factor = 3.3 / (65535)
+
+# Setup the status LED
+led = Pin("LED", Pin.OUT)
+
+# WiFi credentials
+ssid = 'YourNetworkName'
+password = 'YourPassword'
+
+# Connect to WiFi
+wlan = network.WLAN(network.STA_IF)
+wlan.active(True)
+wlan.connect(ssid, password)
+
+# Wait for connection with status indicator
+max_wait = 10
+while max_wait > 0:
+    if wlan.status() < 0 or wlan.status() >= 3:
+        break
+    max_wait -= 1
+    print('Waiting for connection...')
+    led.toggle()  # Blink LED while connecting
+    time.sleep(1)
+
+# Handle connection result
+if wlan.status() != 3:
+    led.value(0)  # Turn off LED if connection failed
+    raise RuntimeError('Network connection failed')
+else:
+    led.value(1)  # Solid LED on successful connection
+    print('Connected')
+    status = wlan.ifconfig()
+    print('IP address:', status[0])
+
+# Function to read the temperature
+def get_temperature():
+    reading = sensor_temp.read_u16() * conversion_factor
+    temperature = 27 - (reading - 0.706) / 0.001721
+    return temperature
+
+# Create a socket server
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind(('', 80))  # Bind to port 80
+s.listen(5)  # Allow up to 5 connections
+print('Web server started')
+
+# Handle HTTP requests
+while True:
+    try:
+        # Accept connection
+        conn, addr = s.accept()
+        print('Connection from %s' % str(addr))
+
+        # Blink LED on request
+        led.value(0)
+        time.sleep(0.1)
+        led.value(1)
+
+        # Get request
+        request = conn.recv(1024)
+        request = str(request)
+        print('Request:', request)
+
+        # Read current temperature
+        temperature = get_temperature()
+
+        # Create HTML response
+        html = f"""
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <title>Pico W Temperature Server</title>
+                <meta http-equiv="refresh" content="5">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <style>
+                    body {{ font-family: Arial; text-align: center; padding: 20px; }}
+                    .temperature {{ font-size: 48px; margin: 20px 0; }}
+                </style>
+            </head>
+            <body>
+                <h1>Pico W Temperature Monitor</h1>
+                <div class="temperature">{temperature:.2f} &deg;C</div>
+                <p>Last updated: {time.time()}</p>
+                <p>This page refreshes every 5 seconds</p>
+            </body>
+        </html>
+        """
+
+        # Send response
+        conn.send('HTTP/1.0 200 OK\r\nContent-type: text/html\r\n\r\n')
+        conn.send(html)
+
+        # Close connection
+        conn.close()
+
+    except Exception as e:
+        print('Error:', e)
+        conn.close()
+```
+
+**Step 2: Access the Web Server from Raspberry Pi 4B**
+
+1. After uploading the code to the Pico 2W, note the IP address printed in the Thonny shell
+2. Open a web browser on the Raspberry Pi 4B
+3. Enter the IP address of the Pico 2W in the address bar (e.g., `http://192.168.1.100`)
+4. You should see a web page displaying the current temperature from the Pico 2W
+5. The page will automatically refresh every 5 seconds to show updated readings
+
+**Step 3: Enhance the Experience (Optional)**
+
+For a more permanent setup:
+
+1. Set a static IP for your Pico 2W in your router settings
+2. Create a desktop shortcut on the Raspberry Pi to quickly access the temperature monitor
+3. Modify the code to include additional sensors or controls
+
+**What's Happening?**
+
+- The Pico 2W connects to your WiFi network
+- It starts a web server listening on port 80
+- When a browser (from any device on the network) connects to its IP address, it responds with HTML
+- The web page displays the current temperature and auto-refreshes
+- This demonstrates IoT principles with a device providing data over the network
+  :::
+
+
+
+
+
+
+
+
+
+
+MicroPython on the Pico 2W provides Bluetooth Low Energy (BLE) support. Here's how to set it up:
+
+```python
+# Basic Bluetooth setup on Pico 2W
+import bluetooth
+from ble_simple_peripheral import BLESimplePeripheral
+import time
+
+# Create a Bluetooth Low Energy (BLE) object
+ble = bluetooth.BLE()
+# Create a BLE peripheral
+sp = BLESimplePeripheral(ble)
+
+# LED for status indication
+led = machine.Pin("LED", machine.Pin.OUT)
+
+def on_rx(data):
+    print("Received:", data.decode())
+    if data == b'toggle':
+        led.toggle()
+
+# Wait for connections
+while True:
+    if sp.is_connected():
+        # If connected, wait for instructions
+        sp.on_write(on_rx)
+    else:
+        # If not connected, blink LED slowly
+        led.toggle()
+        time.sleep(0.5)
+```
+
+:::tip[Activity: Bluetooth Control System]
+
+In this activity, we'll set up Bluetooth communication between the Raspberry Pi 4B and Pico 2W. The Pi will send commands that the Pico will execute.
+
+**Prerequisites:**
+
+- The `ble_simple_peripheral.py` file for the Pico 2W. You can download it from the MicroPython documentation or GitHub repositories.
+- Bluez tools installed on the Raspberry Pi 4B: `sudo apt install bluez bluez-tools`
+
+**Step 1: Program the Pico 2W as a BLE Peripheral**
+
+First, upload the `ble_simple_peripheral.py` helper file to your Pico 2W, then create this main program:
+
+```python
+# Save this as main.py on your Pico 2W
+import bluetooth
+from ble_simple_peripheral import BLESimplePeripheral
+from machine import Pin, PWM
+import time
+
+# LED and controls
+led = Pin("LED", Pin.OUT)
+pwm_pin = Pin(15, Pin.OUT)
+pwm = PWM(pwm_pin)
+pwm.freq(1000)  # Set frequency to 1 KHz
+
+# Set initial brightness
+brightness = 0
+pwm.duty_u16(brightness)
+
+# Create BLE object
+ble = bluetooth.BLE()
+sp = BLESimplePeripheral(ble)
+
+# Handle received data
+def on_rx(data):
+    global brightness
+
+    data_str = data.decode().strip()
+    print("Received:", data_str)
+
+    # Process commands
+    if data_str == "on":
+        led.value(1)
+        sp.send("LED turned ON")
+    elif data_str == "off":
+        led.value(0)
+        sp.send("LED turned OFF")
+    elif data_str == "toggle":
+        led.toggle()
+        state = "ON" if led.value() else "OFF"
+        sp.send(f"LED toggled: {state}")
+    elif data_str.startswith("brightness:"):
+        try:
+            # Extract brightness value (0-100)
+            level = int(data_str.split(":")[1])
+            # Convert to 16-bit duty cycle (0-65535)
+            brightness = int((level / 100) * 65535)
+            pwm.duty_u16(brightness)
+            sp.send(f"Brightness set to {level}%")
+        except:
+            sp.send("Invalid brightness command")
+    else:
+        sp.send(f"Echo: {data_str}")
+
+# Main loop
+print("Waiting for Bluetooth connection...")
+while True:
+    if sp.is_connected():
+        # Flash LED rapidly when connected
+        for _ in range(3):
+            led.toggle()
+            time.sleep(0.1)
+        led.value(1)
+
+        # If connected, process commands
+        sp.on_write(on_rx)
+
+        # Send heartbeat periodically
+        last_heartbeat = time.time()
+
+        while sp.is_connected():
+            # Send a status update every 10 seconds
+            if time.time() - last_heartbeat >= 10:
+                sp.send(f"Status: Connected, Brightness: {int((brightness/65535)*100)}%")
+                last_heartbeat = time.time()
+
+            time.sleep(0.1)  # Small delay
+    else:
+        # Slow blink when disconnected
+        led.toggle()
+        time.sleep(0.5)
+```
+
+**Step 2: Create a Control Program on the Raspberry Pi 4B**
+
+Create a new file called `bluetooth_controller.py` on your Raspberry Pi:
+
+```python
+import time
+import subprocess
+import re
+import sys
+from bluepy import btle
+
+# Function to find the Pico W device
+def find_pico_device():
+    print("Scanning for Bluetooth devices...")
+    scanner = btle.Scanner()
+    devices = scanner.scan(5.0)  # Scan for 5 seconds
+
+    pico_mac = None
+    for dev in devices:
+        for (adtype, desc, value) in dev.getScanData():
+            if "Pico" in value:
+                pico_mac = dev.addr
+                print(f"Found Pico W: {value} ({pico_mac})")
+                break
+
+    return pico_mac
+
+# Function to connect and interact with the Pico
+def connect_to_pico(mac_address):
+    if not mac_address:
+        print("Pico W device not found. Make sure it's running the BLE peripheral program.")
+        sys.exit(1)
+
+    print(f"Connecting to Pico W at {mac_address}...")
+
+    try:
+        # Connect to device
+        peripheral = btle.Peripheral(mac_address)
+        print("Connected successfully!")
+
+        # Discover services
+        services = peripheral.getServices()
+        uart_service = None
+        rx_char = None
+
+        # Find the UART service
+        for service in services:
+            if service.uuid == btle.UUID("6E400001-B5A3-F393-E0A9-E50E24DCCA9E"):  # UART service UUID
+                uart_service = service
+                break
+
+        if uart_service:
+            # Find the RX characteristic
+            for char in uart_service.getCharacteristics():
+                if char.uuid == btle.UUID("6E400002-B5A3-F393-E0A9-E50E24DCCA9E"):  # RX characteristic UUID
+                    rx_char = char
+                    break
+
+        if not rx_char:
+            print("Could not find the correct service/characteristic.")
+            peripheral.disconnect()
+            sys.exit(1)
+
+        # Interactive control
+        print("\n=== Pico W Bluetooth Control Panel ===")
+        print("Commands:")
+        print("  on           - Turn LED on")
+        print("  off          - Turn LED off")
+        print("  toggle       - Toggle LED state")
+        print("  brightness:X - Set brightness to X% (0-100)")
+        print("  quit         - Exit the program")
+
+        try:
+            while True:
+                command = input("\nEnter command: ")
+
+                if command.lower() == "quit":
+                    break
+
+                # Send the command
+                rx_char.write(command.encode())
+                print("Command sent, wait for response...")
+                time.sleep(0.5)  # Give the Pico time to respond
+
+        except KeyboardInterrupt:
+            print("\nExiting...")
+        finally:
+            peripheral.disconnect()
+
+    except Exception as e:
+        print(f"Error: {e}")
+        print("Connection failed. Make sure the Pico W is in range and running.")
+        sys.exit(1)
+
+# Main program
+if __name__ == "__main__":
+    # Install required package if not already installed
+    try:
+        import bluepy
+    except ImportError:
+        print("Installing required bluepy package...")
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "bluepy"])
+        print("Package installed. Restarting script...")
+        subprocess.check_call([sys.executable] + sys.argv)
+        sys.exit(0)
+
+    # Find and connect to Pico
+    print("Looking for Pico W device...")
+    mac_address = find_pico_device()
+
+    if mac_address:
+        connect_to_pico(mac_address)
+    else:
+        print("No Pico W device found. Make sure it's powered on and running the BLE program.")
+```
+
+**Step 3: Run the Bluetooth Communication**
+
+1. First, prepare the Pico 2W:
+
+   - Make sure the `ble_simple_peripheral.py` file is uploaded to the Pico 2W
+   - Upload and run the BLE peripheral code on the Pico 2W
+   - The LED should start blinking slowly, indicating it's waiting for a connection
+
+2. Next, run the controller on the Raspberry Pi 4B:
+
+   - Install any required packages: `sudo apt install python3-pip && pip3 install bluepy`
+   - Run the script: `python3 bluetooth_controller.py`
+   - The script will scan for the Pico, connect to it, and show the command interface
+
+3. Try sending various commands:
+   - Type `on` to turn on the LED
+   - Type `off` to turn it off
+   - Type `toggle` to switch its state
+   - Type `brightness:50` to set LED brightness to 50%
+
+**What's Happening?**
+
+- The Pico 2W advertises itself as a Bluetooth peripheral device
+- The Raspberry Pi discovers it, connects, and sends commands
+- The Pico receives commands wirelessly and executes them
+- This demonstrates how to create a wireless control system for IoT devices
+
+:::note[Troubleshooting]
+If you encounter issues with Bluetooth communication:
+
+1. Make sure Bluetooth is enabled on the Raspberry Pi: `sudo bluetoothctl power on`
+2. Check that the Pico 2W is powered and running the correct program
+3. Try resetting the Pico 2W by disconnecting and reconnecting power
+4. Ensure you have the correct permissions: `sudo setcap 'cap_net_raw,cap_net_admin+eip' $(which python3)`
+5. If the Pico isn't discovered, try reducing the distance between devices
+   :::

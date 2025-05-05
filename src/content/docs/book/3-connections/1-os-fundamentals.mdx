@@ -1,0 +1,150 @@
+---
+title: Understanding Operating Systems
+---
+
+import { YouTube } from 'astro-embed';
+
+Now that we have explored computer hardware components and how they work together, it's time to understand the software layer that brings these components to life: the operating system.
+
+We've learned about processors executing instructions, memory storing data, and various input/output devices. But how does all this hardware know what to do? How do multiple programs run simultaneously without interfering with each other? How does your computer manage resources efficiently? The answers lie in understanding operating systems.
+
+:::note[Think about It: Exploring beyond the basics]
+
+- How does your computer run multiple applications at once?
+- How does a computer protect one application from affecting another?
+- Why do some programs work on certain operating systems but not others?
+- How does your computer know what to do when you plug in a new device?
+  
+:::
+
+Next, we are going to explore operating systems in detail. We'll examine what they do, how they're structured, and why they're crucial for modern computing.
+
+## What is an Operating System?
+
+An operating system (OS) is software that acts as an intermediary between computer hardware and application software. It provides common services, manages hardware resources, and creates a platform for applications to run. It acts as an intermediary between users, applications, and hardware.
+
+:::note[Think about It]
+Your smartphone, smartwatch, car infotainment system, and even some refrigerators run operating systems. Different devices often require specialized operating systems designed for their specific hardware and use cases.
+:::
+
+Watch the following video to understand the role of operating systems in modern computing.
+
+<div class='not-content'>
+  <YouTube id='fkGCLIQx1MI' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
+</div>
+
+
+## Core Functions of Operating Systems
+
+### Process Management
+
+Process management is one of the most critical functions of an operating system. A process is a program in execution, and the OS must:
+
+1. **Create and terminate processes**
+2. **Schedule processes** for efficient CPU utilization
+3. **Synchronize processes** to prevent conflicts
+4. **Handle inter-process communication**
+
+### Memory Management
+
+Memory is a finite resource that must be carefully managed:
+
+1. **Allocation and deallocation** of memory to processes
+2. **Virtual memory** implementation to extend physical memory
+3. **Memory protection** to prevent processes from accessing each other's memory
+4. **Garbage collection** in some systems to reclaim unused memory
+
+### File System Management
+
+File systems organize data for storage and retrieval:
+
+1. **File creation, deletion, and modification**
+2. **Directory management**
+3. **Access control and security**
+4. **Disk space allocation**
+
+### Device Management
+
+Device management handles communication with peripheral hardware:
+
+1. **Device drivers** for hardware communication
+2. **Buffering** to handle speed mismatches between devices
+3. **Spooling** for devices that can serve only one request at a time
+4. **Plug and Play** functionality
+
+## Types of Operating Systems
+
+| Device               | Operating System              | Key Characteristics           |
+| -------------------- | ----------------------------- | ----------------------------- |
+| Raspberry Pi 4B      | Raspberry Pi OS (Linux-based) | Full multitasking OS with GUI |
+| Raspberry Pi Pico 2W | No OS (bare metal)            | Direct hardware execution     |
+| Smartphone           | Android/iOS                   | Mobile-optimized OS           |
+| Laptop/Desktop       | Windows/macOS/Linux           | General purpose OS            |
+| Smart Watch          | watchOS/Wear OS               | Resource-constrained OS       |
+
+### Desktop Operating Systems
+
+- **Windows**: Developed by Microsoft, known for its widespread compatibility
+- **macOS**: Developed by Apple for their hardware, known for its design and stability
+- **Linux Distributions**: Open-source alternatives like Ubuntu, Fedora, and Mint
+
+### Mobile Operating Systems
+
+- **Android**: Open-source, developed by Google
+- **iOS**: Developed by Apple for iPhones and iPads
+
+### Embedded Operating Systems
+
+- **RTOS (Real-Time Operating Systems)**: For time-critical applications
+- **Embedded Linux**: For more complex embedded devices
+- **Bare-metal programming**: Direct hardware control without an OS
+
+
+:::note[Compare and Contrast]
+
+In groups or individually, compare two different operating systems (e.g., Windows vs. Linux, iOS vs. Android):
+
+1. Research the history and development of each OS.
+2. Identify the key design philosophies.
+3. Compare their user interfaces.
+4. Analyze their strengths and weaknesses.
+5. Discuss what types of users or use cases each OS is best suited for.
+6. Present your findings to the class.
+
+Questions to consider:
+- Why do certain operating systems dominate specific markets?
+- How does the business model affect OS development and features?
+- How do open-source and proprietary operating systems differ?
+:::
+
+
+
+:::tip[Activity: Exploring Your Operating System]
+
+Complete the following tasks appropriate for your operating system:
+
+**For Windows:**
+1. Open Task Manager (Ctrl+Shift+Esc)
+2. Examine running processes, CPU usage, and memory usage
+3. Open Command Prompt and run `systeminfo`
+4. Explore Device Manager to see hardware devices
+
+**For macOS:**
+1. Open Activity Monitor
+2. Examine processes, CPU, and memory usage
+3. Open Terminal and run `system_profiler SPSoftwareDataType`
+4. Use Disk Utility to examine storage volumes
+
+**For Linux:**
+1. Open Terminal and run `top` or `htop`
+2. Run `lsblk` to see storage devices
+3. Run `lspci` to see hardware components
+4. Examine system logs with `dmesg | less`
+
+Questions to consider:
+- How many processes are running on your system?
+- Which processes use the most resources?
+- What happens when you start a new application?
+- How much of your system's memory is being used?
+  
+:::
