@@ -1009,3 +1009,341 @@ If you encounter issues with Bluetooth communication:
 4. Ensure you have the correct permissions: `sudo setcap 'cap_net_raw,cap_net_admin+eip' $(which python3)`
 5. If the Pico isn't discovered, try reducing the distance between devices
    :::
+
+
+
+
+
+
+
+
+
+
+
+
+### Method 2: SPI Communication
+
+SPI is faster than UART and allows for more complex interactions. Let's connect our devices using SPI.
+
+#### Hardware Setup
+
+Connect the GPIO pins as follows:
+
+| Raspberry Pi 4B | Pico 2W         |
+| --------------- | --------------- |
+| GPIO 10 (MOSI)  | GP19 (SPI0 TX)  |
+| GPIO 9 (MISO)   | GP16 (SPI0 RX)  |
+| GPIO 11 (SCLK)  | GP18 (SPI0 SCK) |
+| GPIO 8 (CE0)    | GP17 (SPI0 CSN) |
+| GND             | GND             |
+
+![SPI Connection](../2-computers/images/pico/pico.png)
+_SPI connection between Raspberry Pi 4B and Pico 2W_
+
+#### Software Setup
+
+**On the Raspberry Pi 4B:**
+
+1. Enable SPI interface:
+
+   ```bash
+   sudo raspi-config
+   ```
+
+   Navigate to "Interface Options" > "SPI" > "Yes"
+
+2. Install the required Python library:
+   ```bash
+   sudo apt update
+   sudo apt install python3-spidev
+   ```
+
+:::tip[Activity: SPI Temperature Monitor]
+
+In this activity, we'll use the Pico 2W to read temperature data (using its internal temperature sensor) and send it to the Raspberry Pi 4B via SPI.
+
+**Step 1: Program the Pico 2W (SPI Slave)**
+
+```python
+# Save this as main.py on your Pico 2W
+from machine import Pin, SPI, ADC
+import struct
+import time
+
+# Setup the temperature sensor
+sensor_temp = ADC(4)
+conversion_factor = 3.3 / (65535)
+
+# Setup SPI as slave
+spi = SPI(0,
+          baudrate=100000,
+          polarity=0,
+          phase=0,
+          bits=8,
+          firstbit=SPI.MSB,
+          sck=Pin(18),
+          mosi=Pin(19),
+          miso=Pin(16))
+
+# CS pin as input
+cs = Pin(17, Pin.IN)
+
+# Status LED
+led = Pin("LED", Pin.OUT)
+
+# Buffer for data
+buffer = bytearray(4)
+response = bytearray(4)
+
+def get_temperature():
+    # Read the raw temperature value
+    reading = sensor_temp.read_u16() * conversion_factor
+    # Convert to temperature in Celsius
+    temperature = 27 - (reading - 0.706) / 0.001721
+    return temperature
+
+while True:
+    # Check if CS is active (low)
+    if cs.value() == 0:
+        led.value(1)  # Turn on LED to indicate activity
+
+        # Read command from master
+        spi.readinto(buffer)
+
+        if buffer[0] == ord('T'):  # Temperature request
+            # Get temperature
+            temp = get_temperature()
+            # Pack temperature as float into bytes
+            struct.pack_into("f", response, 0, temp)
+            # Send response
+            spi.write(response)
+
+        led.value(0)  # Turn off LED
+
+    time.sleep(0.01)  # Small delay
+```
+
+**Step 2: Program the Raspberry Pi 4B (SPI Master)**
+
+Create a new file called `spi_master.py` on your Raspberry Pi:
+
+```python
+import spidev
+import time
+import struct
+
+# Initialize SPI
+spi = spidev.SpiDev()
+spi.open(0, 0)  # Bus 0, Device 0
+spi.max_speed_hz = 100000
+spi.mode = 0
+
+def read_temperature():
+    # Send temperature request command ('T')
+    command = [ord('T'), 0, 0, 0]
+    spi.xfer2(command)
+
+    # Small delay to allow Pico to process
+    time.sleep(0.01)
+
+    # Read 4 bytes (float)
+    response = spi.xfer2([0, 0, 0, 0])
+
+    # Convert bytes to float
+    temperature = struct.unpack('f', bytes(response))[0]
+    return temperature
+
+try:
+    print("Reading temperature from Pico 2W via SPI...")
+    print("Press Ctrl+C to exit")
+
+    while True:
+        temp = read_temperature()
+        print(f"Current temperature: {temp:.2f}°C")
+        time.sleep(2)
+
+except KeyboardInterrupt:
+    print("Measurement stopped")
+finally:
+    spi.close()  # Close SPI connection
+```
+
+**Step 3: Run the Communication**
+
+1. Start the program on the Pico 2W
+2. Run the Python script on the Raspberry Pi:
+   ```bash
+   python3 spi_master.py
+   ```
+3. Observe the temperature readings from the Pico's internal sensor
+4. Try warming the Pico with your finger to see the temperature change
+
+**What's Happening?**
+
+- The Raspberry Pi acts as the SPI master and requests temperature data
+- The Pico 2W acts as the SPI slave, reading its internal temperature sensor when requested
+- Data is transferred via SPI protocol with proper framing and timing
+- This demonstrates how to use SPI for sensor data collection in embedded systems
+  :::
+
+
+
+
+
+
+https://timhanewich.medium.com/using-uart-between-a-raspberry-pi-pico-and-raspberry-pi-3b-raspbian-71095d1b259f
+
+
+
+
+
+
+
+```python
+# enhanced_receiver.py - Save this on your Pico 2W
+from machine import UART, Pin
+import time
+
+# Initialize UART
+uart = UART(0, baudrate=9600)
+
+# Status LED (onboard)
+status_led = Pin("LED", Pin.OUT)
+
+# Connect external LEDs to these GPIO pins
+red_led = Pin(15, Pin.OUT)
+green_led = Pin(14, Pin.OUT)
+yellow_led = Pin(13, Pin.OUT)
+
+# Turn all LEDs off initially
+red_led.value(0)
+green_led.value(0)
+yellow_led.value(0)
+
+print("Enhanced UART Receiver started. Waiting for commands...")
+
+def process_command(cmd):
+    cmd = cmd.strip().lower()
+    response = "Unknown command"
+    
+    # LED control commands
+    if cmd == "red on":
+        red_led.value(1)
+        response = "Red LED turned ON"
+    elif cmd == "red off":
+        red_led.value(0)
+        response = "Red LED turned OFF"
+    elif cmd == "green on":
+        green_led.value(1)
+        response = "Green LED turned ON"
+    elif cmd == "green off":
+        green_led.value(0)
+        response = "Green LED turned OFF"
+    elif cmd == "yellow on":
+        yellow_led.value(1)
+        response = "Yellow LED turned ON"
+    elif cmd == "yellow off":
+        yellow_led.value(0)
+        response = "Yellow LED turned OFF"
+    elif cmd == "all on":
+        red_led.value(1)
+        green_led.value(1)
+        yellow_led.value(1)
+        response = "All LEDs turned ON"
+    elif cmd == "all off":
+        red_led.value(0)
+        green_led.value(0)
+        yellow_led.value(0)
+        response = "All LEDs turned OFF"
+    elif cmd == "status":
+        status = f"Status: Red={'ON' if red_led.value() else 'OFF'}, "
+        status += f"Green={'ON' if green_led.value() else 'OFF'}, "
+        status += f"Yellow={'ON' if yellow_led.value() else 'OFF'}"
+        response = status
+    
+    return response
+
+while True:
+    if uart.any():
+        # Blink status LED to show activity
+        status_led.value(1)
+        
+        # Read the incoming data
+        data = uart.read()
+        command = data.decode('utf-8')
+        print(f"Received command: {command}")
+        
+        # Process the command
+        result = process_command(command)
+        print(f"Result: {result}")
+        
+        # Send back the response
+        uart.write(result)
+        
+        # Turn off status LED
+        time.sleep(0.1)
+        status_led.value(0)
+        
+    time.sleep(0.05)
+```
+
+**Step 2: Create an enhanced sender program on the Raspberry Pi**
+
+```python
+# enhanced_sender.py - Run this on your Raspberry Pi 4B
+import serial
+import time
+
+# Open serial port
+ser = serial.Serial('/dev/ttyS0', 9600, timeout=1)
+
+def display_menu():
+    print("\n=== LED Control System ===")
+    print("Available commands:")
+    print("  red on     - Turn on the red LED")
+    print("  red off    - Turn off the red LED")
+    print("  green on   - Turn on the green LED")
+    print("  green off  - Turn off the green LED")
+    print("  yellow on  - Turn on the yellow LED")
+    print("  yellow off - Turn off the yellow LED")
+    print("  all on     - Turn on all LEDs")
+    print("  all off    - Turn off all LEDs")
+    print("  status     - Check LED status")
+    print("  menu       - Show this menu")
+    print("  exit       - Exit the program")
+    print("========================")
+
+print("Enhanced UART Sender started.")
+display_menu()
+
+try:
+    while True:
+        # Get user input
+        command = input("\nEnter command: ")
+        
+        # Check for exit command
+        if command.lower() == "exit":
+            print("Exiting program...")
+            break
+            
+        # Check for menu command
+        if command.lower() == "menu":
+            display_menu()
+            continue
+        
+        # Send the command
+        ser.write(command.encode('utf-8'))
+        print(f"Sent: {command}")
+        
+        # Wait for response
+        time.sleep(0.5)
+        if ser.in_waiting > 0:
+            response = ser.read(ser.in_waiting).decode('utf-8')
+            print(f"Response: {response}")
+        
+except KeyboardInterrupt:
+    print("\nProgram interrupted")
+finally:
+    print("Closing connection")
+    ser.close()
+```

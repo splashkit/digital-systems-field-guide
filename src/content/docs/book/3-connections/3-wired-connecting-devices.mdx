@@ -2,13 +2,43 @@
 title: Wired connections between devices
 ---
 
-Now let's put theory into practice by connecting our Raspberry Pi 4B to the Pico 2W using different communication methods.
+import { YouTube } from 'astro-embed';
 
-### Method 1: Direct UART Connection
+In today's interconnected world, devices rarely operate in isolation. Whether it's a smart home system, robotics project, or industrial automation, the ability for different digital systems to communicate with each other is fundamental. Learning how to establish connections between devices provides a foundation for building more complex and interactive systems.
 
-UART is one of the simplest ways to connect two devices. We'll establish a serial connection between the Raspberry Pi 4B and the Pico 2W.
+Serial communication is one of the most basic and reliable methods for devices to exchange information. By mastering this fundamental protocol, you'll understand the principles that underpin many modern communication systems, from USB to Ethernet and beyond.
 
-#### Hardware Setup
+In this module, we'll establish a wired serial connection between our Raspberry Pi 4B and Raspberry Pi Pico 2W. This will allow us to:
+
+- Send commands from the Raspberry Pi to control the Pico
+- Collect sensor data from the Pico and process it on the Raspberry Pi
+- Build interactive systems with components distributed across multiple devices
+- Understand the fundamentals of how devices "talk" to each other
+
+Let's get started with connecting our devices using UART (Universal Asynchronous Receiver/Transmitter), one of the simplest serial communication protocols.
+
+## Direct UART Connection
+
+UART is one of the simplest ways to connect two devices. We'll establish a serial connection between the Raspberry Pi 4B and the Pico 2W. UART is a simple yet powerful protocol that requires minimal wiring - just two data lines for bidirectional communication.
+
+:::note[Before you start: Setting up the interfaces]
+Enable serial connection on RPi using the steps given at the link [here](https://raspberrytips.com/enable-uart-on-raspberry-pi/) or folloe the steps below:
+
+![Step 1 - Enable Serial Connection](./images/raspberry_pi_configuration_serialport_serialconsole.jpg)
+_Screenshot: Enable serial connection via the configuration settings_
+
+1. Open a terminal on your Raspberry Pi
+2. Run `sudo raspi-config`
+3. Navigate to "Interface Options"
+4. Select "Serial Port"
+5. Answer "No" to "Would you like a login shell to be accessible over serial?"
+6. Answer "Yes" to "Would you like the serial port hardware to be enabled?"
+7. Select "Finish" and reboot your Raspberry Pi
+:::
+
+### Step 1: Hardware Setup
+
+Now let's physically connect the Raspberry Pi 4B to the Pico 2W:
 
 1. Connect the GPIO pins as follows:
 
@@ -18,301 +48,252 @@ UART is one of the simplest ways to connect two devices. We'll establish a seria
 | GPIO 15 (RX)    | GP0 (TX) |
 | GND             | GND      |
 
-![UART Connection](./images/Raspberry-Pi-4-Pinout.png)
-_UART connection between Raspberry Pi 4B and Pico 2W_
+:::caution[Important Connection Note!]
+When connecting the devices, remember that TX (transmit) on one device connects to RX (receive) on the other, and vice versa. This is a common mistake - don't connect TX to TX or RX to RX!
 
-https://timhanewich.medium.com/using-uart-between-a-raspberry-pi-pico-and-raspberry-pi-3b-raspbian-71095d1b259f
-
-:::caution[Important!]
-The Raspberry Pi operates at 3.3V logic levels. Make sure not to connect it to 5V systems without level shifting to avoid damage.
+Also, the Raspberry Pi operates at 3.3V logic levels. Make sure not to connect it to 5V systems without level shifting to avoid damage.
 :::
 
-#### Software Setup
+![UART Connection](./images/Raspberry-Pi-4-Pinout.png)
+_Raspberry Pi 4B pinout_
 
-**On the Raspberry Pi 4B:**
+![UART Connection](./images/pico2w-pinout.png)
+_Pico 2W pinout_
 
-1. Enable the serial port by editing the config file:
+Your final connection should look like this. Note that the USB connection is being used to program the Pico but the actual communication will be done with the serial connection cables between the devices.
 
-   ```bash
-   sudo nano /boot/config.txt
-   ```
+![UART Connection](./images/rpi-pico-connection.jpg)
+_Wiring diagram showing connections between Raspberry Pi 4B and Pico 2W_
 
-2. Add or uncomment this line:
+### Step 2: Program the Pico 2W (Receiver)
 
-   ```
-   enable_uart=1
-   ```
+Now we'll write the code for the Pico 2W to receive data from the Raspberry Pi:
 
-3. Save and exit (Ctrl+X, Y, Enter)
-
-4. Reboot the Raspberry Pi:
-
-   ```bash
-   sudo reboot
-   ```
-
-5. Install the pyserial package:
-   ```bash
-   sudo apt update
-   sudo apt install python3-pip
-   pip3 install pyserial
-   ```
-
-**On the Pico 2W:**
-
-1. Open Thonny IDE on the Raspberry Pi 4B
-2. Make sure the Pico 2W is connected and MicroPython is installed
-3. Create a new file on the Pico 2W for receiving data
-
-:::tip[Activity: UART Communication]
-
-In this activity, we'll send data from the Raspberry Pi 4B to the Pico 2W and have the Pico acknowledge receipt.
-
-**Step 1: Program the Pico 2W (Receiver)**
+1. Connect your Pico 2W to the Raspberry Pi via USB
+2. Open Thonny IDE on the Raspberry Pi
+3. Create a new file and paste this code:
 
 ```python
-# Save this as main.py on your Pico 2W
 from machine import UART, Pin
 import time
 
-# Initialize UART on GP0 (TX) and GP1 (RX)
-uart = UART(0, baudrate=9600)  # UART0 uses GP0 and GP1
-
-# LED for visual confirmation
+# Initialize UART0 with pins GP0 (TX) and GP1 (RX)
+uart = UART(0, baudrate=9600, tx=Pin(0), rx=Pin(1))
 led = Pin("LED", Pin.OUT)
 
+# Configure UART communication
+uart.init(bits=8, parity=None, stop=1)
+
+print("UART initialized. Waiting for communication...")
+
 while True:
-    if uart.any():  # Check if data is available
-        data = uart.read()  # Read data
-        print("Received:", data.decode('utf-8'))
+    # Check if data is available
+    if uart.any():
+        # Read the data
+        data = uart.read()
+        led.value(1)  # Turn on LED when data received
 
-        # Blink LED to indicate receipt
-        led.value(1)
-        time.sleep(0.2)
-        led.value(0)
+        if data:
+            # Decode the data
+            message = data.decode('utf-8').strip()
+            print(f"Received: {message}")
 
-        # Send acknowledgment
-        uart.write("ACK: " + data.decode('utf-8'))
+            # Send a response
+            response = f"Pico received: {message}"
+            uart.write(f"{response}\n".encode('utf-8'))
 
-    time.sleep(0.1)  # Small delay
+        led.value(0)  # Turn off LED
+
+    time.sleep(0.1)  # Small delay to prevent tight loop
 ```
 
-**Step 2: Program the Raspberry Pi 4B (Sender)**
+4. Save this file as `receiver.py` on your Pico 2W
+5. Run the program on your Pico 2W
 
-Create a new file called `uart_sender.py` on your Raspberry Pi:
+![Thonny IDE with Receiver Code](./images/thonyy-receiver.png)
+_Screenshot: Thonny IDE showing the receiver code with Pico 2W connected_
+
+### Step 3: Program the Raspberry Pi 4B (Sender)
+
+Now let's create the sender program on the Raspberry Pi:
+
+1. Open a text editor on your Raspberry Pi:
+   ```bash
+   nano sender.py
+   ```
+
+2. Write the following code:
 
 ```python
 import serial
 import time
 
-# Open serial port
-ser = serial.Serial('/dev/ttyS0', 9600, timeout=1)
+def setup_uart(port="/dev/ttyS0", baud_rate=9600):
+    # Configure the serial connection
+    ser = serial.Serial(
+        port=port,
+        baudrate=baud_rate,
+        parity=serial.PARITY_NONE,
+        stopbits=serial.STOPBITS_ONE,
+        bytesize=serial.EIGHTBITS,
+        timeout=1
+    )
+    
+    return ser
 
-try:
-    counter = 0
-    while True:
-        # Create message with counter
-        message = f"Hello Pico! Count: {counter}"
-        print(f"Sending: {message}")
+def send_message(ser, message):
+    # Add newline character for easier reading
+    full_message = message + '\n'
+    ser.write(full_message.encode('utf-8'))
+    print(f"Sent: {message}")
+    
+def receive_message(ser, timeout=1):
+    # Set timeout for this operation
+    ser.timeout = timeout
+    
+    # Read until newline or timeout
+    data = ser.readline()
+    
+    if data:
+        # Decode and strip whitespace
+        return data.decode('utf-8').strip()
+    return None
 
-        # Send message
-        ser.write(message.encode('utf-8'))
+def interactive_uart_terminal(ser):
+    print("UART Terminal - Type messages to send to Pico (Ctrl+C to exit)")
+    
+    try:
+        while True:
+            # Get user input
+            message = input("> ")
+            
+            # Send the message
+            send_message(ser, message)
+            
+            # Wait a moment for the response
+            time.sleep(0.1)
+            
+            # Check for response
+            response = receive_message(ser)
+            if response:
+                print(f"Received: {response}")
+            
+    except KeyboardInterrupt:
+        print("\nExiting UART terminal.")
+        ser.close()
 
-        # Wait for response
-        time.sleep(0.5)
-        if ser.in_waiting > 0:
-            response = ser.read(ser.in_waiting).decode('utf-8')
-            print(f"Received: {response}")
-
-        counter += 1
-        time.sleep(2)  # Wait 2 seconds before next message
-
-except KeyboardInterrupt:
-    print("Communication stopped")
-finally:
-    ser.close()  # Close serial port
+# Example usage
+if __name__ == "__main__":
+    # Make sure the Raspberry Pi's UART is enabled (see setup instructions)
+    ser = setup_uart(port="/dev/ttyS0", baud_rate=9600)
+    
+    if ser.is_open:
+        print(f"Serial connection opened on {ser.port}")
+        interactive_uart_terminal(ser)
+    else:
+        print("Failed to open serial connection")
 ```
 
-**Step 3: Run the Communication**
+3. Save the file (Ctrl+X, Y, Enter)
 
-1. Make sure the Pico 2W is running its program (it will start automatically if saved as `main.py`)
-2. Run the Python script on the Raspberry Pi:
+### Step 4: Run the Communication Test
+
+Now let's test the communication between devices:
+
+1. Make sure the receiver program is running on your Pico 2W
+   - You should see "UART Receiver started. Waiting for data..." in the Thonny console
+
+   ![Pico Running Receiver](./images/thonyy-receiver.png)
+   _Screenshot: Thonny console showing Pico 2W ready to receive_
+
+2. Run the sender program on your Raspberry Pi:
    ```bash
-   python3 uart_sender.py
+   python sender.py
    ```
-3. Observe the messages being sent from the Pi and the acknowledgments coming back from the Pico
-4. Watch the Pico's LED blink when messages are received
 
-**What's Happening?**
+3. Enter a message when prompted and press Enter
+   - For example, type "hello" and press Enter
 
-- The Raspberry Pi is sending incremental counter messages via UART
-- The Pico receives these messages, blinks its LED, and sends an acknowledgment
-- The Raspberry Pi reads the acknowledgment and displays it
+    ![Sender Program Started](./images/rpi-sender.png)
+    _Screenshot: Terminal showing sender program started_
 
-This demonstrates bidirectional serial communication between two different device types!
+4. Observe the Thonny console for the Pico 2W
+   - You should see your message displayed
+   - The Pico's onboard LED should blink
+   - The Pico should send an acknowledgment
+
+   ![Sender Program Started](./images/thonny-receiver-hello.png)
+    _Screenshot: Terminal showing sender program started_
+
+5. Check the sender program terminal
+   - You should see the acknowledgment from the Pico
+
+6. Continue sending messages or press Ctrl+C to exit
+
+Congratulations! You've successfully established a serial communication channel between your Raspberry Pi 4B and Pico 2W. This simple demonstration shows the basics of how devices can exchange information through a wired connection.
+
+
+:::tip[Activity: Build a Remote Control LED System]
+Now that you've established communication between your devices, let's build a more interactive system:
+
+**Objective**: Create a remote control system where the Raspberry Pi can send commands to control multiple LEDs on the Pico.
+
+**Materials needed**:
+- Your existing setup (Raspberry Pi 4B connected to Pico 2W)
+- 3 LEDs (red, green, and blue if available)
+- 3 resistors (220Ω or 330Ω)
+- Breadboard and jumper wires
+
+**Step 1: Modify the Pico receiver code to receive different codes to turn on/ off different LEDs**
+
+![Multiple LED](./images/multiple-led.png)
+_Multiple LED control_
+
+**Step 2: Connect the LEDs to your Pico**
+
+1. Connect the LEDs to the specified GPIO pins (13, 14, 15) with resistors
+2. Connect the cathodes (short legs) to ground
+
+**Step 3: Test your system**
+
+1. Run the enhanced receiver code on your Pico
+2. Run the enhanced sender on your Raspberry Pi
+3. Try the different commands to control the LEDs
+
+
+This activity demonstrates how serial communication can be used to create remote control systems - a fundamental concept in home automation, robotics, and many other applications!
+
 :::
 
-### Method 2: SPI Communication
+## Troubleshooting
 
-SPI is faster than UART and allows for more complex interactions. Let's connect our devices using SPI.
+If you encounter issues:
 
-#### Hardware Setup
+1. **No communication**: 
+   - Double-check your wiring
+   - Ensure TX from one device connects to RX on the other
+   - Verify both devices share a common ground
 
-Connect the GPIO pins as follows:
+2. **Garbled data**:
+   - Ensure both sides use the same baud rate
+   - Check for correct parity and stop bits
 
-| Raspberry Pi 4B | Pico 2W         |
-| --------------- | --------------- |
-| GPIO 10 (MOSI)  | GP19 (SPI0 TX)  |
-| GPIO 9 (MISO)   | GP16 (SPI0 RX)  |
-| GPIO 11 (SCLK)  | GP18 (SPI0 SCK) |
-| GPIO 8 (CE0)    | GP17 (SPI0 CSN) |
-| GND             | GND             |
+3. **Permission issues on Raspberry Pi**:
+   - Run `sudo usermod -a -G dialout $USER` to add your user to the dialout group
+   - Reboot your Raspberry Pi
 
-![SPI Connection](../2-computers/images/pico/pico.png)
-_SPI connection between Raspberry Pi 4B and Pico 2W_
+4. **Serial port not available**:
+   - Check if another process is using the serial port: `sudo lsof /dev/ttyS0`
+   - Try using `/dev/serial0` instead of `/dev/ttyS0`
 
-#### Software Setup
 
-**On the Raspberry Pi 4B:**
+## What You've Learned
 
-1. Enable SPI interface:
+By completing this module, you've gained valuable skills in:
 
-   ```bash
-   sudo raspi-config
-   ```
+1. **Serial Communication**: Understanding how UART works to transfer data between devices
+2. **Cross-Device Programming**: Writing complementary code for two different devices to work together
+3. **Hardware Integration**: Connecting devices physically through appropriate GPIO pins
+4. **Protocol Design**: Creating a simple command-and-response protocol for device control
 
-   Navigate to "Interface Options" > "SPI" > "Yes"
-
-2. Install the required Python library:
-   ```bash
-   sudo apt update
-   sudo apt install python3-spidev
-   ```
-
-:::tip[Activity: SPI Temperature Monitor]
-
-In this activity, we'll use the Pico 2W to read temperature data (using its internal temperature sensor) and send it to the Raspberry Pi 4B via SPI.
-
-**Step 1: Program the Pico 2W (SPI Slave)**
-
-```python
-# Save this as main.py on your Pico 2W
-from machine import Pin, SPI, ADC
-import struct
-import time
-
-# Setup the temperature sensor
-sensor_temp = ADC(4)
-conversion_factor = 3.3 / (65535)
-
-# Setup SPI as slave
-spi = SPI(0,
-          baudrate=100000,
-          polarity=0,
-          phase=0,
-          bits=8,
-          firstbit=SPI.MSB,
-          sck=Pin(18),
-          mosi=Pin(19),
-          miso=Pin(16))
-
-# CS pin as input
-cs = Pin(17, Pin.IN)
-
-# Status LED
-led = Pin("LED", Pin.OUT)
-
-# Buffer for data
-buffer = bytearray(4)
-response = bytearray(4)
-
-def get_temperature():
-    # Read the raw temperature value
-    reading = sensor_temp.read_u16() * conversion_factor
-    # Convert to temperature in Celsius
-    temperature = 27 - (reading - 0.706) / 0.001721
-    return temperature
-
-while True:
-    # Check if CS is active (low)
-    if cs.value() == 0:
-        led.value(1)  # Turn on LED to indicate activity
-
-        # Read command from master
-        spi.readinto(buffer)
-
-        if buffer[0] == ord('T'):  # Temperature request
-            # Get temperature
-            temp = get_temperature()
-            # Pack temperature as float into bytes
-            struct.pack_into("f", response, 0, temp)
-            # Send response
-            spi.write(response)
-
-        led.value(0)  # Turn off LED
-
-    time.sleep(0.01)  # Small delay
-```
-
-**Step 2: Program the Raspberry Pi 4B (SPI Master)**
-
-Create a new file called `spi_master.py` on your Raspberry Pi:
-
-```python
-import spidev
-import time
-import struct
-
-# Initialize SPI
-spi = spidev.SpiDev()
-spi.open(0, 0)  # Bus 0, Device 0
-spi.max_speed_hz = 100000
-spi.mode = 0
-
-def read_temperature():
-    # Send temperature request command ('T')
-    command = [ord('T'), 0, 0, 0]
-    spi.xfer2(command)
-
-    # Small delay to allow Pico to process
-    time.sleep(0.01)
-
-    # Read 4 bytes (float)
-    response = spi.xfer2([0, 0, 0, 0])
-
-    # Convert bytes to float
-    temperature = struct.unpack('f', bytes(response))[0]
-    return temperature
-
-try:
-    print("Reading temperature from Pico 2W via SPI...")
-    print("Press Ctrl+C to exit")
-
-    while True:
-        temp = read_temperature()
-        print(f"Current temperature: {temp:.2f}°C")
-        time.sleep(2)
-
-except KeyboardInterrupt:
-    print("Measurement stopped")
-finally:
-    spi.close()  # Close SPI connection
-```
-
-**Step 3: Run the Communication**
-
-1. Start the program on the Pico 2W
-2. Run the Python script on the Raspberry Pi:
-   ```bash
-   python3 spi_master.py
-   ```
-3. Observe the temperature readings from the Pico's internal sensor
-4. Try warming the Pico with your finger to see the temperature change
-
-**What's Happening?**
-
-- The Raspberry Pi acts as the SPI master and requests temperature data
-- The Pico 2W acts as the SPI slave, reading its internal temperature sensor when requested
-- Data is transferred via SPI protocol with proper framing and timing
-- This demonstrates how to use SPI for sensor data collection in embedded systems
-  :::
+These skills form the foundation for more advanced inter-device communication methods we'll explore in future modules, such as SPI, I²C, and wireless protocols like WiFi and Bluetooth.
