@@ -490,15 +490,6 @@ This demonstrates a typical IoT architecture with sensor nodes (Pico 2W) collect
 
 :::
 
-
-
-
-
-
-
-
-
-
 ## Exploring Raspberry Pi OS
 
 Now that we understand the general concepts of operating systems, let's dive into [Raspberry Pi OS](https://www.raspberrypi.com/software/), a specialized Linux distribution designed specifically for Raspberry Pi hardware. This exploration will give us hands-on experience with a real operating system and help us understand how operating system concepts apply in practice.
@@ -511,7 +502,7 @@ Raspberry Pi OS (formerly called Raspbian) is based on [Debian Linux](https://ww
 - What considerations might go into designing an OS for educational purposes?
 - How does hardware specificity impact operating system design?
 - Why would developers create a specialized distribution rather than using standard Linux?
-  
+
 :::
 
 ### Exploring the Desktop Environment
@@ -528,10 +519,7 @@ Take some time to identify these key components:
 4. **Terminal**: The command-line interface
 5. **Customization Options**: Right-click on the desktop or panel for settings
 
-
-
-
-----------------------------
+---
 
 Raspberry Pi OS is a Linux-based operating system optimized for the Raspberry Pi hardware. Open Terminal and run `ls /` command that will list out all the folders and files in the `root` or `/` location. Let's explore some essential concepts:
 
@@ -545,9 +533,7 @@ Watch this video to understand the Linux file system structure:
   <YouTube id='42iQKuQodW4' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
 </div>
 
-
 #### Process Management
-
 
 #### Hardware Interaction through the OS
 
@@ -578,9 +564,6 @@ Notice how the operating system provides abstractions:
 
 This "everything is a file" approach is a fundamental design philosophy in Unix/Linux systems.
 :::
-
-
-
 
 :::tip[Activity: Web Server Temperature Monitor]
 
@@ -721,15 +704,6 @@ For a more permanent setup:
 - The web page displays the current temperature and auto-refreshes
 - This demonstrates IoT principles with a device providing data over the network
   :::
-
-
-
-
-
-
-
-
-
 
 MicroPython on the Pico 2W provides Bluetooth Low Energy (BLE) support. Here's how to set it up:
 
@@ -1010,17 +984,6 @@ If you encounter issues with Bluetooth communication:
 5. If the Pico isn't discovered, try reducing the distance between devices
    :::
 
-
-
-
-
-
-
-
-
-
-
-
 ### Method 2: SPI Communication
 
 SPI is faster than UART and allows for more complex interactions. Let's connect our devices using SPI.
@@ -1186,18 +1149,7 @@ finally:
 - This demonstrates how to use SPI for sensor data collection in embedded systems
   :::
 
-
-
-
-
-
 https://timhanewich.medium.com/using-uart-between-a-raspberry-pi-pico-and-raspberry-pi-3b-raspbian-71095d1b259f
-
-
-
-
-
-
 
 ```python
 # enhanced_receiver.py - Save this on your Pico 2W
@@ -1225,7 +1177,7 @@ print("Enhanced UART Receiver started. Waiting for commands...")
 def process_command(cmd):
     cmd = cmd.strip().lower()
     response = "Unknown command"
-    
+
     # LED control commands
     if cmd == "red on":
         red_led.value(1)
@@ -1260,30 +1212,30 @@ def process_command(cmd):
         status += f"Green={'ON' if green_led.value() else 'OFF'}, "
         status += f"Yellow={'ON' if yellow_led.value() else 'OFF'}"
         response = status
-    
+
     return response
 
 while True:
     if uart.any():
         # Blink status LED to show activity
         status_led.value(1)
-        
+
         # Read the incoming data
         data = uart.read()
         command = data.decode('utf-8')
         print(f"Received command: {command}")
-        
+
         # Process the command
         result = process_command(command)
         print(f"Result: {result}")
-        
+
         # Send back the response
         uart.write(result)
-        
+
         # Turn off status LED
         time.sleep(0.1)
         status_led.value(0)
-        
+
     time.sleep(0.05)
 ```
 
@@ -1320,30 +1272,612 @@ try:
     while True:
         # Get user input
         command = input("\nEnter command: ")
-        
+
         # Check for exit command
         if command.lower() == "exit":
             print("Exiting program...")
             break
-            
+
         # Check for menu command
         if command.lower() == "menu":
             display_menu()
             continue
-        
+
         # Send the command
         ser.write(command.encode('utf-8'))
         print(f"Sent: {command}")
-        
+
         # Wait for response
         time.sleep(0.5)
         if ser.in_waiting > 0:
             response = ser.read(ser.in_waiting).decode('utf-8')
             print(f"Response: {response}")
-        
+
 except KeyboardInterrupt:
     print("\nProgram interrupted")
 finally:
     print("Closing connection")
     ser.close()
 ```
+
+:::tip[Activity: Advanced Web Control Panel]
+
+Enhance the basic web server to create a more comprehensive control panel:
+
+1. Add `CSS` Styling: Improve the web interface with better styling.
+2. Add Temperature Reading: Include the Pico's internal temperature in the display.
+3. Add Automatic Refresh: Make the page update values without manual refreshing.
+4. Add Multiple LED Controls: If you have external LEDs connected, add controls for them.
+
+:::
+
+### Understanding the Web Server Code
+
+1. **Connection Setup**: The `connect()` function establishes a Wi-Fi connection and returns the assigned IP address
+2. **Socket Creation**: `open_socket()` creates a network socket listening on port 80 (standard HTTP port)
+3. **HTML Generation**: `webpage()` generates a simple HTML page with buttons to control the LED
+4. **Request Handling**: `serve()` processes incoming HTTP requests and updates the LED state
+
+![Web Server Running on Pico Screenshot]
+
+## Step 4: Accessing the Web Server from Raspberry Pi 4B
+
+After uploading the web server code to your Pico 2W, you can access it from your Raspberry Pi:
+
+1. Note the IP address printed in the Thonny shell when the Pico 2W connects to Wi-Fi
+2. Make sure your Raspberry Pi is connected to the same Wi-Fi network
+3. Open a web browser on the Raspberry Pi
+4. Enter the IP address of the Pico 2W in the address bar (e.g., `http://192.168.1.100`)
+5. You should see a web page with buttons to control the Pico's onboard LED
+
+![Accessing Pico Web Server from Raspberry Pi Screenshot]
+
+## Step 5: Creating a Python Client on Raspberry Pi 4B
+
+While using a web browser to interact with the Pico 2W is convenient, you might want to create a Python script on your Raspberry Pi to programmatically communicate with the Pico. This is useful for automated tasks or more complex interactions.
+
+Here's a Python script for the Raspberry Pi that acts as a client to interact with the Pico 2W web server:
+
+```python
+# pico_client.py - Run this on the Raspberry Pi 4B
+
+import requests
+import time
+import argparse
+
+def control_led(pico_ip, state):
+    """
+    Control the LED on the Pico 2W
+
+    Args:
+        pico_ip: IP address of the Pico 2W
+        state: 'on' or 'off'
+
+    Returns:
+        Response from the Pico
+    """
+    if state.lower() == 'on':
+        url = f"http://{pico_ip}/lighton"
+    elif state.lower() == 'off':
+        url = f"http://{pico_ip}/lightoff"
+    else:
+        print(f"Invalid state: {state}. Use 'on' or 'off'.")
+        return None
+
+    try:
+        response = requests.get(url)
+        return response.text
+    except requests.exceptions.RequestException as e:
+        print(f"Error communicating with Pico: {e}")
+        return None
+
+def toggle_led(pico_ip, interval=1, count=5):
+    """
+    Toggle the LED on the Pico 2W multiple times
+
+    Args:
+        pico_ip: IP address of the Pico 2W
+        interval: Time between toggles in seconds
+        count: Number of times to toggle
+    """
+    print(f"Toggling LED {count} times with {interval}s interval...")
+
+    for i in range(count):
+        state = "on" if i % 2 == 0 else "off"
+        print(f"Setting LED {state}...")
+        control_led(pico_ip, state)
+        time.sleep(interval)
+
+def monitor_led(pico_ip, interval=2, duration=60):
+    """
+    Monitor the LED state on the Pico 2W
+
+    Args:
+        pico_ip: IP address of the Pico 2W
+        interval: Time between checks in seconds
+        duration: Total monitoring duration in seconds
+    """
+    print(f"Monitoring LED state for {duration} seconds...")
+
+    start_time = time.time()
+    while time.time() - start_time < duration:
+        try:
+            response = requests.get(f"http://{pico_ip}")
+            # Extract LED state from the response
+            if "LED is ON" in response.text:
+                led_state = "ON"
+            else:
+                led_state = "OFF"
+
+            print(f"Current LED state: {led_state}")
+        except requests.exceptions.RequestException as e:
+            print(f"Error communicating with Pico: {e}")
+
+        time.sleep(interval)
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Control Raspberry Pi Pico 2W LED via Wi-Fi')
+    parser.add_argument('pico_ip', help='IP address of the Pico 2W')
+    parser.add_argument('--action', choices=['on', 'off', 'toggle', 'monitor'],
+                        default='toggle', help='Action to perform')
+    parser.add_argument('--interval', type=float, default=1.0,
+                        help='Interval for toggle/monitor (seconds)')
+    parser.add_argument('--count', type=int, default=5,
+                        help='Number of toggles for toggle action')
+    parser.add_argument('--duration', type=int, default=60,
+                        help='Duration for monitor action (seconds)')
+
+    args = parser.parse_args()
+
+    if args.action == 'on':
+        print(f"Turning LED ON...")
+        control_led(args.pico_ip, 'on')
+    elif args.action == 'off':
+        print(f"Turning LED OFF...")
+        control_led(args.pico_ip, 'off')
+    elif args.action == 'toggle':
+        toggle_led(args.pico_ip, args.interval, args.count)
+    elif args.action == 'monitor':
+        monitor_led(args.pico_ip, args.interval, args.duration)
+```
+
+### Using the Python Client
+
+To use this client script on your Raspberry Pi 4B:
+
+1. Save the code above as `pico_client.py`
+2. Install the required packages if you haven't already:
+   ```bash
+   pip install requests
+   ```
+3. Run the script with the IP address of your Pico 2W:
+   ```bash
+   python pico_client.py 192.168.1.100 --action on
+   ```
+
+This script provides several functions:
+
+- **Turn the LED on or off**:
+
+  ```bash
+  python pico_client.py 192.168.1.100 --action on
+  python pico_client.py 192.168.1.100 --action off
+  ```
+
+- **Toggle the LED multiple times**:
+
+  ```bash
+  python pico_client.py 192.168.1.100 --action toggle --interval 0.5 --count 10
+  ```
+
+- **Monitor the LED state**:
+  ```bash
+  python pico_client.py 192.168.1.100 --action monitor --interval 1 --duration 30
+  ```
+
+## Activity: Advanced Client-Server IoT System
+
+In this activity, you'll create a more sophisticated IoT system with your Raspberry Pi 4B and Pico 2W, where the Pico acts as a server collecting sensor data and the Pi acts as a client processing and visualizing that data.
+
+### Step 1: Enhance the Pico 2W Web Server with Temperature Data
+
+First, let's modify the Pico 2W web server to include its internal temperature sensor data:
+
+```python
+# advanced-pico-server.py
+
+import network
+from time import sleep
+import socket
+import json
+from machine import Pin, ADC
+import machine
+
+# Create a Pin object for the onboard LED
+led = Pin("LED", Pin.OUT)
+
+# Set up the internal temperature sensor
+sensor_temp = ADC(4)
+conversion_factor = 3.3 / (65535)
+
+# Wi-Fi credentials
+ssid = 'YOUR_NETWORK_NAME'
+password = 'YOUR_PASSWORD'
+
+def connect():
+    # Init Wi-Fi Interface
+    wlan = network.WLAN(network.STA_IF)
+    wlan.active(True)
+
+    # Connect to your network
+    wlan.connect(ssid, password)
+
+    # Wait for Wi-Fi connection
+    connection_timeout = 10
+    while connection_timeout > 0:
+        if wlan.status() >= 3:
+            break
+        connection_timeout -= 1
+        print('Waiting for Wi-Fi connection...')
+        sleep(1)
+
+    # Check if connection is successful
+    if wlan.status() != 3:
+        raise RuntimeError('Failed to establish a network connection')
+    else:
+        print('Connection successful!')
+        network_info = wlan.ifconfig()
+        print('IP address:', network_info[0])
+        return network_info[0]
+
+def open_socket(ip):
+    # Open a socket
+    address = (ip, 80)
+    connection = socket.socket()
+    connection.bind(address)
+    connection.listen(1)
+    return connection
+
+def read_temperature():
+    # Read temperature from internal sensor
+    reading = sensor_temp.read_u16() * conversion_factor
+    # The temperature sensor measures the Vbe voltage of a biased bipolar diode
+    temperature = 27 - (reading - 0.706) / 0.001721
+    return round(temperature, 1)
+
+def webpage(state, temperature):
+    # Template HTML with improved styling
+    html = f"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Pico W Control Center</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <style>
+                    body {{
+                        font-family: Arial, sans-serif;
+                        margin: 0;
+                        padding: 20px;
+                        text-align: center;
+                        background-color: #f5f5f5;
+                    }}
+                    h1 {{ color: #0066cc; }}
+                    .control-panel {{
+                        max-width: 400px;
+                        margin: 0 auto;
+                        background-color: white;
+                        border-radius: 10px;
+                        padding: 20px;
+                        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                    }}
+                    .status {{
+                        margin: 20px 0;
+                        padding: 15px;
+                        border-radius: 5px;
+                        background-color: #e8f4fc;
+                    }}
+                    .btn {{
+                        background-color: #0066cc;
+                        color: white;
+                        border: none;
+                        padding: 10px 20px;
+                        margin: 5px;
+                        border-radius: 5px;
+                        cursor: pointer;
+                    }}
+                    .btn:hover {{
+                        background-color: #0055aa;
+                    }}
+                    .led-status {{
+                        display: inline-block;
+                        width: 15px;
+                        height: 15px;
+                        border-radius: 50%;
+                        background-color: {'yellow' if state=='ON' else 'gray'};
+                        margin-right: 10px;
+                    }}
+                </style>
+                <script>
+                    function refreshData() {{
+                        fetch('/data')
+                            .then(response => response.json())
+                            .then(data => {{
+                                document.getElementById('temperature').textContent = data.temperature;
+                                document.getElementById('led-indicator').style.backgroundColor =
+                                    data.led_state === 'ON' ? 'yellow' : 'gray';
+                                document.getElementById('led-status').textContent = data.led_state;
+                            }});
+                    }}
+
+                    // Refresh data every 5 seconds
+                    setInterval(refreshData, 5000);
+                </script>
+            </head>
+            <body>
+                <div class="control-panel">
+                    <h1>Pico W Control Center</h1>
+
+                    <div class="status">
+                        <p><span class="led-status" id="led-indicator"></span>LED is <span id="led-status">{state}</span></p>
+                        <p>Temperature: <span id="temperature">{temperature}</span>°C</p>
+                    </div>
+
+                    <form action="./lighton">
+                        <input type="submit" value="Light ON" class="btn" />
+                    </form>
+                    <form action="./lightoff">
+                        <input type="submit" value="Light OFF" class="btn" />
+                    </form>
+                </div>
+            </body>
+            </html>
+            """
+    return str(html)
+
+def serve(connection):
+    # Start a web server
+    state = 'OFF'
+    led.off()
+    temperature = read_temperature()
+
+    while True:
+        client = connection.accept()[0]
+        request = client.recv(1024)
+        request = str(request)
+
+        try:
+            request = request.split()[1]
+        except IndexError:
+            pass
+
+        # Update temperature reading
+        temperature = read_temperature()
+
+        if request == '/lighton?':
+            led.on()
+            state = 'ON'
+            html = webpage(state, temperature)
+            client.send('HTTP/1.0 200 OK\r\nContent-type: text/html\r\n\r\n')
+            client.send(html)
+        elif request =='/lightoff?':
+            led.off()
+            state = 'OFF'
+            html = webpage(state, temperature)
+            client.send('HTTP/1.0 200 OK\r\nContent-type: text/html\r\n\r\n')
+            client.send(html)
+        elif request == '/data':
+            # JSON API endpoint for programmatic access
+            data = {
+                'temperature': temperature,
+                'led_state': state
+            }
+            json_data = json.dumps(data)
+            client.send('HTTP/1.0 200 OK\r\nContent-type: application/json\r\n\r\n')
+            client.send(json_data)
+        else:
+            # Default page
+            html = webpage(state, temperature)
+            client.send('HTTP/1.0 200 OK\r\nContent-type: text/html\r\n\r\n')
+            client.send(html)
+
+        client.close()
+
+try:
+    ip = connect()
+    connection = open_socket(ip)
+    serve(connection)
+except KeyboardInterrupt:
+    machine.reset()
+```
+
+### Step 2: Create a Data Logging Client on Raspberry Pi
+
+Now, let's create a Python script for the Raspberry Pi that will collect and log data from the Pico 2W:
+
+```python
+# pico_data_logger.py - Run this on the Raspberry Pi 4B
+
+import requests
+import time
+import json
+import matplotlib.pyplot as plt
+import pandas as pd
+from datetime import datetime
+import argparse
+import os
+
+class PicoDataLogger:
+    def __init__(self, pico_ip, log_interval=10, log_file="pico_data_log.csv"):
+        self.pico_ip = pico_ip
+        self.log_interval = log_interval
+        self.log_file = log_file
+        self.temperatures = []
+        self.led_states = []
+        self.timestamps = []
+
+        # Create log file with headers if it doesn't exist
+        if not os.path.exists(log_file):
+            with open(log_file, 'w') as f:
+                f.write("timestamp,temperature,led_state\n")
+
+    def fetch_data(self):
+        """Fetch data from Pico 2W"""
+        try:
+            response = requests.get(f"http://{self.pico_ip}/data")
+            if response.status_code == 200:
+                return response.json()
+            else:
+                print(f"Error: Received status code {response.status_code}")
+                return None
+        except requests.exceptions.RequestException as e:
+            print(f"Error communicating with Pico: {e}")
+            return None
+
+    def log_data(self, data):
+        """Log data to CSV file"""
+        if data:
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            self.timestamps.append(timestamp)
+            self.temperatures.append(data['temperature'])
+            self.led_states.append(1 if data['led_state'] == 'ON' else 0)
+
+            # Append to CSV
+            with open(self.log_file, 'a') as f:
+                f.write(f"{timestamp},{data['temperature']},{data['led_state']}\n")
+
+            print(f"[{timestamp}] Temperature: {data['temperature']}°C, LED: {data['led_state']}")
+
+    def plot_data(self):
+        """Plot the collected data"""
+        if len(self.timestamps) > 1:
+            plt.figure(figsize=(12, 6))
+
+            # Plot temperature
+            plt.subplot(2, 1, 1)
+            plt.plot(self.timestamps, self.temperatures, 'b-', marker='o')
+            plt.title('Pico 2W Temperature Over Time')
+            plt.ylabel('Temperature (°C)')
+            plt.xticks(rotation=45)
+            plt.grid(True)
+
+            # Plot LED state
+            plt.subplot(2, 1, 2)
+            plt.step(self.timestamps, self.led_states, 'r-', where='post')
+            plt.title('Pico 2W LED State Over Time')
+            plt.ylabel('LED State (0=OFF, 1=ON)')
+            plt.yticks([0, 1], ['OFF', 'ON'])
+            plt.xticks(rotation=45)
+            plt.grid(True)
+
+            plt.tight_layout()
+            plt.savefig('pico_data_plot.png')
+            plt.close()
+
+            print(f"Plot saved as pico_data_plot.png")
+
+    def start_logging(self, duration=None):
+        """Start logging data at regular intervals"""
+        print(f"Starting data logging from Pico at {self.pico_ip}")
+        print(f"Logging to {self.log_file} every {self.log_interval} seconds")
+
+        start_time = time.time()
+        try:
+            while True:
+                data = self.fetch_data()
+                self.log_data(data)
+
+                # Check if we've reached the duration (if specified)
+                if duration and (time.time() - start_time) >= duration:
+                    break
+
+                time.sleep(self.log_interval)
+
+        except KeyboardInterrupt:
+            print("\nLogging stopped by user")
+
+        # Plot the data when logging stops
+        self.plot_data()
+
+        # Load and display summary statistics
+        if os.path.exists(self.log_file):
+            df = pd.read_csv(self.log_file)
+            print("\nData Summary:")
+            print(f"Total records: {len(df)}")
+            print(f"Temperature stats:\n{df['temperature'].describe()}")
+            print(f"LED ON percentage: {df[df['led_state']=='ON'].shape[0]/len(df)*100:.1f}%")
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Log data from Raspberry Pi Pico 2W')
+    parser.add_argument('pico_ip', help='IP address of the Pico 2W')
+    parser.add_argument('--interval', type=int, default=10,
+                        help='Logging interval in seconds')
+    parser.add_argument('--duration', type=int, default=None,
+                        help='Total logging duration in seconds (optional)')
+    parser.add_argument('--output', default="pico_data_log.csv",
+                        help='Output CSV file')
+
+    args = parser.parse_args()
+
+    # Make sure necessary packages are installed
+    try:
+        import matplotlib
+        import pandas
+    except ImportError:
+        print("Installing required packages...")
+        os.system("pip install matplotlib pandas")
+
+    # Start the data logger
+    logger = PicoDataLogger(args.pico_ip, args.interval, args.output)
+    logger.start_logging(args.duration)
+```
+
+### Running the Activity
+
+To run this client-server IoT system:
+
+1. **On the Pico 2W**:
+
+   - Upload and run the `advanced-pico-server.py` code using Thonny
+   - Note the IP address that appears in the console
+
+2. **On the Raspberry Pi 4B**:
+
+   - Create the `pico_data_logger.py` script
+   - Install required packages:
+     ```bash
+     pip install requests matplotlib pandas
+     ```
+   - Run the data logger:
+     ```bash
+     python pico_data_logger.py 192.168.1.100 --interval 5 --duration 300
+     ```
+     (Replace 192.168.1.100 with your Pico's actual IP address)
+
+3. **Observe the Results**:
+   - Watch the real-time data collection in the terminal
+   - After the logging completes, view the plot that shows temperature and LED state over time
+   - Examine the CSV file with all the collected data
+
+### Understanding What's Happening
+
+This activity demonstrates a real-world IoT system where:
+
+1. The Pico 2W functions as a web server and sensor node
+2. The Raspberry Pi 4B functions as a client that collects, stores, and visualizes the data
+3. Communication happens over Wi-Fi using standard web protocols (HTTP/JSON)
+
+This pattern is common in many IoT applications, where small sensor nodes collect data and send it to more powerful devices for processing, storage, and visualization.
+
+## Additional Challenges
+
+1. **Add More Sensors**: Connect external sensors (like DHT22 temperature/humidity, light sensor, etc.) to the Pico 2W and include their data in the web server
+2. **Create a Control Dashboard**: Enhance the Raspberry Pi client to include a GUI dashboard (using Tkinter or PyQT) for real-time monitoring and control
+3. **Implement Data Analysis**: Add data analysis features to the Raspberry Pi client, such as anomaly detection or trend analysis
+4. **Add Security**: Implement basic authentication on the Pico 2W web server to secure your IoT system
+5. **Integrate with Cloud Services**: Modify the Raspberry Pi client to forward the data to cloud IoT platforms like AWS IoT, Google Cloud IoT, or a simple MQTT broker
+
+## Conclusion
+
+You've now set up Wi-Fi communication between your Raspberry Pi 4B and Pico 2W, created a web server on the Pico, and developed a data logging client on the Raspberry Pi. This establishes a foundation for building more complex IoT projects that leverage the strengths of both devices: the Pico 2W's GPIO capabilities and low power consumption, and the Raspberry Pi 4B's processing power and connectivity options.
+
+By using standard web technologies (HTTP, HTML, and JSON), you've created an IoT system that is easy to extend and integrate with other services and platforms.
