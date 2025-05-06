@@ -15,7 +15,7 @@ In this module, we've explored how to connect digital systems and work with oper
 2. **Communication Protocols**:
 
    - Understood serial vs. parallel communication
-   - Worked with UART, SPI, and wireless protocols
+   - Worked with UART, and wireless protocols
    - Connected Raspberry Pi 4B and Pico 2W using different methods
 
 3. **Wireless Communication**:
@@ -30,12 +30,50 @@ In this module, we've explored how to connect digital systems and work with oper
    - Combined sensors, processing, storage, and presentation
    - Applied practical communication techniques
 
-5. How does the approach to hardware access differ between a full operating system (like on the Raspberry Pi 4B) and bare-metal programming (like on the Pico 2W)?
 
-6. What are the advantages and disadvantages of different communication protocols (UART, SPI, I²C, WiFi, Bluetooth) for various IoT applications?
+:::note[Communication Protocol Characteristics]
 
-7. How might the principles of digital communication change when scaling from two devices to dozens or hundreds of devices?
+**UART Communication:**
+- Direct connection using TX/RX pins
+- Simple to implement and debug
+- Limited to short distances
+- Great for device-to-device communication without network infrastructure
 
-8. In what ways has the Internet of Things (IoT) changed how we think about operating systems and device communication?
+**WiFi Communication:**
+- Enables Internet connectivity and remote access
+- Higher power consumption
+- Suitable for data-intensive applications
+- Allows creation of web servers and IoT applications
 
-9. What security considerations are important when connecting multiple devices in a system?
+**Bluetooth Low Energy:**
+- Optimized for low power consumption
+- Perfect for mobile device interactions
+- Moderate range and data rates
+- Ideal for sensor data and control applications
+
+Remember that each protocol has its place in the IoT ecosystem. The best projects often combine multiple communication methods to leverage their respective strengths!
+
+:::
+
+
+:::tip[Activity: Think about it!]
+
+### Communication Protocols
+- What are the main differences between UART, WiFi, and Bluetooth in terms of setup complexity?
+- How would you decide which communication protocol to use for a battery-powered sensor network?
+- When would the physical connection requirement of UART be an advantage rather than a limitation?
+- How does data transmission reliability compare between wired and wireless protocols?
+
+### Device Roles
+- How do the roles of the Raspberry Pi 4B and Pico 2W differ when implementing these communication protocols?
+- What are the implications of using the Pico 2W as a server versus a client?
+- How might you design a hybrid system that leverages the strengths of both devices?
+- What security vulnerabilities might exist in each communication method?
+
+### Software Implementation
+- How does the coding approach differ when implementing UART, WiFi, or Bluetooth communication?
+- What challenges did you encounter when implementing these protocols, and how did you overcome them?
+- How would you modify the code to handle multiple clients connecting to your WiFi or Bluetooth server?
+- What error handling strategies should be implemented for robust communication systems?
+
+:::
