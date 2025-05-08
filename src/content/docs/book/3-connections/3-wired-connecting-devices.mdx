@@ -6,23 +6,18 @@ import { YouTube } from 'astro-embed';
 
 In today's interconnected world, devices rarely operate in isolation. Whether it's a smart home system, robotics project, or industrial automation, the ability for different digital systems to communicate with each other is fundamental. Learning how to establish connections between devices provides a foundation for building more complex and interactive systems.
 
-Serial communication is one of the most basic and reliable methods for devices to exchange information. By mastering this fundamental protocol, you'll understand the principles that underpin many modern communication systems, from USB to Ethernet and beyond.
+Serial communication is one of the most basic and reliable methods for devices to exchange information. By mastering this fundamental protocol, you will understand the principles that underpin many modern communication systems, from USB to Ethernet and beyond.
 
-In this module, we'll establish a wired serial connection between our Raspberry Pi 4B and Raspberry Pi Pico 2W. This will allow us to:
+In this module, we will establish a wired serial connection between our Raspberry Pi 4B and Raspberry Pi Pico 2W. This will allow us to send commands from the Raspberry Pi to control the Pico, collect sensor data from the Pico and process it on the Raspberry Pi, build interactive systems with components distributed across multiple devices, and understand the fundamentals of how devices "talk" to each other
 
-- Send commands from the Raspberry Pi to control the Pico
-- Collect sensor data from the Pico and process it on the Raspberry Pi
-- Build interactive systems with components distributed across multiple devices
-- Understand the fundamentals of how devices "talk" to each other
-
-Let's get started with connecting our devices using UART (Universal Asynchronous Receiver/Transmitter), one of the simplest serial communication protocols.
+Let's get started with connecting our devices using UART (Universal Asynchronous Receiver/Transmitter), one of the simplest serial communication protocols that we explored in the previous section. 
 
 ## Direct UART Connection
 
-UART is one of the simplest ways to connect two devices. We'll establish a serial connection between the Raspberry Pi 4B and the Pico 2W. UART is a simple yet powerful protocol that requires minimal wiring - just two data lines for bidirectional communication.
+UART is one of the simplest ways to connect two devices. We will explore how to establish a serial connection between the Raspberry Pi 4B and the Pico 2W. UART is a simple yet powerful protocol that requires minimal wiring which requires just two data lines for bidirectional communication.
 
 :::note[Before you start: Setting up the interfaces]
-Enable serial connection on RPi using the steps given at the link [here](https://raspberrytips.com/enable-uart-on-raspberry-pi/) or folloe the steps below:
+Enable serial connection on RPi using the steps given at the link [here](https://raspberrytips.com/enable-uart-on-raspberry-pi/) or follow the steps below:
 
 ![Step 1 - Enable Serial Connection](./images/raspberry_pi_configuration_serialport_serialconsole.jpg)
 _Screenshot: Enable serial connection via the configuration settings_
@@ -36,7 +31,7 @@ _Screenshot: Enable serial connection via the configuration settings_
 7. Select "Finish" and reboot your Raspberry Pi
 :::
 
-### Step 1: Hardware Setup
+#### Step 1: Hardware Setup
 
 Now let's physically connect the Raspberry Pi 4B to the Pico 2W:
 
@@ -49,9 +44,9 @@ Now let's physically connect the Raspberry Pi 4B to the Pico 2W:
 | GND             | GND      |
 
 :::caution[Important Connection Note!]
-When connecting the devices, remember that TX (transmit) on one device connects to RX (receive) on the other, and vice versa. This is a common mistake - don't connect TX to TX or RX to RX!
+When connecting the devices, remember that TX (transmit) on one device connects to RX (receive) on the other, and vice versa. This is a common mistake - DO NOT connect TX to TX or RX to RX!
 
-Also, the Raspberry Pi operates at 3.3V logic levels. Make sure not to connect it to 5V systems without level shifting to avoid damage.
+The Raspberry Pi operates at 3.3V logic levels. Make sure not to connect it to 5V systems without level shifting to avoid damage.
 :::
 
 ![UART Connection](./images/Raspberry-Pi-4-Pinout.png)
@@ -60,14 +55,14 @@ _Raspberry Pi 4B pinout_
 ![UART Connection](./images/pico2w-pinout.png)
 _Pico 2W pinout_
 
-Your final connection should look like this. Note that the USB connection is being used to program the Pico but the actual communication will be done with the serial connection cables between the devices.
+Your final connection should look like this. Note that the USB connection is being used to program the Pico but the actual communication will be done via the serial connection cables between the devices.
 
 ![UART Connection](./images/rpi-pico-connection.jpg)
 _Wiring diagram showing connections between Raspberry Pi 4B and Pico 2W_
 
 ### Step 2: Program the Pico 2W (Receiver)
 
-Now we'll write the code for the Pico 2W to receive data from the Raspberry Pi:
+Now We will write the code for the Pico 2W to receive data from the Raspberry Pi:
 
 1. Connect your Pico 2W to the Raspberry Pi via USB
 2. Open Thonny IDE on the Raspberry Pi
@@ -230,11 +225,11 @@ Now let's test the communication between devices:
 
 6. Continue sending messages or press Ctrl+C to exit
 
-Congratulations! You've successfully established a serial communication channel between your Raspberry Pi 4B and Pico 2W. This simple demonstration shows the basics of how devices can exchange information through a wired connection.
+Congratulations! You have successfully established a serial communication channel between your Raspberry Pi 4B and Pico 2W. This simple demonstration shows the basics of how devices can exchange information through a wired connection.
 
 
 :::tip[Activity: Build a Remote Control LED System]
-Now that you've established communication between your devices, let's build a more interactive system:
+Now that you have established communication between your devices, let's build a more interactive system:
 
 **Objective**: Create a remote control system where the Raspberry Pi can send commands to control multiple LEDs on the Pico.
 
@@ -267,33 +262,26 @@ This activity demonstrates how serial communication can be used to create remote
 
 ## Troubleshooting
 
-If you encounter issues:
+If you encounter issues of
 
-1. **No communication**: 
+ **No communication**: 
    - Double-check your wiring
    - Ensure TX from one device connects to RX on the other
    - Verify both devices share a common ground
 
-2. **Garbled data**:
+**Garbled data**:
    - Ensure both sides use the same baud rate
    - Check for correct parity and stop bits
 
-3. **Permission issues on Raspberry Pi**:
+**Permission issues on Raspberry Pi**:
    - Run `sudo usermod -a -G dialout $USER` to add your user to the dialout group
    - Reboot your Raspberry Pi
 
-4. **Serial port not available**:
+**Serial port not available**:
    - Check if another process is using the serial port: `sudo lsof /dev/ttyS0`
    - Try using `/dev/serial0` instead of `/dev/ttyS0`
 
 
 ## What You've Learned
 
-By completing this module, you've gained valuable skills in:
-
-1. **Serial Communication**: Understanding how UART works to transfer data between devices
-2. **Cross-Device Programming**: Writing complementary code for two different devices to work together
-3. **Hardware Integration**: Connecting devices physically through appropriate GPIO pins
-4. **Protocol Design**: Creating a simple command-and-response protocol for device control
-
-These skills form the foundation for more advanced inter-device communication methods we'll explore in future modules, such as SPI, I²C, and wireless protocols like WiFi and Bluetooth.
+By completing the above activities, you have gained understanding on how UART works to transfer data between devices, writing complementary code for two different devices to work together, connecting devices physically through appropriate GPIO pins and creating a simple command-and-response protocol for device control. Next, we will explore more advanced inter-device communication methods.

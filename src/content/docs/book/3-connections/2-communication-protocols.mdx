@@ -6,13 +6,13 @@ import { YouTube } from 'astro-embed';
 
 Now that we have explored how a computer is built from the inside with components including the CPU, memory, and storage all working together, we can step beyond the boundaries of a single machine. In the real world, computers rarely operate in isolation. They need to communicate with other devices to share information, access data, or work together on tasks. Whether it is a keyboard sending signals to the CPU, a Raspberry Pi connected to a microcontroller like a Pico, or one computer sending files to another over a network, connections are essential. In this section, we will explore how digital systems connect and communicate with each other, starting with simple wired connections between devices, and gradually moving into the fundamentals of networking and data transmission in the next chapter.
 
-In the interconnected digital world, devices need standardised ways to exchange information. These standardized methods are called **communication protocols** - the digital languages that allow hardware and software to talk to each other regardless of manufacturer or purpose.
+In the interconnected digital world, devices need standardised ways to exchange information. These standardised methods are called **communication protocols** - the digital languages that allow hardware and software to talk to each other regardless of manufacturer or purpose.
 
 Understanding protocols is essential for anyone working with digital systems, from simple microcontrollers to complex networks of computers and IoT devices.
 
 :::note[Think about It: Communication Everywhere]
 
-- How many different types of digital communication do you use daily?
+- How many types of digital communication do you use daily?
 - What happens when two devices do not "speak the same language"?
 - Why might some protocols be better suited for certain applications than others?
 
@@ -21,7 +21,7 @@ Understanding protocols is essential for anyone working with digital systems, fr
 
 ## What are Communication Protocols?
 
-Communication protocols are standardized rules that allow electronic devices to exchange data. They define everything from the physical connection between devices to the format of the data being exchanged.
+Communication protocols are standardised rules that allow electronic devices to exchange data. They define everything from the physical connection between devices to the format of the data being exchanged.
 
 Think of protocols like human languages - they have grammar rules (syntax), meaning (semantics), and conversation etiquette (synchronization and error handling).
 
@@ -56,7 +56,7 @@ _Serial communication uses a single data line, while parallel uses multiple line
 
 
 :::note[Historical Shift]
-Historically, computers used parallel ports for peripherals like printers because they were faster over short distances. However, as signals need to be synchronized, parallel communication becomes problematic over longer distances. Modern systems have largely shifted to high-speed serial protocols like USB, HDMI, and Ethernet.
+Historically, computers used parallel ports for peripherals like printers because they were faster over short distances. However, as signals need to be synchronised, parallel communication becomes problematic over longer distances. Modern systems have largely shifted to high-speed serial protocols like USB, HDMI, and Ethernet.
 :::
 
 ## Common Serial Protocols
@@ -66,7 +66,7 @@ Next we are going to learn how devices agree on the rules of the serial conversa
 
 UART is one of the simplest serial communication methods, using just two wires for data. Key characteristics of UART are
 
-- **Asynchronous**: No clock signal; devices must agree on timing (baud rate)
+- **Asynchronous**: No clock signal; devices must agree on timing (baud rate). Baud rate refers to how fast data is sent over a communication channel, measured by the number of signal shifts or symbols sent each second
 - **Simplicity**: Easy to implement in hardware and software
 - **Directness**: Designed for point-to-point communication
 - **Ubiquity**: Found in virtually all microcontrollers and computers
@@ -74,7 +74,7 @@ UART is one of the simplest serial communication methods, using just two wires f
 How it works:
 
 - Devices connect TX (transmit) to RX (receive) and share a common ground
-- Data frames include start and stop bits to synchronize transmission
+- Data frames include start and stop bits to synchronise transmission
 - Common baud rates: 9600, 115200 bits per second
 
 ![UART Communication](./images/uart.png)
@@ -141,10 +141,10 @@ How it Works:
 
 #### Ethernet
 
-Ethernet is the foundation of most local area networks. We will discuss Ethernet in the next chapter. Key characteristics of Ethernet are, 
+Ethernet is the foundation of most local area networks. We will discuss Ethernet in the next chapter. Key characteristics of Ethernet are,
 
 - **Standardized**: Follows IEEE 802.3 standards
-- **Scalable**: From small home networks to massive data centers
+- **Scalable**: From small home networks to massive data centres
 - **Speed**: Ranges from 10 Mbps to 400 Gbps
 - **Addressing**: Uses MAC addresses for device identification
 
@@ -156,7 +156,7 @@ How it Works:
 
 #### Bluetooth
 
-Bluetooth is types of wireless communication technology that enables wireless communication between devices over short distances which uses a variety of protocols. In this Chapter, we look at Bluetooth as a medium that can be used to connect two devices together. Key Characteristics of Bluetooth are, 
+Bluetooth is types of wireless communication technology that enables wireless communication between devices over short distances which uses a variety of protocols. In this Chapter, we look at Bluetooth as a medium that can be used to connect two devices together. Key Characteristics of Bluetooth are,
 
 - **Wireless**: No physical connection required
 - **Low-Power**: Designed for battery-powered devices
