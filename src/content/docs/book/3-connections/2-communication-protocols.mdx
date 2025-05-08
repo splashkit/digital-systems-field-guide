@@ -4,16 +4,18 @@ title: Understanding Communication Protocols
 
 import { YouTube } from 'astro-embed';
 
-In our interconnected digital world, devices need standardized ways to exchange information. These standardized methods are called **communication protocols** - the digital languages that allow hardware and software to talk to each other regardless of manufacturer or purpose.
+Now that we have explored how a computer is built from the inside with components including the CPU, memory, and storage all working together, we can step beyond the boundaries of a single machine. In the real world, computers rarely operate in isolation. They need to communicate with other devices to share information, access data, or work together on tasks. Whether it is a keyboard sending signals to the CPU, a Raspberry Pi connected to a microcontroller like a Pico, or one computer sending files to another over a network, connections are essential. In this section, we will explore how digital systems connect and communicate with each other, starting with simple wired connections between devices, and gradually moving into the fundamentals of networking and data transmission in the next chapter.
+
+In the interconnected digital world, devices need standardised ways to exchange information. These standardized methods are called **communication protocols** - the digital languages that allow hardware and software to talk to each other regardless of manufacturer or purpose.
 
 Understanding protocols is essential for anyone working with digital systems, from simple microcontrollers to complex networks of computers and IoT devices.
 
 :::note[Think about It: Communication Everywhere]
 
 - How many different types of digital communication do you use daily?
-- What happens when two devices don't "speak the same language"?
+- What happens when two devices do not "speak the same language"?
 - Why might some protocols be better suited for certain applications than others?
-- How have communication protocols evolved over time?
+
 
 :::
 
@@ -25,7 +27,24 @@ Think of protocols like human languages - they have grammar rules (syntax), mean
 
 ## Serial vs. Parallel Communication
 
-There are two fundamental ways to transmit digital data. More information can be found [here](https://www.geeksforgeeks.org/difference-between-serial-and-parallel-transmission/)
+Now that we know digital devices need to talk to each other, the next question is how exactly do they exchange data? Imagine you are passing a message made of several letters to a friend. You have two options:
+
+- Serial communication is like handing over one letter at a time which is simple, reliable, and only needs one path (or wire).
+
+- Parallel communication is like giving each letter to a friend at the same time which is faster, but more complex and can cause confusion.
+
+In digital systems, the same concept applies. Devices use serial or parallel methods to send bits of information. Serial is slower but more stable over long distances, while parallel can be faster but is often used for short distances. 
+
+<div class='not-content'>
+  <YouTube id='myU2x27FIIc' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
+</div>
+
+The following figure illustrates the differences between serial and parallel communications. 
+
+![Serial vs Parallel Communication](./images/serial-and-parallel.png)
+_Serial communication uses a single data line, while parallel uses multiple lines_
+
+{/** More information can be found [here](https://www.geeksforgeeks.org/difference-between-serial-and-parallel-transmission/) **/}
 
 | Serial Communication                          | Parallel Communication             |
 | --------------------------------------------- | ---------------------------------- |
@@ -34,27 +53,25 @@ There are two fundamental ways to transmit digital data. More information can be
 | Can achieve higher speeds over long distances | Faster over short distances        |
 | Examples: UART, SPI, I²C, USB                 | Examples: PATA, PCI, Memory bus    |
 
-![Serial vs Parallel Communication](./images/serial-and-parallel.png)
-_Serial communication uses a single data line, while parallel uses multiple lines_
+
 
 :::note[Historical Shift]
 Historically, computers used parallel ports for peripherals like printers because they were faster over short distances. However, as signals need to be synchronized, parallel communication becomes problematic over longer distances. Modern systems have largely shifted to high-speed serial protocols like USB, HDMI, and Ethernet.
 :::
 
 ## Common Serial Protocols
+Next we are going to learn how devices agree on the rules of the serial conversation. Just like humans need a common language to talk to each other, digital devices use serial communication protocols to make sure they understand the data being sent and received. There are several widely used serial protocols, each designed for specific situations and has its own "language rules" including how to start and stop messages, how to avoid collisions, and how to confirm a message was received. Commonly used serial communication protocols are,
 
-### UART (Universal Asynchronous Receiver/Transmitter)
+#### UART (Universal Asynchronous Receiver/Transmitter)
 
-UART is one of the simplest serial communication methods, using just two wires for data.
-
-**Key Characteristics:**
+UART is one of the simplest serial communication methods, using just two wires for data. Key characteristics of UART are
 
 - **Asynchronous**: No clock signal; devices must agree on timing (baud rate)
 - **Simplicity**: Easy to implement in hardware and software
 - **Directness**: Designed for point-to-point communication
 - **Ubiquity**: Found in virtually all microcontrollers and computers
 
-**How it Works:**
+How it works:
 
 - Devices connect TX (transmit) to RX (receive) and share a common ground
 - Data frames include start and stop bits to synchronize transmission
@@ -63,18 +80,16 @@ UART is one of the simplest serial communication methods, using just two wires f
 ![UART Communication](./images/uart.png)
 _UART uses TX (transmit) and RX (receive) lines between devices_
 
-### SPI (Serial Peripheral Interface)
+#### SPI (Serial Peripheral Interface)
 
-SPI is a synchronous protocol commonly used for communicating with sensors, displays, and memory devices.
-
-**Key Characteristics:**
+SPI is a synchronous protocol commonly used for communicating with sensors, displays, and memory devices. Key Characteristics of SPI are, 
 
 - **Synchronous**: Uses a clock signal to coordinate data transfer
 - **Full-Duplex**: Can send and receive simultaneously
 - **Higher Speed**: Typically faster than UART or I²C
 - **Hardware Select**: Uses separate select lines for each device
 
-**How it Works:**
+How it Works:
 
 - Requires at least 4 wires:
   - MOSI (Master Out, Slave In): Data from controller to peripheral
@@ -85,18 +100,17 @@ SPI is a synchronous protocol commonly used for communicating with sensors, disp
 ![SPI Communication](./images/SPI-flow-chart-.png)
 _SPI allows one master to communicate with multiple slave devices_
 
-### I²C (Inter-Integrated Circuit)
+#### I²C (Inter-Integrated Circuit)
 
 I²C combines the best aspects of UART and SPI, using a two-wire bus with addressing.
-
-**Key Characteristics:**
+Key Characteristics of I²C are,
 
 - **Synchronous**: Uses a clock signal (SCL)
 - **Bus Topology**: Multiple devices share the same two wires
 - **Addressing**: Each device has a unique address
 - **Medium Speed**: Typically 100kHz, 400kHz, or 1MHz
 
-**How it Works:**
+How it Works:
 
 - Uses two wires:
   - SDA (Serial Data): Bidirectional data line
@@ -108,74 +122,67 @@ I²C combines the best aspects of UART and SPI, using a two-wire bus with addres
 _I²C uses a bus architecture with device addressing_
 
 ## Higher-Level Communication Protocols
+We have explored low-level serial protocols like UART, SPI, and I²C which are like basic conversations between devices. Next we are going to look at how more complex and powerful communication systems work.
 
-### USB (Universal Serial Bus)
+#### USB (Universal Serial Bus)
 
-USB has become the standard for connecting peripherals to computers.
-
-**Key Characteristics:**
+While low-level protocols are usually used inside devices or between microcontrollers and sensors, USB is built for general-purpose, plug-and-play communication between a wide range of devices. USB has become the standard for connecting peripherals to computers. Key Characteristics of USB are,
 
 - **Versatility**: Supports everything from keyboards to storage devices
 - **Power Delivery**: Provides power to connected devices
 - **Hot-Swappable**: Devices can be connected/disconnected while running
 - **Speed**: Ranges from 1.5 Mbps (USB 1.0) to 40 Gbps (USB4)
 
-**How it Works:**
+How it Works:
 
-- Uses differential signaling for noise immunity
+- Uses differential signalling for noise immunity
 - Hub architecture allows connecting multiple devices
 - Complex protocol stack handles device discovery, power management
 
-### Ethernet
+#### Ethernet
 
-Ethernet is the foundation of most local area networks.
-
-**Key Characteristics:**
+Ethernet is the foundation of most local area networks. We will discuss Ethernet in the next chapter. Key characteristics of Ethernet are, 
 
 - **Standardized**: Follows IEEE 802.3 standards
 - **Scalable**: From small home networks to massive data centers
 - **Speed**: Ranges from 10 Mbps to 400 Gbps
 - **Addressing**: Uses MAC addresses for device identification
 
-**How it Works:**
+How it Works:
 
 - Media Access Control (MAC) handles data frames
 - CSMA/CD protocol manages channel access
 - Switches and routers forward data to appropriate destinations
 
-### Bluetooth
+#### Bluetooth
 
-Bluetooth enables wireless communication between devices over short distances.
-
-**Key Characteristics:**
+Bluetooth is types of wireless communication technology that enables wireless communication between devices over short distances which uses a variety of protocols. In this Chapter, we look at Bluetooth as a medium that can be used to connect two devices together. Key Characteristics of Bluetooth are, 
 
 - **Wireless**: No physical connection required
 - **Low-Power**: Designed for battery-powered devices
 - **Personal Area Networks**: Typically 10-meter range
 - **Versatile**: Supports audio, data, control applications
 
-**How it Works:**
+How it Works:
 
 - Uses 2.4 GHz radio frequency band
 - Frequency-hopping spread spectrum for security and reliability
 - Device pairing establishes trusted connections
 
-### Wi-Fi
+#### Wi-Fi
 
-Wi-Fi provides wireless local area network connectivity.
-
-**Key Characteristics:**
+Similar to Bluetooth, Wi-Fi is also wireless communication technology which provides wireless local area network connectivity. We will learn about WiFi in the next chapter. However, in this chapter we look at WiFi as a connection technology that help us connects devices together. Key Characteristics of WiFi are, 
 
 - **High Bandwidth**: Supports demanding applications like video streaming
 - **Longer Range**: Typically 30+ meters indoors
 - **Network-Oriented**: Designed for multi-device networks
 - **Internet Connectivity**: Primary wireless internet access method
 
-**How it Works:**
+How it Works:
 
-- Operates in 2.4 GHz and 5 GHz bands
-- Uses SSID for network identification
-- Security through WPA2/WPA3 encryption
+- Operates in 2.4 GHz and 5 GHz bands depending on the technology used. 
+- Uses an ID for network identification
+- Enable security through encryption protocols. 
 
 ## Protocol Comparison Table
 
@@ -190,5 +197,5 @@ Wi-Fi provides wireless local area network connectivity.
 | Wi-Fi     | 0 (wireless) | Very High      | Yes (networking)        | Very High  | Long       | Wireless networking, internet access       |
 
 :::tip[Activity: Protocol Selection]
-Consider everyday devices like smartphones, laptops, and smart home gadgets. For each, identify What protocols they use to communicate with each other. Provide a brief discussion on why those protocols have been used and what if those protocols were not available.
+Consider everyday devices such as smartphones, laptops, and smart home devices. For each, identify what protocols they use to communicate with each other. Provide a brief discussion on why those protocols have been used and what would happen if we only had serial communication protocols.
 :::
