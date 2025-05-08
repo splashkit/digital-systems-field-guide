@@ -80,3 +80,158 @@ Modern computers and embedded systems use various buses to connect internal comp
 - **SATA**: Storage device connection
 
 The Raspberry Pi 4B exposes several of these buses, allowing it to connect to displays, storage, and other peripherals.
+
+
+### Controlling hardware wirelessly
+
+:::tip[Activity: Creating a Web Server on Pico 2W]
+
+Creating web server  allows any device on the same network to interact with the Pico 2W through a web browser, making it perfect for control panels, data visualization, and remote monitoring.
+
+In this activity, we'll set up the Pico 2W as a web server that controls and displays the onboard LED state. The Raspberry Pi 4B (or any device on the network) can access this web page.
+
+**Step 1: Program the Pico 2W as a Web Server**
+
+```python
+# wifi-server.py
+
+import network
+from time import sleep
+import socket
+# Import necessary classes for hardware control
+from machine import Pin
+
+# Create a Pin object for the onboard LED
+led = Pin("LED", Pin.OUT)
+
+# Wi-Fi credentials
+ssid = 'YOUR_NETWORK_NAME'
+password = 'YOUR_PASSWORD'
+
+def connect():
+    # Init Wi-Fi Interface
+    wlan = network.WLAN(network.STA_IF)
+    wlan.active(True)
+
+    # Connect to your network
+    wlan.connect(ssid, password)
+
+    # Wait for Wi-Fi connection
+    connection_timeout = 10
+    while connection_timeout > 0:
+        if wlan.status() >= 3:
+            break
+        connection_timeout -= 1
+        print('Waiting for Wi-Fi connection...')
+        sleep(1)
+
+    # Check if connection is successful
+    if wlan.status() != 3:
+        raise RuntimeError('Failed to establish a network connection')
+    else:
+        print('Connection successful!')
+        network_info = wlan.ifconfig()
+        print('IP address:', network_info[0])
+        return network_info[0]
+
+def open_socket(ip):
+    # Open a socket
+    address = (ip, 80)
+    connection = socket.socket()
+    connection.bind(address)
+    connection.listen(1)
+    print(connection)
+    return connection
+
+def webpage(state):
+    #Template HTML
+    html = f"""
+            <!DOCTYPE html>
+            <html>
+            <form action="./lighton">
+            <input type="submit" value="Light on" />
+            </form>
+            <form action="./lightoff">
+            <input type="submit" value="Light off" />
+            </form>
+            <p>LED is {state}</p>
+            </body>
+            </html>
+            """
+    return str(html)
+
+def serve(connection):
+    #Start a web server
+    state = 'OFF'
+    led.off()
+    while True:
+        client = connection.accept()[0]
+        request = client.recv(1024)
+        request = str(request)
+        try:
+            request = request.split()[1]
+        except IndexError:
+            pass
+        if request == '/lighton?':
+            led.on()
+            state = 'ON'
+        elif request =='/lightoff?':
+            led.off()
+            state = 'OFF'
+        html = webpage(state)
+        client.send(html)
+        client.close()
+
+try:
+    ip = connect()
+    connection = open_socket(ip)
+    serve(connection)
+except KeyboardInterrupt:
+    machine.reset()
+```
+
+**Step 2: Access the Web Server from Raspberry Pi 4B**
+
+1. After uploading the code to the Pico 2W, note the IP address printed in the Thonny shell.
+   ![Wi-Fi Connection Success](./images/wifi/thonny-wifi-server.png)
+   _Wi-Fi Connection Success_
+2. Open a web browser on the Raspberry Pi 4B and enter the IP address of the Pico 2W in the address bar. You should see a web page displaying the current LED satate and two buttons to control the LED from the Pico 2W.
+   ![Wi-Fi server](./images/wifi/wifi-server.png)
+   _Wi-Fi server_
+
+**Step 3: Controlling the hardware through WiFi**
+
+1. Once you are able to access the server via the browser, you will be able to control the onboard LED using the buttons on the webpage. Click the `Turn on` button to turn the LED on.
+
+![Wi-Fi server turn on](./images/wifi/wifi-server-on.png)
+_Wi-Fi server turn on_
+![Wi-Fi server turn on](./images/wifi/led-on-wifi.jpg)
+_Wi-Fi server turn on_
+
+1. Similarly the `Turn off` button to turns the LED off.
+
+![Wi-Fi server turn off](./images/wifi/wifi-server-off.png)
+_Wi-Fi server turn off_
+![Wi-Fi server turn off](./images/wifi/led-off-wifi.jpg)
+_Wi-Fi server turn off_
+
+**What's Happening?**
+
+- The Pico 2W connects to your WiFi network.
+- It starts a web server listening on port 80.
+- When a browser (from any device on the network) connects to its IP address, it responds with HTML code that the browser displays as web page.
+- The web page displays the current LED state and two buttons to control the LED.
+- This demonstrates IoT principles with a device providing data over the network
+
+**Understanding the code**
+
+1. `Connection Setup`: `The connect()` function establishes a Wi-Fi connection and returns the assigned IP address
+2. `Socket Creation`: `open_socket()` creates a network socket listening on port 80 (standard HTTP port)
+3. `HTML Generation`: `webpage()` generates a simple HTML page with buttons to control the LED
+4. `Request Handling`: `serve()` processes incoming HTTP requests and updates the LED state
+5. `User Interaction`: From any device on the same network, opening a browser and navigating to the Pico's IP address displays the control page
+
+This example demonstrates core concepts in IoT (Internet of Things) development, where physical devices can be controlled through standard web interfaces.
+
+:::
+
