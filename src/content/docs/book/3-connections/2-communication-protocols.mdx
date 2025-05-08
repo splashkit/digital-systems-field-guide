@@ -15,8 +15,7 @@ Understanding protocols is essential for anyone working with digital systems, fr
 - How many types of digital communication do you use daily?
 - What happens when two devices do not "speak the same language"?
 - Why might some protocols be better suited for certain applications than others?
-
-
+  
 :::
 
 ## What are Communication Protocols?
@@ -33,7 +32,7 @@ Now that we know digital devices need to talk to each other, the next question i
 
 - Parallel communication is like giving each letter to a friend at the same time which is faster, but more complex and can cause confusion.
 
-In digital systems, the same concept applies. Devices use serial or parallel methods to send bits of information. Serial is slower but more stable over long distances, while parallel can be faster but is often used for short distances. 
+In digital systems, the same concept applies. Devices use serial or parallel methods to send bits of information. Serial is slower but more stable over long distances, while parallel can be faster but is often used for short distances.
 
 <div class='not-content'>
   <YouTube id='myU2x27FIIc' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
@@ -56,6 +55,7 @@ _Serial communication uses a single data line, while parallel uses multiple line
 
 
 :::note[Historical Shift]
+
 Historically, computers used parallel ports for peripherals like printers because they were faster over short distances. However, as signals need to be synchronised, parallel communication becomes problematic over longer distances. Modern systems have largely shifted to high-speed serial protocols like USB, HDMI, and Ethernet.
 :::
 
@@ -82,7 +82,7 @@ _UART uses TX (transmit) and RX (receive) lines between devices_
 
 #### SPI (Serial Peripheral Interface)
 
-SPI is a synchronous protocol commonly used for communicating with sensors, displays, and memory devices. Key Characteristics of SPI are, 
+SPI is a synchronous protocol commonly used for communicating with sensors, displays, and memory devices. Key Characteristics of SPI are,
 
 - **Synchronous**: Uses a clock signal to coordinate data transfer
 - **Full-Duplex**: Can send and receive simultaneously
@@ -122,6 +122,7 @@ How it Works:
 _I²C uses a bus architecture with device addressing_
 
 ## Higher-Level Communication Protocols
+
 We have explored low-level serial protocols like UART, SPI, and I²C which are like basic conversations between devices. Next we are going to look at how more complex and powerful communication systems work.
 
 #### USB (Universal Serial Bus)
@@ -171,7 +172,7 @@ How it Works:
 
 #### Wi-Fi
 
-Similar to Bluetooth, Wi-Fi is also wireless communication technology which provides wireless local area network connectivity. We will learn about WiFi in the next chapter. However, in this chapter we look at WiFi as a connection technology that help us connects devices together. Key Characteristics of WiFi are, 
+Similar to Bluetooth, Wi-Fi is also wireless communication technology which provides wireless local area network connectivity. We will learn about WiFi in the next chapter. However, in this chapter we look at WiFi as a connection technology that help us connects devices together. Key Characteristics of WiFi are,
 
 - **High Bandwidth**: Supports demanding applications like video streaming
 - **Longer Range**: Typically 30+ meters indoors
@@ -180,11 +181,11 @@ Similar to Bluetooth, Wi-Fi is also wireless communication technology which prov
 
 How it Works:
 
-- Operates in 2.4 GHz and 5 GHz bands depending on the technology used. 
+- Operates in 2.4 GHz and 5 GHz bands depending on the technology used.
 - Uses an ID for network identification
-- Enable security through encryption protocols. 
+- Enable security through encryption protocols.
 
-## Protocol Comparison Table
+#### Protocol Comparison Table
 
 | Protocol  | Wires        | Speed          | Multiple Devices        | Complexity | Distance   | Typical Use Cases                          |
 | --------- | ------------ | -------------- | ----------------------- | ---------- | ---------- | ------------------------------------------ |

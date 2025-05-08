@@ -4,31 +4,36 @@ title: Wireless Connections Between Raspberry Pi and Pico 2W
 
 import { YouTube } from 'astro-embed';
 
-Now that we understand the fundamentals of communication protocols, let's explore how to establish wireless connections between our Raspberry Pi 4B and Raspberry Pi Pico 2W. Wireless communication allows for flexible device placement and eliminates the need for physical cables, enabling more dynamic project implementations. Unlike UART connections that require physical wires, Wi-Fi allows for flexible device placement and enables more dynamic project implementations.
+Now that we understand the fundamentals of communication protocols, let's explore how to establish wireless connections between our Raspberry Pi 4B and Raspberry Pi Pico 2W. Wireless communication allows for flexible device placement and eliminates the need for physical cables, enabling more dynamic project implementations and applications. Unlike UART connections that require physical wires, Wi-Fi allows for flexible device placement and enables more dynamic project implementations.
 
-In this module, we'll focus on two primary wireless methods: Wi-Fi and Bluetooth. Each offers distinct advantages and is suited for different applications in your projects.
+In this section, we will focus on two primary wireless connectivity methods, Wi-Fi and Bluetooth. Each offers distinct advantages and is suited for different applications.
 
 :::note[Think about It: Choosing the Right Wireless Protocol]
 
 - What factors would influence your choice between Wi-Fi and Bluetooth for a project?
 - How do range, power consumption, and data rate requirements affect this decision?
 - What security considerations should you keep in mind when implementing wireless communication?
-- In what scenarios might you need to use both protocols in the same project?
+- In what scenarios do you need to use both protocols in the same project?
 
 :::
 
-## Hardware Requirements
+## Wireless Connection Actvity
+
+In this activity we are going to send and receive data between Raspberry Pi 4B and Raspberry Pi Pico 2W.
+
+### Hardware Requirements
 
 - Raspberry Pi 4B
 - Raspberry Pi Pico 2W (with built-in Wi-Fi)
 - USB cable (for initial programming)
 - Thonny IDE with MicroPython installed
 
-## Method 1: Wi-Fi Communication
+### Method 1: Wi-Fi Communication
 
 Wi-Fi provides high-bandwidth network connectivity and is perfect for applications requiring Internet access or data transfer across longer distances. The Raspberry Pi Pico 2W comes with built-in Wi-Fi capabilities that we can leverage with MicroPython.
 
 :::note[Remember]
+
 Always connect the Raspberry Pi 4B with Pico 2W using Thonny and install the needed MicroPython so that you can develop the code on the Pico 2W. The following code should be executed on the Pico 2W unless explicitely specified to be executed on the Raspberry Pi.
 :::
 
@@ -72,7 +77,7 @@ _Wi-Fi Network Scan Output_
 
 ### Step 2: Connecting to a Wi-Fi Network
 
-Once you've identified the network you want to connect to, you can establish a connection using its SSID and password:
+Once you have identified the network you want to connect to, you can establish a connection using its SSID and password:
 
 ```python
 # wifi-connect.py
@@ -114,7 +119,7 @@ After running this code, your Pico 2W should be connected to the specified Wi-Fi
 ![Wi-Fi Connection Success](./images/wifi/wifi-connect.png)
 _Wi-Fi Connection Success_
 
-Your Pico 2W is now connected to wifi and can send and receive data wirelessly now. Connect you RPi to the same wifi and now we can start communicating between the devices.
+Your Pico 2W is now connected to WiFi and can send and receive data wirelessly now. Connect you RPi to the same WiFi and now we can start communicating between the devices.
 
 ### Controlling hardware wirelessly
 
@@ -233,7 +238,7 @@ except KeyboardInterrupt:
    ![Wi-Fi server](./images/wifi/wifi-server.png)
    _Wi-Fi server_
 
-**Step 3: Controlling the hardware through wifi**
+**Step 3: Controlling the hardware through WiFi**
 
 1. Once you are able to access the server via the browser, you will be able to control the onboard LED using the buttons on the webpage. Click the `Turn on` button to turn the LED on.
 
@@ -703,13 +708,16 @@ if __name__ == "__main__":
 1. Save the code above to a file named `ble_client.py` on your Raspberry Pi 4B.
 
 2. Run the script in scan mode to find your Pico 2W:
+
    ```bash
    sudo python3 ble_client.py --scan
    ```
+
     ![BLE Scan](./images/bluetooth/ble-scan-client.png)
    _BLE Scan_
 
 3. You can run the client code directly to enable the interactive mode:
+
    ```bash
    sudo python3 ble_client.py
    ```
@@ -727,7 +735,6 @@ _BLE Pico main_
 ![Wi-Fi server turn on](./images/wifi/led-on-wifi.jpg)
 _Bluetooth LED toggle_
 
-
 ### Understanding the Communication
 
 1. The Pico 2W acts as a peripheral device that advertises its presence.
@@ -735,7 +742,6 @@ _Bluetooth LED toggle_
 3. The communication uses the Nordic UART Service (NUS), which emulates a UART connection over BLE.
 4. When the Raspberry Pi sends the character 'o', the Pico toggles its onboard LED.
 5. The communication is bidirectional, so the Pico can also send data back to the Raspberry Pi.
-
 
 ## Conclusion
 
