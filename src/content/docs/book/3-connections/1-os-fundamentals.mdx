@@ -24,7 +24,7 @@ Next, we are going to explore operating systems in detail. We will examine the f
 An operating system (OS) is system software that manages computer hardware, software and provide services computer programs. It provides common services, manages hardware resources, and creates a platform for applications to run. It acts as an intermediary between users, applications, and hardware.
 
 :::note[Think about It]
-Your smartphone, smartwatch, car infotainment system, and even some refrigerators run operating systems. Different devices often require specialized operating systems designed for their specific hardware and use cases.
+Your smartphone, smartwatch, car infotainment system, and even some refrigerators run operating systems. Different devices often require specialised operating systems designed for their specific hardware and use cases.
 :::
 
 Watch the following video to understand the role of operating systems in modern computing.
@@ -35,44 +35,52 @@ Watch the following video to understand the role of operating systems in modern 
 
 
 ## Core Functions of Operating Systems
+Core functions of OS include managing processes (running programs), allocating and organizing memory, handling input/output devices, managing files and storage, and providing a user interface. It also ensures system security, manages user permissions, enables networking, and monitors overall system performance—all to ensure that the computer runs efficiently and reliably.
 
 ### Process Management
 
-Process management is one of the most critical functions of an operating system. A process is a program in execution, and the OS must:
+Process management is one of the most critical functions of an operating system. A process is a program in execution. Imagine your computer is like a kitchen. In the kitchen, the operating system (OS) is the head chef, and all the programs you are running such as a web browser, music player, or MS word are like the recipes being cooked at the same time. Each recipe is a process, and the OS has to decide which recipe to cook first, make sure each recipe gets enough stove space (CPU time), keep track of what ingredients (data) are being used, make sure recipes do not interfere with each other, and pause and resume cooking as needed. This juggling act is called process management and the OS must:
+- **Create and terminate processes**
+- **Schedule processes** for efficient CPU utilisation
+- **Synchronize processes** to prevent conflicts
+- **Handle inter-process communication**
 
-1. **Create and terminate processes**
-2. **Schedule processes** for efficient CPU utilization
-3. **Synchronize processes** to prevent conflicts
-4. **Handle inter-process communication**
+:::note[Do we need an operating system?]
+When you open a browser, it becomes a process. If you then open a game, it becomes another process. The OS switches between them rapidly so that both feel like they are working at the same time even if you only have one CPU.
+
+What would happen without process management?
+:::
 
 ### Memory Management
 
-Memory is a finite resource that must be carefully managed:
+Memory is a finite resource that must be carefully managed. The Os responsible for, 
 
-1. **Allocation and deallocation** of memory to processes
-2. **Virtual memory** implementation to extend physical memory
-3. **Memory protection** to prevent processes from accessing each other's memory
-4. **Garbage collection** in some systems to reclaim unused memory
+- **Allocation and deallocation** of memory to processes
+- **Virtual memory** implementation to extend physical memory
+- **Memory protection** to prevent processes from accessing each other's memory
+- **Garbage collection** in some systems to reclaim unused memory
 
 ### File System Management
 
 File systems organize data for storage and retrieval:
 
-1. **File creation, deletion, and modification**
-2. **Directory management**
-3. **Access control and security**
-4. **Disk space allocation**
+- **File creation, deletion, and modification**
+- **Directory management**
+- **Access control and security**
+- **Disk space allocation**
 
 ### Device Management
 
 Device management handles communication with peripheral hardware:
 
-1. **Device drivers** for hardware communication
-2. **Buffering** to handle speed mismatches between devices
-3. **Spooling** for devices that can serve only one request at a time
-4. **Plug and Play** functionality
+- **Device drivers** for hardware communication
+- **Buffering** to handle speed mismatches between devices
+- **Spooling** for devices that can serve only one request at a time
+- **Plug and Play** functionality
 
 ## Types of Operating Systems
+
+Not all devices are built the same and that is why they need different types of operating systems. For example, personal computers have powerful processors, lots of memory, and support for other peripherals such as keyboards and monitors. Their OS is designed to manage multiple apps, users, and complex programs. On the other hand, OS in an IoT device has a completely different set of requirements.  The following table lists different types of operating systems available in the commonly used devices. 
 
 | Device               | Operating System              | Key Characteristics           |
 | -------------------- | ----------------------------- | ----------------------------- |
@@ -82,34 +90,35 @@ Device management handles communication with peripheral hardware:
 | Laptop/Desktop       | Windows/macOS/Linux           | General purpose OS            |
 | Smart Watch          | watchOS/Wear OS               | Resource-constrained OS       |
 
-### Desktop Operating Systems
+#### Desktop Operating Systems
 
 - **Windows**: Developed by Microsoft, known for its widespread compatibility
 - **macOS**: Developed by Apple for their hardware, known for its design and stability
 - **Linux Distributions**: Open-source alternatives like Ubuntu, Fedora, and Mint
 
-### Mobile Operating Systems
+#### Mobile Operating Systems
 
 - **Android**: Open-source, developed by Google
 - **iOS**: Developed by Apple for iPhones and iPads
 
-### Embedded Operating Systems
+#### Embedded Operating Systems
 
 - **RTOS (Real-Time Operating Systems)**: For time-critical applications
 - **Embedded Linux**: For more complex embedded devices
 - **Bare-metal programming**: Direct hardware control without an OS
 
 
-:::note[Compare and Contrast]
+:::note [Compare and Contrast]
 
 In groups or individually, compare two different operating systems (e.g., Windows vs. Linux, iOS vs. Android):
 
-1. Research the history and development of each OS.
-2. Identify the key design philosophies.
-3. Compare their user interfaces.
-4. Analyze their strengths and weaknesses.
-5. Discuss what types of users or use cases each OS is best suited for.
-6. Present your findings to the class.
+1. Select two different operating systems 
+2. Look into the history and development of each OS.
+3. Identify the key design criterian.
+4. Compare their user interfaces.
+5. Analyze their strengths and weaknesses.
+6. Discuss what types of users or use cases each OS is best suited for.
+7. Present your findings to the class.
 
 Questions to consider:
 - Why do certain operating systems dominate specific markets?
