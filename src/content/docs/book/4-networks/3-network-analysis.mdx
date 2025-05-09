@@ -1,0 +1,162 @@
+---
+title: Network Analysis with Wireshark
+---
+
+import { YouTube } from 'astro-embed';
+
+# Network Analysis Tools
+
+The basic tools that we use to monitor the messages exchanged between executing protocols and applications are called packet sniffers. A packet sniffer is passive program and it copies (sniffs) messages being sent from and received by your device and it displays the contents of the various protocol fields of these captured messages. It does not send or receive packets itself. Instead, it receives a copy of the packets that are been transferred in your device.  In this section, we'll focus on Wireshark, which is a popular free open source packet sniffer used in the networking industry which will allow us to observe and decode network traffic, providing a window into the communication happening between devices.
+
+## Introduction to Wireshark
+
+Wireshark is one of the most popular network protocol analyzers in the world. It lets you capture and interactively browse the traffic running on a computer network, providing detailed information about each packet.
+
+#### Key Capabilities:
+
+- **Live packet capture**: Watch network traffic in real-time
+- **Deep inspection**: Decode hundreds of protocols
+- **Advanced filtering**: Focus on specific traffic types
+- **Visualization tools**: Graph traffic patterns
+- **Cross-platform**: Available for Windows, macOS, Linux (including Raspberry Pi)
+
+![Wireshark Operation](./images/operation-of-wireshark.png)
+_Operating of Wireshark_
+
+:::note[Ethical and Legal Considerations]
+Packet sniffing can raise privacy and security concerns. Always:
+- Only analyze networks you own or have explicit permission to monitor
+- Be aware of privacy laws and regulations
+- Never attempt to capture sensitive information like passwords
+- Inform users if you're monitoring a shared network for educational purposes
+
+In educational settings, create controlled environments for network analysis rather than analyzing general traffic.
+:::
+
+
+
+## Installing Wireshark on Raspberry Pi
+
+Our Raspberry Pi 4B makes an excellent platform for network analysis with Wireshark. Let's install and configure it.
+
+:::tip[Activity: Installing and Configuring Wireshark on Raspberry Pi]
+
+Follow these steps to set up Wireshark on your Raspberry Pi for network traffic analysis.
+
+**Materials Needed:**
+- Raspberry Pi 4B with Raspberry Pi OS
+- Internet connection
+- Terminal access
+
+**Step 1: Update your system**
+
+Open a terminal and run:
+```bash
+sudo apt update
+sudo apt upgrade
+```
+
+**Step 2: Install Wireshark**
+
+Install Wireshark using:
+```bash
+sudo apt install wireshark
+```
+
+During installation, you'll be asked if non-superusers should be able to capture packets. Select "Yes" for easier use.
+
+![Wireshark Panes](./images/wireshark/wireshark-config.png)
+_Wireshark Configuration_
+
+**Step 3: Add your user to the wireshark group**
+
+To capture packets without running as root:
+```bash
+sudo usermod -a -G wireshark $USER
+```
+
+You'll need to log out with `logout` command and back in for this change to take effect or you can just restart the RPi to apply the effect.
+
+**Step 4: Start Wireshark**
+
+You can start Wireshark through the desktop environment:
+1. Click the Raspberry Pi menu
+2. Go to Internet
+3. Select Wireshark
+
+![Wireshark from menu](./images/wireshark/wireshark-menu-start.png)
+_Starting Wireshark from menu_
+
+Alternatively, start it from the terminal:
+```bash
+wireshark
+```
+
+![Wireshark Terminal](./images/wireshark/wireshark-terminal-start.png)
+_Starting Wireshark from Terminal_
+
+**Step 5: Select an interface to capture**
+
+When Wireshark opens:
+1. You'll see a list of network interfaces
+2. For wired connections, select "eth0"
+3. For wireless connections, select "wlan0"
+4. Click the shark fin icon to start capturing
+
+![Wireshark Home](./images/wireshark/wireshark-home.png)
+_Wireshark Home Page_
+
+If you do not see the interfaces like `wlan` or `bluetooth0`, then most probably your Step 3 failed and the program does not have permission to access those interfaces. Try Step 3 again and logout from the menu and log back in to enable the command.
+
+**Step 6: Observe traffic**
+
+Watch as packets start appearing in the main window. Each line represents a single packet, with columns showing:
+- Packet number
+- Time
+- Source address
+- Destination address
+- Protocol
+- Length
+- Info about the packet
+
+![Wireshark WLAN](./images/wireshark/wlan-interface.png)
+_Wireshark WLAN Capture
+
+**Step 7: Stop the capture**
+
+Click the red square button to stop capturing when you have sufficient data to analyze.
+
+**Step 8: Save your capture (optional)**
+
+If you want to save the capture for later analysis:
+1. Click File > Save
+2. Choose a location and filename
+3. Save with the .pcapng extension
+
+**Troubleshooting:**
+
+- **No permission to capture**: Run `sudo chmod 750 /usr/bin/dumpcap` to set the correct permissions
+- **No interfaces shown**: Try running with sudo: `sudo wireshark`
+- **Slow performance**: Limit the capture with display filters to reduce processing load
+- **Raspberry Pi freezing**: Use capture filters to reduce the amount of data captured
+
+**Initial Exploration:**
+
+1. Generate some network traffic by:
+   - Opening a web browser and visiting a simple website
+   - Pinging another device on your network
+   - Running a speed test
+
+2. Observe the different protocols you can see in the capture
+3. Click on a packet to see its details in the middle and bottom panes
+4. Experiment with color coding (View > Coloring Rules) to better visualize different protocols
+:::
+
+:::tip[Activity: Capturing bluetooth traffic]
+In the last module, you connected RPi and Pico via Bluetooth connection and controlled the Pico LED by sending bluetooth commands. Rerun the activity and start capturing the activity on the bluetooth interface.
+
+You should see traffic like below. Capture and store the data for further analysis.
+
+![Wireshark Bluetooth](./images/wireshark/bluetooth.png)
+_Wireshark Bluetooth Capture_
+:::

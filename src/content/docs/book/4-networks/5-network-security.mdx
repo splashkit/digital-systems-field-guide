@@ -1,0 +1,159 @@
+---
+title: Introduction to Network Security
+---
+
+import { YouTube } from 'astro-embed';
+
+
+# Introduction to Network Security
+
+As we've explored network communication in detail, you've likely noticed that much of the traffic we analyzed was transmitted in plain text. This transparency is excellent for learning but presents significant security risks in real-world applications. In this final section, we'll introduce the fundamentals of network security.
+
+## Why Network Security Matters
+
+Network security is crucial because:
+
+1. **Data Protection**: Sensitive information should remain private
+2. **Authentication**: Verifying the identity of communicating parties
+3. **Integrity**: Ensuring data hasn't been tampered with
+4. **Availability**: Keeping systems operational despite attack attempts
+5. **Compliance**: Meeting legal and regulatory requirements
+
+:::note[Think about It: Personal Data in Transit]
+Consider what sensitive information you transmit over networks daily:
+- Passwords and login credentials
+- Financial information
+- Personal messages
+- Health information
+- Location data
+
+Without proper security, this information could be intercepted or manipulated by attackers.
+:::
+
+
+## Common Network Security Threats
+
+Understanding potential threats is the first step in protection:
+
+### 1. Eavesdropping (Sniffing)
+
+**What it is**: Intercepting and reading network traffic not intended for you.
+
+**How it works**: Using tools like Wireshark on unsecured networks to capture sensitive data.
+
+**Example**: Capturing login credentials on an open Wi-Fi network.
+
+
+### 2. Man-in-the-Middle (MITM) Attacks
+
+**What it is**: Inserting oneself between two communicating parties, intercepting and potentially altering traffic.
+
+**How it works**: Redirecting traffic through an attacker's system by manipulating DNS, ARP, or routing.
+
+**Example**: Fake Wi-Fi hotspots that masquerade as legitimate networks.
+
+
+### 3. Denial of Service (DoS)
+
+**What it is**: Overwhelming a system to make it unavailable to legitimate users.
+
+**How it works**: Flooding a target with excessive traffic or exploiting vulnerabilities.
+
+**Example**: Distributed Denial of Service (DDoS) attacks using botnets.
+
+### 4. Spoofing
+
+**What it is**: Impersonating another device or user.
+
+**How it works**: Falsifying data to disguise one's identity.
+
+**Types**:
+- IP spoofing (forging source IP address)
+- MAC spoofing (forging hardware address)
+- Email spoofing (forging sender information)
+
+### 5. Packet Injection
+
+**What it is**: Inserting malicious packets into an established communication stream.
+
+**How it works**: Exploiting weaknesses in protocols to insert unauthorized commands or data.
+
+**Example**: Injecting malicious SQL commands into unprotected web traffic.
+
+## Basic Security Measures
+
+Let's explore fundamental security techniques that address these threats:
+
+### Encryption
+
+Encryption transforms readable data (plaintext) into encoded data (ciphertext) that can only be read with the proper key.
+
+**Types of Encryption:**
+
+1. **Symmetric Encryption**:
+   - Uses the same key for encryption and decryption
+   - Faster but requires secure key exchange
+   - Examples: AES, 3DES
+
+2. **Asymmetric Encryption**:
+   - Uses public-private key pairs
+   - Anyone can encrypt with the public key, but only the private key holder can decrypt
+   - Slower but solves key distribution problem
+   - Examples: RSA, ECC
+
+3. **Hybrid Approaches**:
+   - Use asymmetric encryption to exchange symmetric keys
+   - Then use faster symmetric encryption for bulk data
+   - How most secure connections work today
+
+
+### Transport Layer Security (TLS)
+
+TLS (formerly SSL) secures communication at the transport layer, most commonly seen in HTTPS.
+
+**How TLS Works:**
+
+1. **Handshake**:
+   - Client and server agree on protocol version and cipher suite
+   - Server authenticates with a certificate
+   - Session keys are established
+
+2. **Data Transfer**:
+   - All data is encrypted with the session keys
+   - Message Authentication Codes (MACs) ensure integrity
+   - Sequence numbers prevent replay attacks
+
+**In Wireshark:**
+- TLS traffic shows the handshake process
+- The actual content is encrypted and unreadable
+- Look for certificate information and cipher suites
+
+
+### Authentication and Authorization
+
+Security also involves verifying identity and access rights:
+
+1. **Authentication Methods**:
+   - Passwords and passphrases
+   - Digital certificates
+   - Multi-factor authentication (MFA)
+   - Biometrics
+
+2. **Authorization Frameworks**:
+   - Access Control Lists (ACLs)
+   - Role-Based Access Control (RBAC)
+   - Attribute-Based Access Control (ABAC)
+
+### Firewalls and IDS/IPS
+
+Physical and virtual network protection includes:
+
+1. **Firewalls**:
+   - Filter traffic based on rules
+   - Types: packet filtering, stateful inspection, application-level
+   - Can be hardware devices or software
+
+2. **Intrusion Detection/Prevention Systems**:
+   - Monitor for suspicious patterns
+   - IDS: Detects and alerts
+   - IPS: Detects and actively blocks

@@ -1,0 +1,451 @@
+---
+title: Analyzing Network Traffic
+---
+
+import { YouTube } from 'astro-embed';
+
+
+# Analyzing TCP/IP Communication
+
+Now that we've captured network traffic between our devices, it's time to analyze it. This analysis will give us practical insight into the TCP/IP model and help us understand how protocols work at each layer. We'll focus on analyzing the Wi-Fi communication.
+
+
+## The TCP/IP Layers in Action
+
+Let's examine how each layer of the TCP/IP model appears in our Wireshark captures and what role it plays in communication.
+
+### Link Layer (Data Link and Physical)
+
+The Link layer in TCP/IP combines the Physical and Data Link layers from the OSI model. It handles the physical connection between devices and local addressing.
+
+**Key Components:**
+- **MAC Addresses**: 48-bit hardware addresses assigned to network interfaces
+- **Frames**: The basic unit of transmission at this layer
+- **Error Detection**: CRC (Cyclic Redundancy Check) to verify frame integrity
+
+**In Wireshark:**
+- Look at the "Frame" section in the packet details pane
+- Examine Ethernet or IEEE 802.11 (Wi-Fi) headers
+- MAC addresses appear as source and destination
+
+![MAC Address in Wireshark](./images/placeholder.png)
+_MAC addresses in the Ethernet frame header_
+
+:::note[MAC vs. IP Addresses]
+MAC addresses are physical addresses tied to specific hardware, while IP addresses are logical addresses that can be assigned and changed. MAC addresses operate at the Link layer for local delivery, while IP addresses work at the Network layer for internetwork routing.
+:::
+
+
+### Internet Layer (Network Layer)
+
+The Internet layer handles routing between different networks using IP addresses.
+
+**Key Components:**
+- **IP Addresses**: Logical addresses for internetwork routing (IPv4 or IPv6)
+- **Packets**: Data units at this layer
+- **Routing**: Determining paths through different networks
+- **Fragmentation**: Breaking large packets into smaller ones if needed
+
+**In Wireshark:**
+- Look at the "Internet Protocol" section in packet details
+- Source and destination IP addresses
+- Time to Live (TTL) values
+- Fragmentation flags and offsets
+
+![IP Header in Wireshark](./images/placeholder.png)
+_IP header showing source and destination addresses_
+
+**IP Address Ranges:**
+- Private ranges (not routable on the internet):
+  - 10.0.0.0/8 (10.0.0.0 - 10.255.255.255)
+  - 172.16.0.0/12 (172.16.0.0 - 172.31.255.255)
+  - 192.168.0.0/16 (192.168.0.0 - 192.168.255.255)
+- Local loopback: 127.0.0.0/8 (typically 127.0.0.1)
+- Link-local: 169.254.0.0/16 (auto-assigned when DHCP fails)
+
+### Transport Layer
+
+The Transport layer provides end-to-end communication between applications, primarily using TCP or UDP.
+
+**TCP (Transmission Control Protocol):**
+- Connection-oriented with three-way handshake
+- Reliable delivery with acknowledgments and retransmissions
+- Flow control and congestion management
+- Identified by ports (e.g., HTTP on port 80, HTTPS on port 443)
+
+**UDP (User Datagram Protocol):**
+- Connectionless with no handshaking
+- No guaranteed delivery or ordering
+- Lower overhead and latency
+- Also uses ports for service identification
+
+**In Wireshark:**
+- Look at the TCP or UDP section in packet details
+- Source and destination ports
+- Sequence and acknowledgment numbers (TCP)
+- Flags (SYN, ACK, FIN, etc. for TCP)
+- Window size for flow control
+
+![TCP Header in Wireshark](./images/placeholder.png)
+_TCP header showing ports, sequence numbers, and flags_
+
+### Application Layer
+
+The Application layer provides network services directly to end-users or applications.
+
+**Common Protocols:**
+- **HTTP/HTTPS**: Web browsing
+- **DNS**: Domain name resolution
+- **DHCP**: Dynamic IP address assignment
+- **SMTP/IMAP/POP3**: Email
+- **FTP/SFTP**: File transfer
+
+**In Wireshark:**
+- Look at the protocol-specific section (HTTP, DNS, etc.)
+- Request and response content
+- Headers and parameters
+- Status codes and error messages
+
+![HTTP in Wireshark](./images/placeholder.png)
+_HTTP request details in the Application layer_
+
+## Analyzing Wi-Fi Communication
+
+Let's analyze the Wi-Fi communication between our Raspberry Pi and the Pico 2W web server in detail.
+
+:::tip[Activity: Analyzing Wi-Fi Traffic Between Pi and Pico]
+
+In this activity, we'll analyze the captured Wi-Fi traffic between your Raspberry Pi and Pico 2W web server.
+
+**Materials Needed:**
+- Wireshark installed on Raspberry Pi
+- Previously captured Wi-Fi traffic file (or create a new capture)
+
+**Step 1: Open your capture file**
+
+Open Wireshark and load your saved capture file:
+1. Click File > Open
+2. Navigate to your saved capture
+3. Click Open
+
+**Step 2: Apply a display filter to focus on relevant traffic**
+
+If you know the IP address of your Pico 2W, enter a filter like:
+```
+ip.addr == 192.168.1.X
+```
+Replace the IP address with your Pico's actual address.
+
+**Step 3: Identify the TCP three-way handshake**
+
+1. Look for TCP packets with the SYN flag set:
+   ```
+   tcp.flags.syn == 1
+   ```
+2. Find the complete handshake sequence:
+   - SYN (Client → Server)
+   - SYN, ACK (Server → Client)
+   - ACK (Client → Server)
+3. Note the IP addresses and ports involved
+4. What do these port numbers tell you about the communication?
+
+**Step 4: Examine HTTP requests and responses**
+
+1. Apply a filter to show only HTTP traffic:
+   ```
+   http
+   ```
+2. Find an HTTP GET request from the Pi to the Pico
+3. Analyze the request details:
+   - Request method and URI
+   - Headers (Host, User-Agent, etc.)
+   - Any query parameters or cookies
+
+4. Find the corresponding HTTP response
+5. Analyze the response:
+   - Status code (200 OK, 404 Not Found, etc.)
+   - Headers (Content-Type, Content-Length, etc.)
+   - Content/payload
+
+**Step 5: Follow the TCP stream**
+
+1. Right-click on one of the HTTP packets
+2. Select Follow > TCP Stream
+3. Review the complete HTTP conversation
+4. Identify the HTML code being served by the Pico
+
+**Step 6: Examine each layer in detail**
+
+For a selected HTTP packet, examine each layer:
+
+1. **Link Layer**
+   - Note the source and destination MAC addresses
+   - What devices do these MAC addresses belong to?
+
+2. **Internet Layer**
+   - Record the source and destination IP addresses
+   - Check the TTL value
+   - Is there any fragmentation?
+
+3. **Transport Layer**
+   - Note the source and destination ports
+   - For TCP packets, examine sequence and acknowledgment numbers
+   - What do the flags indicate?
+
+4. **Application Layer**
+   - What is being requested or served?
+   - Are there any notable headers?
+   - If it's controlling the LED, what parameters are being sent?
+
+**Step 7: Analyze LED control traffic**
+
+1. Apply a filter to find requests that control the LED:
+   ```
+   http contains "lighton" or http contains "lightoff"
+   ```
+2. Examine how the command is transmitted
+3. Find the server's response to these commands
+4. Trace the complete request-response cycle
+
+**Questions to Answer:**
+
+1. What transport protocol is used for communication between the Pi and Pico? Why is this appropriate?
+2. How does the client (Pi) specify which resource it wants from the server (Pico)?
+3. What content type is the Pico serving? How can you tell?
+4. How does the web interface send commands to control the LED?
+5. Does the communication use any encryption? How would this change if HTTPS was used?
+6. What happens at the network level when you refresh the web page?
+7. How does the browser know when it has received all the data?
+8. Can you identify any inefficiencies or potential improvements in the communication?
+
+**Submit a screenshot of your Wireshark analysis with annotations highlighting the key aspects of the communication.**
+:::
+
+## Analyzing Bluetooth Communication
+
+Now let's analyze the Bluetooth Low Energy (BLE) communication between our Raspberry Pi and Pico 2W.
+
+### BLE Protocol Structure
+
+BLE uses a different protocol stack than traditional TCP/IP, but we can still analyze it in terms of layers:
+
+1. **Physical Layer**: Radio transmission at 2.4 GHz
+2. **Link Layer**: Advertising, scanning, and connection management
+3. **L2CAP (Logical Link Control and Adaptation Protocol)**: Multiplexing, fragmentation
+4. **ATT (Attribute Protocol)**: Simple client/server operations
+5. **GATT (Generic Attribute Profile)**: Higher-level service framework
+6. **GAP (Generic Access Profile)**: Device discovery and connection
+
+:::tip[Activity: Analyzing Bluetooth Traffic Between Pi and Pico]
+
+In this activity, we'll analyze the captured Bluetooth traffic between your Raspberry Pi and Pico 2W.
+
+**Materials Needed:**
+- Wireshark installed on Raspberry Pi
+- Previously captured Bluetooth traffic file (or create a new capture)
+- Pen and paper for notes
+
+**Step 1: Open your Bluetooth capture file**
+
+1. Open Wireshark
+2. Load your saved Bluetooth capture file
+3. If you used btmon, the file should open correctly as a Bluetooth capture
+
+**Step 2: Understand BLE packet structure**
+
+Bluetooth Low Energy packets have a different structure than TCP/IP packets. Look for:
+1. **Advertising packets**: How the Pico announces its presence
+2. **Connection establishment**: When the Pi connects to the Pico
+3. **GATT operations**: Reading/writing characteristics
+4. **Notifications**: Data sent from Pico to Pi
+
+**Step 3: Identify device roles and addresses**
+
+1. Find the BLE advertising packets
+2. Note the Bluetooth addresses of both devices
+3. Identify which device is the Central (the Pi) and which is the Peripheral (the Pico)
+
+**Step 4: Locate service discovery**
+
+After connection establishment, the Central device discovers the Peripheral's services:
+1. Look for "Read By Group Type Request" packets
+2. Note the services being discovered
+3. Find the GATT service (typically a UART service in our implementation)
+
+**Step 5: Analyze characteristic operations**
+
+1. Find "Write Request" packets from Pi to Pico
+   - These contain commands like "led_on" or "read_temp"
+   - Note the handle being written to
+   - Examine the data being sent
+
+2. Find "Notification" packets from Pico to Pi
+   - These contain responses or sensor data
+   - Note the handle and the data format
+
+**Step 6: Follow a complete command-response sequence**
+
+Track a complete interaction:
+1. Find a command sent from the Pi (e.g., "read_temp")
+2. Locate the corresponding notification response from the Pico
+3. Note the timing between command and response
+4. Examine the format of the data being exchanged
+
+**Step 7: Compare with Wi-Fi communication**
+
+Consider how BLE communication differs from the Wi-Fi/HTTP approach:
+1. Connection establishment
+2. Addressing
+3. Data format
+4. Overhead
+5. Power efficiency
+
+**Questions to Answer:**
+
+1. How does a BLE device advertise its presence? What information is included?
+2. What services and characteristics does the Pico expose? How are they identified?
+3. How are commands formatted when sent from the Pi to the Pico?
+4. How does notification work for sending data from the Pico to the Pi?
+5. What advantages does BLE provide for this type of communication compared to Wi-Fi?
+6. What are the limitations of BLE for this application?
+7. How is security implemented in the BLE communication?
+8. How would you modify the communication to be more efficient or secure?
+
+**Submit a screenshot of your Wireshark analysis with annotations highlighting the key aspects of the BLE communication.**
+:::
+
+## Key TCP/IP Concepts in Detail
+
+Now that we've seen TCP/IP in action, let's dive deeper into some key concepts:
+
+### IP Addressing and Subnetting
+
+IP addresses are 32-bit (IPv4) or 128-bit (IPv6) numbers that identify network interfaces. Subnetting divides IP networks into smaller subnetworks.
+
+**Key Concepts:**
+- **CIDR Notation**: e.g., 192.168.1.0/24 (the /24 indicates 24 bits for network portion)
+- **Subnet Mask**: e.g., 255.255.255.0 (corresponds to /24)
+- **Network Address**: The first address in a subnet (e.g., 192.168.1.0)
+- **Broadcast Address**: The last address in a subnet (e.g., 192.168.1.255)
+- **Available Hosts**: Number of usable addresses in a subnet
+
+### DNS Resolution
+
+DNS (Domain Name System) translates human-readable domain names into IP addresses.
+
+**DNS Resolution Process:**
+1. Client queries local DNS server
+2. If not cached, local DNS server queries root servers
+3. Root servers direct to TLD (Top-Level Domain) servers
+4. TLD servers direct to authoritative name servers
+5. Authoritative servers provide the IP address
+6. Result is cached at various levels
+
+**In Wireshark:**
+- DNS queries show the domain being looked up
+- DNS responses contain the IP addresses
+- Both queries and responses include various flags and parameters
+
+![DNS in Wireshark](./images/placeholder.png)
+_DNS query and response in Wireshark_
+
+### TCP Connection Management
+
+TCP establishes, maintains, and terminates connections in an orderly way.
+
+**Connection Establishment (Three-Way Handshake):**
+1. SYN: Client sends a synchronization packet
+2. SYN-ACK: Server acknowledges and sends its own synchronization
+3. ACK: Client acknowledges the server's synchronization
+
+**Connection Termination (Four-Way Handshake):**
+1. FIN: One endpoint sends a finish packet
+2. ACK: Other endpoint acknowledges
+3. FIN: Other endpoint sends its own finish packet
+4. ACK: First endpoint acknowledges
+
+**TCP States:**
+- CLOSED: No connection
+- LISTEN: Server waiting for connections
+- SYN-SENT: Client sent SYN, waiting for SYN-ACK
+- SYN-RECEIVED: Server received SYN, sent SYN-ACK
+- ESTABLISHED: Connection established, data transfer possible
+- FIN-WAIT: Sent FIN, waiting for ACK
+- CLOSE-WAIT: Received FIN, sent ACK
+- TIME-WAIT: Waiting to ensure all packets processed
+
+### ARP (Address Resolution Protocol)
+
+ARP resolves IP addresses to MAC addresses on local networks.
+
+**ARP Process:**
+1. Device needs to send data to an IP on the same network
+2. Checks ARP cache for matching MAC address
+3. If not found, broadcasts an ARP request
+4. Device with matching IP sends an ARP reply
+5. Sending device updates its ARP cache
+6. Communication proceeds using the MAC address
+
+**In Wireshark:**
+- ARP requests are broadcast to all devices
+- ARP replies are sent directly to the requester
+- Both include IP and MAC address pairs
+
+![ARP in Wireshark](./images/placeholder.png)
+_ARP request and reply in Wireshark_
+
+## Advanced Wireshark Features
+
+To deepen your analysis, explore these advanced Wireshark features:
+
+### Protocol Statistics
+
+Wireshark provides various statistical analyses:
+
+1. **Protocol Hierarchy**: Statistics > Protocol Hierarchy
+   - Shows distribution of protocols in your capture
+   - Helps identify predominant traffic types
+
+2. **Conversations**: Statistics > Conversations
+   - Lists all observed connections
+   - Organized by Ethernet, IP, TCP, or UDP
+   - Shows bytes transferred and connection duration
+
+3. **Endpoints**: Statistics > Endpoints
+   - Lists all devices observed in the capture
+   - Helps identify busy hosts on the network
+
+4. **I/O Graphs**: Statistics > I/O Graph
+   - Visualizes traffic patterns over time
+   - Can plot multiple filters on the same graph
+
+### Expert Information
+
+Wireshark's "Expert Information" highlights potential issues:
+
+1. Access via Analyze > Expert Information
+2. Categories include:
+   - Errors (red): Serious problems
+   - Warnings (yellow): Notable issues
+   - Notes (blue): Unusual but not problematic
+   - Chats (green): Normal protocol behavior
+
+This feature helps identify network problems, retransmissions, and protocol violations.
+
+### Time Analysis
+
+Wireshark offers several timing features:
+
+1. **Time display formats**: View > Time Display Format
+   - Absolute time
+   - Time since previous packet
+   - Time since reference packet
+
+2. **TCP stream graph**: Statistics > TCP Stream Graphs
+   - Round-trip time graph
+   - Throughput graph
+   - Window scaling graph
+
+These tools help identify latency issues and performance bottlenecks.
+
+In the next section, we'll introduce basic concepts of network security, explaining how the communication we've been analyzing can be protected from various threats.
