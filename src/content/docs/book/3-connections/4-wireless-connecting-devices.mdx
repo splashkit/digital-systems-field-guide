@@ -123,7 +123,7 @@ Your Pico 2W is now connected to WiFi and can send and receive data wirelessly n
 
 ## Method 2: Bluetooth Communication
 
-The Raspberry Pi Pico 2W also has Bluetooth capabilities, allowing for direct device-to-device communication without needing a network infrastructure. While Wi-Fi excels at longer range and higher bandwidth applications, Bluetooth offers better power efficiency and direct device-to-device connectivity without requiring a network infrastructure. The Raspberry Pi Pico 2W supports Bluetooth Low Energy (BLE), which is perfect for lower-power applications.
+The Raspberry Pi Pico 2W also has Bluetooth capabilities, allowing for direct device-to-device communication without needing a network infrastructure. While Wi-Fi is suitable for longer range and higher bandwidth applications, Bluetooth offers better power efficiency and direct device-to-device connectivity without requiring a network infrastructure. The Raspberry Pi Pico 2W supports Bluetooth Low Energy (BLE), which is suitable for lower-power applications.
 
 ### Understanding BLE on Pico 2W
 
@@ -140,7 +140,7 @@ Communication happens through defined characteristics that can be read from or w
 
 For Bluetooth communication, we need three Python files on the Pico 2W. Make sure to store these files on the Pico 2W and not the Rpi:
 
-1. **ble_advertising.py** - Helper module for generating BLE advertising payloads
+1. **ble_advertising.py** - Helper module for generating BLE advertising information, i.e, payloads
 2. **ble_simple_peripheral.py** - Module for implementing a BLE peripheral device
 3. **main.py** - Our main code that uses the above modules to communicate
 
@@ -370,11 +370,11 @@ Now your Pico 2W is set up as a BLE peripheral device that will toggle its onboa
 
 ### Step 3: Setting Up the Raspberry Pi 4B as a BLE Client
 
-Now we'll create a Python script for the Raspberry Pi 4B to connect to the Pico 2W and send commands to control its LED. This script uses the `bluepy` library, which we need to install first.
+Now we will create a Python script for the Raspberry Pi 4B to connect to the Pico 2W and send commands to control its LED. This script uses the `bluepy` library, which we need to install first.
 
 #### Installing Dependencies on Raspberry Pi 4B
 
-Open a terminal on your Raspberry Pi 4B and run the following commands. The installation make take long time so let it complete the installation successfully:
+Open a terminal on your Raspberry Pi 4B and run the following commands. The installation may take several minutes and let it complete the installation successfully:
 
 ```bash
 sudo apt-get update
@@ -590,4 +590,6 @@ _Bluetooth LED toggle_
 4. When the Raspberry Pi sends the character 'o', the Pico toggles its onboard LED.
 5. The communication is bidirectional, so the Pico can also send data back to the Raspberry Pi.
 
-You have now set up Bluetooth communication between your Raspberry Pi 4B and Pico 2W. This allows wireless control and data exchange between these devices without requiring a physical connection. The Nordic UART Service provides a simple but effective way to send commands and data in both directions, making it ideal for a wide range of IoT projects.
+You have now set up Bluetooth communication between your Raspberry Pi 4B and Pico 2W. This allows wireless control and data exchange between these devices without requiring a wired connection. 
+
+{/*The Nordic UART Service provides a simple but effective way to send commands and data in both directions, making it ideal for a wide range of IoT projects.*/}
