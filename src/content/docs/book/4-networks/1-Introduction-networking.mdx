@@ -21,7 +21,7 @@ Think of it like a conversation between people. For humans to communicate succes
 
 If you are speaking to someone in a noisy room, you might have to ask them to repeat what they said. If you do not understand their message, you would likely ask for clarification. We also change how we speak depending on the audience, sometimes addressing a friend casually, other times using more formal language in professional settings. Conversations often begin with greetings and end politely.
 
-Computers communicate in a similar way. They follow specific rules and greetings to ensure messages are sent, received, understood, and if needed re-sent. These rules are called network protocols, and they help devices coordinate how they exchange information.
+Computers communicate similarly. They follow specific rules and greetings to ensure messages are sent, received, understood, and if needed send the message again. These rules are called network protocols, and they help devices coordinate how they exchange information.
 
 When we talk about computer networking, we are really referring to the systems and rules that make it possible for all these machines to “talk” to each other efficiently. Just like human interaction, successful digital communication depends on clarity, shared language (protocols), and a structured process.
 
@@ -36,18 +36,27 @@ The internet is a network of networks and we have different types of networks. T
   <YouTube id='Dxcc6ycZ73M' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
 </div>
 
+Computer networks are typically structured in layers to efficiently deliver data, and the three key types are core, metro, and access networks. The access network is the first layer and connects end-user devices such as your computer, phone, your television to the rest of the network.  Technologies such as 4G (fourth generation wireless networks), 5G (fifth generation wireless networks), Wi-Fi, and fiber to the home (FTTH) are used in access network. The metro network, or metropolitan network, connects multiple access networks within a city or region. It acts as a bridge, aggregating data from many neighborhoods or business areas and routing it toward the wider network. At the top is the core network, which forms the Internet’s backbone. It uses extremely high-speed connections and powerful routing infrastructure to transport large volumes of data across countries and continents. These three layers ensure that data can travel from a user’s device all the way to global services and back.
+
+
+![Networks of networks](./images/Networks.jpg)
+_High level network diagram_
+
 Watch the first 4 minutes of the following video to understand different types of networks that make Internet. 
 
 <div class='not-content'>
   <YouTube id='sMHzfigUxz4' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
 </div>
 
-## How Do Devices Actually Share Information Over a Network?
+Computer networks can be understood both by their function, i.e., core, metro, and access and their scale or scope, i.e., Personal Area Network, Local Area Networks and so on. The access network includes Personal Area Networks (PANs), which link personal devices such as your smartwatch connects to your mobile phone via Bluetooth. Local Area Networks (LANs) are used in homes, schools, or offices for device communication such as WiFi networks. The metro network, which collects traffic from multiple access networks, is closely related to Metropolitan Area Networks (MANs) that cover an entire city or campus. Above that is the core network, which connects regions, countries, and continents—this forms part of Wide Area Networks (WANs), especially the global Internet. 
+
+
+
+## How Do Devices Share Information Over a Network?
 
 When a computer or other digital device (called a host) sends or receives information, it doesn’t transmit one giant message all at once. Instead, it breaks that message into smaller units called packets. These packets travel across the network—through cables, Wi-Fi, and other devices like routers—until they reach their destination. Eventually, the receiving host reassembles the original message from those packets.
 
-Now, this sounds simple in theory, but in practice, it’s much more complex (something we’ll explore in greater detail in later modules).
-A key idea to understand right now is that communication links, the paths the packets travel—don’t have unlimited capacity. Imagine them like water pipes. A small pipe can only carry a certain amount of water at a time. Similarly, a network link can only transmit a certain amount of data per second. This capacity is often called bandwidth, link capacity, or transmission rate.
+Now, this sounds simple in theory, but in practice, it is much more complex (something we’ll explore in greater detail in later modules). A key idea to understand right now is that communication links, the paths the packets travel do not have unlimited capacity. Imagine them like water pipes. A small pipe can only carry a certain amount of water at a time. Similarly, a network link can only transmit a certain amount of data per second. This capacity is often called bandwidth, link capacity, or transmission rate.
 
 Because of this limitation, only a specific number of packets can travel across a link during a given time. This creates something called transmission delay, which is the time it takes for a packet to move from one end of the link to the other. The longer the packet or the slower the link, the more delay you’ll experience.
 
@@ -56,4 +65,4 @@ To estimate the transmission delay, we use a simple formula:
 Transmission delay = L / R
 (where L is the size of the packet in bits, and R is the transmission rate in bits per second)
 
-It’s important to note that this delay can vary depending on whether the link is wireless or wired, and other factors. And how these packets actually travel between devices—that's a complex process involving routing, switching, and protocols, which we'll unpack as we go deeper into networking.
+It isimportant to note that this delay can vary depending on whether the link is wireless or wired, and other factors. And how these packets actually travel between devices—that's a complex process involving routing, switching, and protocols, which we'll unpack as we go deeper into networking.

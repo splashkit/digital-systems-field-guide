@@ -121,6 +121,16 @@ _Wi-Fi Connection Success_
 
 Your Pico 2W is now connected to WiFi and can send and receive data wirelessly now. Connect you RPi to the same WiFi and now we can start communicating between the devices.
 
+:::tip[Activity: Connect your Pico to the WiFi]
+Connect your Pico to the WiFi network that your RPi is connected.
+
+1. make note of IP addresses assigned to each device (take screenshots/ photos).
+Tip: You can use "ip a" command in the terminal to find the ip address assigned to RPi.
+
+1. Do you see any similarity between the IP addresses? 
+
+:::
+
 ## Method 2: Bluetooth Communication
 
 The Raspberry Pi Pico 2W also has Bluetooth capabilities, allowing for direct device-to-device communication without needing a network infrastructure. While Wi-Fi is suitable for longer range and higher bandwidth applications, Bluetooth offers better power efficiency and direct device-to-device connectivity without requiring a network infrastructure. The Raspberry Pi Pico 2W supports Bluetooth Low Energy (BLE), which is suitable for lower-power applications.
@@ -590,6 +600,11 @@ _Bluetooth LED toggle_
 4. When the Raspberry Pi sends the character 'o', the Pico toggles its onboard LED.
 5. The communication is bidirectional, so the Pico can also send data back to the Raspberry Pi.
 
-You have now set up Bluetooth communication between your Raspberry Pi 4B and Pico 2W. This allows wireless control and data exchange between these devices without requiring a wired connection. 
+:::tip[Activity: Connect your Pico and RPi via  BLE]
+
+Follow the above instructions and set up Bluetooth communication between your Raspberry Pi 4B and Pico 2W. This allows wireless control and data exchange between these devices without requiring a wired connection.
+
+Ensure you collect and document all necessary evidence to demonstrate completion of the activity.
+:::
 
 {/*The Nordic UART Service provides a simple but effective way to send commands and data in both directions, making it ideal for a wide range of IoT projects.*/}
