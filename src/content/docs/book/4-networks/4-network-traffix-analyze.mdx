@@ -29,7 +29,7 @@ Today’s applications typically follow one of two main architectural models:
 The following video explains client-server and peer-to-peer (P2P) architectures
 
 <div class='not-content'>
-  <YouTube id='lpGGDdKZvYpI&t=25s' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
+  <YouTube id='pGGDdKZvYpI' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
 </div>
 
 In computer networking, client and server programs exchange messages through the network using a mechanism called a "socket". A socket acts as a connection point between an application and the transport layer, allowing data to flow between them. Think of it as a doorway through which the application and the transport system interact. While the application handles the content, the transport layer is responsible for delivering the messages reliably (or not, depending on the protocol used).
@@ -40,9 +40,134 @@ In networking, the two main transport protocols available are:
 
 - TCP (Transmission Control Protocol): Offers reliable, connection-based communication with features like error checking and flow control.
 
--UDP (User Datagram Protocol): Provides faster, connectionless communication, suitable when speed matters more than reliability.
+- UDP (User Datagram Protocol): Provides faster, connectionless communication, suitable when speed matters more than reliability.
 
 Choosing between TCP and UDP depends on the application's requirements, such as how much delay it can tolerate, whether it needs guaranteed delivery, and how sensitive it is to packet loss.
+
+:::tip[Activity: Discuss with your group]
+
+We explored how end systems use sockets to exchange messages across a network. Did you think about the following:
+
+- What those messages actually look like? 
+- What kind of information needs to be included-
+- How each device knows when to send or process a message? 
+
+:::
+
+For successful communication, both ends using the application need to follow the same rules similar to how we need a common language to understand one another. This is where "application layer protocols" come in.
+
+These protocols define the rules that applications follow to exchange information. They specify the types of messages that can be sent, how those messages are structured, what information is included, and the order in which communication should happen. In short, application layer protocols ensure both sides know how to talk, listen, and respond appropriately in a networked conversation.
+
+Hypertext Transfer Protocol (HTTP) which we use in web browsing and Domain Name System (DNS) which we use in any network application are two popular application layer protocols.
+
+**HTTP**
+
+The following video explains HTTP and its secure counterpart HTTPS where S stands for "secure".
+
+<div class='not-content'>
+  <YouTube id='kBXQZMmiA4s' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
+</div>
+
+**DNS**
+
+When you enter a website address into your browser, your device does not immediately understand it—network devices operate using IP addresses, not human-readable names. So, there needs to be a step that translates the website name into its corresponding IP address. This important task is handled by Domain Name System (DNS) servers, which act like the Internet’s phone book, matching web addresses to their numerical IP equivalents. The following video explains DNS.  
+
+<div class='not-content'>
+  <YouTube id='mpQZVYPuDGU' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
+</div>
+
+:::tip[Activity: Application layer analysis in Wireshark]
+
+In Wireshark:
+
+- Look at the application protocol-specific section (HTTP, DNS, etc.)
+- Can you identify the entries related to application layer protocols?
+- Check request and response content and their headers and parameters
+- Can you identify the transport layer protocol used for each application?
+- Check status codes and error messages
+- Take screenshots and notes on your analysis
+  
+:::
+
+![HTTP in Wireshark](./images/placeholder.png)
+_HTTP request details in the Application layer_
+
+### Transport Layer
+
+The transport layer is responsible for enabling logical communication between application processes running on separate devices or hosts. In contrast, the network layer focuses on creating a communication path between those hosts themselves. The packet unit at this layer is called segments.
+Network applications use two main transport layer protocols depending on the requirements of the applications. They are TCP (Transmission Control Protocol) and (User Datagram Protocol).
+
+**TCP (Transmission Control Protocol):**
+
+- Connection-oriented with three-way handshake, session is established before the client and server started to coomunicate
+- Reliable delivery with acknowledgments and retransmissions
+- Flow control and congestion management
+- Identified by ports (e.g., HTTP on port 80, HTTPS on port 443)
+
+**UDP (User Datagram Protocol):**
+
+- Connectionless with no handshaking
+- No guaranteed delivery or ordering
+- Lower overhead and latency
+- Uses ports for service identification
+
+The following video explain the TCP, its three-way handshake and UDP. 
+
+<div class='not-content'>
+  <YouTube id='uwoD5YsGACg' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
+</div>
+
+**In Wireshark:**
+
+- Identify which applications use TCP or UDP
+- Source and destination ports used
+- Sequence and acknowledgement numbers (if TCP)
+- Flags (SYN, ACK, FIN, etc. for TCP)
+
+![TCP Header in Wireshark](./images/placeholder.png)
+_TCP header showing ports, sequence numbers, and flags_
+
+### Network Layer
+
+The network layer is responsible for directing and delivering data packets between hosts located in separate networks. It creates a logical communication between host devices. To perform these tasks, it relies on a range of protocols, with the Internet Protocol (IP) being the most fundamental and widely used among them.
+
+Network layer's primary responsibilities include routing packets from a source to a destination, determining the best path through the network, and handling logical addressing through IP. The network layer is conceptually divided into two key components:
+
+- Data plane,
+- Control plane.
+
+The data plane is responsible for the actual forwarding of packets through routers and switches based on established rules—this is where decisions are made quickly to move data from one point to another. In contrast, the control plane handles the decision-making processes that guide how packets should be forwarded. It includes routing protocols like OSPF and BGP that calculate optimal paths and update routing tables. Together, these planes ensure that data travels efficiently and accurately through complex, interconnected networks.
+
+**Key Components:**
+- **IP Addresses**: Logical addresses for internetwork routing (IPv4- IP version 4 or IPv6- IP version 6)
+- **Datagram**: Data units at this layer
+- **Routing**: Determining paths through different networks
+- **Fragmentation**: Breaking large packets into smaller ones if needed
+
+IPV4 is 32 bits long address. Example IPV4 address is 192.168.10. 1IPv6, or Internet Protocol version 6, was developed to address the limitations of IPv4, particularly the exhaustion of its 32-bit address space due to the rapid increase in internet-connected devices. To overcome this, IPv6 uses 128-bit addresses, allowing for a vastly larger number of unique IP addresses. A typical IPv6 address looks like this: 2001:0db8:0000:0000:0000:ff00:0370:7334.
+
+The following video explains IP addressing in details. Note: start watching the video into 1 minute 45 seconds.
+
+<div class='not-content'>
+  <YouTube id='5WfiTHiU4x8' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
+</div>
+
+**In Wireshark:**
+- Look at the "Internet Protocol" section in packet details
+- Source and destination IP addresses
+- Time to Live (TTL) values
+- Fragmentation flags and offsets
+
+![IP Header in Wireshark](./images/placeholder.png)
+_IP header showing source and destination addresses_
+
+**IP Address Ranges:**
+- Private ranges (not routable on the internet):
+  - 10.0.0.0/8 (10.0.0.0 - 10.255.255.255)
+  - 172.16.0.0/12 (172.16.0.0 - 172.31.255.255)
+  - 192.168.0.0/16 (192.168.0.0 - 192.168.255.255)
+- Local loopback: 127.0.0.0/8 (typically 127.0.0.1)
+- Link-local: 169.254.0.0/16 (auto-assigned when DHCP fails)
 
 ### Link Layer (Data Link and Physical)
 
@@ -65,79 +190,6 @@ _MAC addresses in the Ethernet frame header_
 MAC addresses are physical addresses tied to specific hardware, while IP addresses are logical addresses that can be assigned and changed. MAC addresses operate at the Link layer for local delivery, while IP addresses work at the Network layer for internetwork routing.
 :::
 
-
-### Internet Layer (Network Layer)
-
-The Internet layer handles routing between different networks using IP addresses.
-
-**Key Components:**
-- **IP Addresses**: Logical addresses for internetwork routing (IPv4 or IPv6)
-- **Packets**: Data units at this layer
-- **Routing**: Determining paths through different networks
-- **Fragmentation**: Breaking large packets into smaller ones if needed
-
-**In Wireshark:**
-- Look at the "Internet Protocol" section in packet details
-- Source and destination IP addresses
-- Time to Live (TTL) values
-- Fragmentation flags and offsets
-
-![IP Header in Wireshark](./images/placeholder.png)
-_IP header showing source and destination addresses_
-
-**IP Address Ranges:**
-- Private ranges (not routable on the internet):
-  - 10.0.0.0/8 (10.0.0.0 - 10.255.255.255)
-  - 172.16.0.0/12 (172.16.0.0 - 172.31.255.255)
-  - 192.168.0.0/16 (192.168.0.0 - 192.168.255.255)
-- Local loopback: 127.0.0.0/8 (typically 127.0.0.1)
-- Link-local: 169.254.0.0/16 (auto-assigned when DHCP fails)
-
-### Transport Layer
-
-The Transport layer provides end-to-end communication between applications, primarily using TCP or UDP.
-
-**TCP (Transmission Control Protocol):**
-- Connection-oriented with three-way handshake
-- Reliable delivery with acknowledgments and retransmissions
-- Flow control and congestion management
-- Identified by ports (e.g., HTTP on port 80, HTTPS on port 443)
-
-**UDP (User Datagram Protocol):**
-- Connectionless with no handshaking
-- No guaranteed delivery or ordering
-- Lower overhead and latency
-- Also uses ports for service identification
-
-**In Wireshark:**
-- Look at the TCP or UDP section in packet details
-- Source and destination ports
-- Sequence and acknowledgment numbers (TCP)
-- Flags (SYN, ACK, FIN, etc. for TCP)
-- Window size for flow control
-
-![TCP Header in Wireshark](./images/placeholder.png)
-_TCP header showing ports, sequence numbers, and flags_
-
-### Application Layer
-
-The Application layer provides network services directly to end-users or applications.
-
-**Common Protocols:**
-- **HTTP/HTTPS**: Web browsing
-- **DNS**: Domain name resolution
-- **DHCP**: Dynamic IP address assignment
-- **SMTP/IMAP/POP3**: Email
-- **FTP/SFTP**: File transfer
-
-**In Wireshark:**
-- Look at the protocol-specific section (HTTP, DNS, etc.)
-- Request and response content
-- Headers and parameters
-- Status codes and error messages
-
-![HTTP in Wireshark](./images/placeholder.png)
-_HTTP request details in the Application layer_
 
 ## Analyzing Wi-Fi Communication
 
