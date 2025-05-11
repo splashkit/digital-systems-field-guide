@@ -277,7 +277,8 @@ _UART_SERVICE = (
 )
 
 class BLESimplePeripheral:
-    def __init__(self, ble, name="mpy-uart"): # Make sure to use your own "name", you can use your first name or student id as part of "name" such as "mpy-uart-EDT703" 
+    # Make sure to use a unique 4 character identified to name the bluetooth connection. Can use first 4 characters of your own "name" or student id as part of "name" such as "mpy-2172" 
+    def __init__(self, ble, name="mpy-XXXX"):
         self._ble = ble
         self._ble.active(True)
         self._ble.irq(self._irq)
@@ -414,7 +415,7 @@ class NotificationHandler(btle.DefaultDelegate):
     def __init__(self):
         btle.DefaultDelegate.__init__(self)
         self.data = []
-        
+
     def handleNotification(self, cHandle, data):
         print(f"Notification received from handle {cHandle}: {data.decode()}")
         self.data.append(data)
@@ -424,19 +425,29 @@ def scan_for_devices(timeout=5.0):
     print("Scanning for BLE devices...")
     scanner = btle.Scanner()
     devices = scanner.scan(timeout)
+
+    print(f"Found {len(devices)} devices total")
     
-    pico_devices = []
-    for device in devices:
+    device_list = []
+    for i, device in enumerate(devices):
         name = None
         for (adtype, desc, value) in device.getScanData():
             if desc == 'Complete Local Name':
                 name = value
-        
-        if name and 'mpy' in name.lower():
-            print(f"Found Pico device: {name} - {device.addr}")
-            pico_devices.append((name, device.addr))
-    
-    return pico_devices
+
+        # Add all devices to the list
+        if name:
+            # Highlight potential Pico devices
+            if 'mpy' in name.lower():
+                print(f"{i+1}. Pico device: {name} - {device.addr}")
+            else:
+                print(f"{i+1}. Device: {name} - {device.addr}")
+            device_list.append((name, device.addr))
+        else:
+            print(f"{i+1}. Unknown Device - {device.addr}")
+            device_list.append((f"Unknown {i+1}", device.addr))
+
+    return device_list
 
 # Function to connect to a BLE device
 def connect_to_device(addr):
@@ -456,32 +467,32 @@ def connect_to_device(addr):
 # Function to discover services and characteristics
 def discover_characteristics(peripheral):
     print("Discovering services and characteristics...")
-    
+
     uart_service = None
     rx_char = None
     tx_char = None
-    
+
     # Get the UART service
     for service in peripheral.getServices():
         if service.uuid == UART_SERVICE_UUID:
             uart_service = service
             break
-    
+
     if not uart_service:
         print("UART service not found!")
         return None, None
-    
+
     # Get the RX and TX characteristics
     for char in uart_service.getCharacteristics():
         if char.uuid == UART_RX_CHAR_UUID:
             rx_char = char
         elif char.uuid == UART_TX_CHAR_UUID:
             tx_char = char
-    
+
     if not rx_char or not tx_char:
         print("Could not find RX or TX characteristics!")
         return None, None
-    
+
     print("Found UART service and characteristics!")
     return rx_char, tx_char
 
@@ -495,6 +506,31 @@ def toggle_led(rx_char):
         print(f"Error toggling LED: {e}")
         return False
 
+# Function to let user select a device from the list
+def select_device(devices):
+    if not devices:
+        print("No devices found.")
+        return None
+    
+    while True:
+        try:
+            choice = input("Enter the number of the device to connect to (or 'r' to rescan, 'q' to quit): ")
+            
+            if choice.lower() == 'q':
+                return None
+            elif choice.lower() == 'r':
+                return 'rescan'
+            
+            index = int(choice) - 1
+            if 0 <= index < len(devices):
+                name, addr = devices[index]
+                print(f"Selected: {name} ({addr})")
+                return addr
+            else:
+                print(f"Invalid selection. Please enter a number between 1 and {len(devices)}")
+        except ValueError:
+            print("Please enter a valid number or command")
+
 # Main function
 def main():
     parser = argparse.ArgumentParser(description='BLE client for Pico W LED control')
@@ -502,30 +538,45 @@ def main():
     parser.add_argument('--toggle', action='store_true', help='Toggle the LED')
     parser.add_argument('--scan', action='store_true', help='Scan for BLE devices')
     args = parser.parse_args()
-    
+
+    # If just scanning, scan and exit
     if args.scan:
         scan_for_devices()
         return
-    
+
+    # If address is provided, use it directly
     addr = args.addr
-    if not addr:
-        devices = scan_for_devices()
-        if not devices:
-            print("No Pico devices found. Please try again or specify the address.")
-            return
-        _, addr = devices[0]  # Use the first found device
     
+    # Otherwise, scan and let user select a device
+    if not addr:
+        while True:
+            devices = scan_for_devices()
+            if not devices:
+                print("No devices found. Rescanning...")
+                time.sleep(1)
+                continue
+                
+            addr = select_device(devices)
+            
+            if addr == 'rescan':
+                continue
+            elif not addr:
+                print("Exiting...")
+                return
+            else:
+                break
+
     # Connect to the device
     peripheral = connect_to_device(addr)
     if not peripheral:
         return
-    
+
     try:
         # Discover characteristics
         rx_char, tx_char = discover_characteristics(peripheral)
         if not rx_char or not tx_char:
             return
-        
+
         # Toggle the LED if requested
         if args.toggle:
             toggle_led(rx_char)
@@ -535,7 +586,7 @@ def main():
             print("\nEnter commands:")
             print("  't' to toggle the LED")
             print("  'q' to quit")
-            
+
             while True:
                 cmd = input("> ")
                 if cmd.lower() == 'q':
@@ -545,12 +596,12 @@ def main():
                     time.sleep(0.1)
                 else:
                     print("Unknown command")
-                
+
                 # Check for notifications
                 if peripheral.waitForNotifications(0.1):
                     # handleNotification() was called
                     continue
-        
+
     finally:
         print("Disconnecting...")
         peripheral.disconnect()
