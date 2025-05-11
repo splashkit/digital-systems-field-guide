@@ -105,7 +105,7 @@ export default defineConfig({
                     },
                 },
                 {
-                    label: "V. Computer Networks and Network Security (Coming soon)",
+                    label: "V. Computer Networks and Network Security",
                     collapsed: true,
                     autogenerate: {
                         directory:
