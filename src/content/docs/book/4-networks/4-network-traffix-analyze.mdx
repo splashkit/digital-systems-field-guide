@@ -4,15 +4,45 @@ title: Understanding and Analysing Network Traffic
 
 import { YouTube } from 'astro-embed';
 
-
-# Analyzing TCP/IP Communication
-
-Now that we've captured network traffic between our devices, it's time to analyze it. This analysis will give us practical insight into the TCP/IP model and help us understand how protocols work at each layer. We'll focus on analyzing the Wi-Fi communication.
-
+Now that we have captured network traffic, it is time to understand network protocols in details and analyse them. This will give us practical insight into the TCP/IP model and help us understand how protocols work at each layer.
 
 ## The TCP/IP Layers in Action
 
-Let's examine how each layer of the TCP/IP model appears in our Wireshark captures and what role it plays in communication.
+Let’s explore each layer of the TCP/IP model by examining how data flows through them, focusing on the specific roles and protocols at each stage. We will start from the top, the application layer since that is where network interaction begins from the user’s perspective and will go slowly down the protocol stack. By analysing traffic at each level, we will gain a clearer understanding of how these layers work together to make communication across the Internet possible.
+
+### Application Layer
+
+The main reason we study computer networks is because of the powerful and exciting applications they enable such as browsing the web, streaming videos, or chatting online. Without these kinds of applications, there would be little need for the complex systems and protocols that make networking possible. The rapid pace of innovation in Internet-based tools shows no signs of slowing down. 
+
+Application layer protocols operate exclusively on end-user devices like laptops, smartphones, and servers and not on intermediary network hardware like routers or switches. These end devices exchange information with one another across the network using the underlying infrastructure of links and networking equipment.
+
+One of the reasons we have seen such a boom in the number and variety of network applications in recent years is because these applications only need to run on end systems. The core of the network remains focused on forwarding data and does not have to deal with user-facing software.
+
+When designing a network application, it is important to first understand the type of architecture that best supports your communication needs. This is different from the protocol stack we have discussed. It is more about how the application components are distributed and how they interact across devices.
+
+Today’s applications typically follow one of two main architectural models:
+
+- Client-Server Architecture
+
+- Peer-to-Peer (P2P) Architecture
+
+The following video explains client-server and peer-to-peer (P2P) architectures
+
+<div class='not-content'>
+  <YouTube id='lpGGDdKZvYpI&t=25s' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
+</div>
+
+In computer networking, client and server programs exchange messages through the network using a mechanism called a "socket". A socket acts as a connection point between an application and the transport layer, allowing data to flow between them. Think of it as a doorway through which the application and the transport system interact. While the application handles the content, the transport layer is responsible for delivering the messages reliably (or not, depending on the protocol used).
+
+When building a networked application, developers need to choose the appropriate transport protocol based on what the application needs similar to choosing a postage method depending on whether you care more about speed or cost. 
+
+In networking, the two main transport protocols available are:
+
+- TCP (Transmission Control Protocol): Offers reliable, connection-based communication with features like error checking and flow control.
+
+-UDP (User Datagram Protocol): Provides faster, connectionless communication, suitable when speed matters more than reliability.
+
+Choosing between TCP and UDP depends on the application's requirements, such as how much delay it can tolerate, whether it needs guaranteed delivery, and how sensitive it is to packet loss.
 
 ### Link Layer (Data Link and Physical)
 
