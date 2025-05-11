@@ -67,7 +67,7 @@ One of the major organisations responsible for these standards is the Internet E
 
 ## TCP/IP Model in Detail
 
-The key characteristics of TCP/IP model are use open standard, works across different hardware and operating systems, and scalable model that can be used from small home networks to the global Internet. 
+The key characteristics of TCP/IP model are use open standard, works across different hardware and operating systems, and scalable model that can be used from small home networks to the global Internet.
 
 ### Encapsulation Process
 
@@ -78,7 +78,7 @@ Data travels down through the layers on the sending device and up through the la
 3. **Internet layer**: Adds IP header (source and destination IP addresses)
 4. **Data Link layer**: Adds Ethernet/Wi-Fi header and trailer (MAC addresses)
 5. **Physical Layer**: Defined how signals are sent over the communication links​
-   
+
 ![TCP/IP Model and Encapsulation](./images/TCPIP.jpg)
 _TCP/IP Model, layers, encapsulation and functions_
 
@@ -94,31 +94,38 @@ The layered networking model is similar to how postal systems work:
 Each layer has its own protocols and standards but works with other layers to deliver the complete message.
 :::
 
-## Common Application Layer Protocols
+We are going to learn about each layer and their protocols in details in the next section. Until then, let's quickly get ourselves familiarise with high level functions that common application layer and transport layer protocols provide.
 
-The application layer contains many specialized protocols for different services:
+### Common Application Layer Protocols
 
-### HTTP/HTTPS (Hypertext Transfer Protocol)
+The application layer contains many specialised protocols for different services:
+
+**HTTP/HTTPS (Hypertext Transfer Protocol)**
+
 - Used for web browsing
-- HTTP operates on port 80, HTTPS on port 443
+- HTTP operates on port 80
 - Request-response model between clients and servers
 
-### DNS (Domain Name System)
+**DNS (Domain Name System)**
+
 - Translates domain names to IP addresses
 - Hierarchical, distributed database
 - Critical for user-friendly web browsing
 
-### SMTP/POP3/IMAP (Email Protocols)
+**SMTP/POP3/IMAP (Email Protocols)**
+
 - SMTP: Simple Mail Transfer Protocol (sending email)
 - POP3/IMAP: Retrieving email from servers
 - Uses different ports (25, 110, 143, etc.)
 
-### FTP (File Transfer Protocol)
-- Specialized for file uploads and downloads
+**FTP (File Transfer Protocol)**
+
+- Specialised for file uploads and downloads
 - Separate control and data connections
 - Still used despite being an older protocol
 
-### SSH (Secure Shell)
+**SSH (Secure Shell)**
+
 - Secure remote login and command execution
 - Encrypts all traffic
 - Common for server administration
@@ -127,7 +134,8 @@ The application layer contains many specialized protocols for different services
 
 The transport layer has two primary protocols:
 
-### TCP (Transmission Control Protocol)
+**TCP (Transmission Control Protocol)**
+
 - Connection-oriented and reliable
 - Guarantees delivery and correct order
 - Flow control and congestion management
@@ -136,7 +144,8 @@ The transport layer has two primary protocols:
 ![TCP](./images/tcp-connection.png)
 _TCP connection_
 
-### UDP (User Datagram Protocol)
+**UDP (User Datagram Protocol)**
+
 - Connectionless and unreliable
 - No guarantee of delivery, order, or duplicate protection
 - Lower overhead and faster
@@ -147,15 +156,48 @@ _UDP connection_
 
 ## Deciphering Web Browsing
 
-We use the Internet all the time to access information. How do you access all these services online or visit a website that provides a specific service? You just type the address of the webpage in the address bar of your browser. Do you know that is just the start of a lengthy process? The browser contacts the relevant web server and requests data and then assembles the webpage from the information received within few milliseconds. Before you blink, you can see the webpage you requested. 
+We use the Internet all the time to access information. How do you access all these services online or visit a website that provides a specific service? You just type the address of the webpage in the address bar of your browser. Do you know that is just the start of a lengthy process? The browser contacts the relevant web server and requests data and then assembles the webpage from the information received within few milliseconds. 
 
-To understand the complexity of this process, let's trace what happens when you browse a website:
+:::note[Think about It]
+Before you blink, you can see the webpage you requested. Do you know how many protocols involved in the process? 
+:::
 
-:::tip[Activity: Analyze Web Traffic with Browser Developer Tools]
+To understand the complexity of this process, let's trace what happens when you browse a website. You might feel overwhelmed by the number of networking protocols out there—but don't worry! In this chapter, our mission is to uncover how these fascinating systems work behind the scenes to connect us to the world. That’s the real magic of networking.
 
-Learn how to use browser developer tools to analyze network traffic and understand the HTTP protocol in action.
+Let’s start with a familiar action: opening a website. When you type a web address into your browser, you are entering what is called a URL—short for Uniform Resource Locator. This URL is not just a string of text, it is made up of different parts, each serving a specific purpose to help your device find and load the correct webpage. We will explore how this process works step by step as we go.
+
+Let us look at an example: https://d2l.deakin.edu.au/d2l/home
+
+- https-> the application layer protocols used
+- d2l.deakin.edu.au-> Domain name (third, second, and first level) Hostname
+- /d2l/home -> Different path directory, can also have a file name
+
+When you type a website’s URL into your browser and press "Enter", your computer starts by sending a message to the web server asking to establish a connection. It then waits for a response. If the server is available, it replies to confirm that the connection can be made. Once this confirmation is received—essentially a digital “OK”—your computer proceeds to ask for a specific page from that website. This is done by sending a message known as a GET request. When the server receives this request, it responds by sending back the contents of the requested page to your device. This simple exchange of messages is how your browser retrieves the web page you asked for.
+
+We use website names because they’re easier for people to remember than long strings of numbers. However, computers and network devices do not understand names, they rely on numerical addresses called IP addresses. That means there must be a system to translate these easy-to-remember names into numbers that machines can work with. This is where the Domain Name System (DNS) comes in.
+
+DNS acts like the Internet’s address book. When you type a web address into your browser, the browser extracts the hostname (like "example.com") and asks the DNS service to find the matching IP address. This request is sent by the DNS client on your device to a DNS server. The server responds with the IP address tied to that hostname. Often, these IP addresses are stored temporarily in your device's memory or browser cache to speed up future visits.
+
+Now that your browser knows the server’s IP address, it can begin establishing a connection. This involves communicating with network routers and using other protocols to find the best path to the server.
+
+Once connected, your browser sends a request to the web server using HTTP, asking for the contents of the page you want to see. The server responds with the necessary data. Your browser then reads and assembles this data into the web page. If the server can't find the page, it returns an error message like the familiar “404 Not Found.”
+
+Let's see this process in action now using a common tool we use daily basis, that is your web browser, well we use developer tool of the web browser.
+
+Please watch the following video to get familiar with the Developers tool and how to inspect network activity using the tool.
+
+
+<div class='not-content'>
+  <YouTube id='e1gAyQuIFQo' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
+</div>
+
+
+:::tip[Activity: Analyse Web Traffic with Browser Developer Tools]
+
+Learn how to use browser developer tools to analyse network traffic and understand the HTTP protocol in action.
 
 **Materials Needed:**
+
 - Computer with a modern web browser (Chrome, Firefox, Edge, or Safari)
 - Internet connection
 
@@ -210,13 +252,14 @@ _Analyzing the document_
    - Check if resources come from different domains
 
 **Questions to Answer:**
-1. How many requests were needed to load the complete webpage?
+
+1. Identify the messages received/ sent between your device and other network devices to access the webpage you requested.
 2. What different types of resources were requested?
 3. What was the total size of the page?
 4. How long did it take for the page to fully load?
 5. What HTTP status codes did you observe and what do they mean?
 6. What security-related headers did you find in HTTPS connections?
-7. How do browsers optimize loading multiple resources?
+7. How many requests were needed to load the complete webpage?
 
 **Submit a screenshot of your developer tools network panel with a brief analysis of what you observed.**
 :::
