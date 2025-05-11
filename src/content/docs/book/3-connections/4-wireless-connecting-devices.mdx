@@ -131,6 +131,173 @@ Tip: You can use "ip a" command in the terminal to find the ip address assigned 
 
 :::
 
+:::tip[Activity: Synchronized LED Blinking]
+
+In this activity, you'll create a wireless system where LEDs on both your Raspberry Pi 4B and Pico 2W blink in perfect synchronization. This demonstrates how wireless protocols can coordinate actions across different devices.
+
+#### Learning Objectives:
+- Implement wireless communication between Raspberry Pi and Pico
+- Understand timing and synchronization challenges
+- Create a visual demonstration of synchronized systems
+
+#### What You'll Need:
+- Raspberry Pi 4B with Raspberry Pi OS
+- Raspberry Pi Pico 2W with MicroPython
+- LED connected to GPIO pin 17 on Raspberry Pi
+- Onboard LED on Pico 2W
+- Both devices connected to the same WiFi network
+
+This method uses a basic countdown timer to synchronize the LEDs:
+
+#### Step 1: Set Up the Raspberry Pi Server
+
+Create a file named `led_sync_server.py` on your Raspberry Pi:
+
+```python
+import socket
+import time
+from gpiozero import LED
+
+# Set up the LED
+led = LED(17)  # Change to your GPIO pin if different
+
+# Create a socket server
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+server_socket.bind(('0.0.0.0', 8000))
+server_socket.listen(1)
+
+print("Server started, waiting for connection...")
+
+# Accept connection from Pico
+client_socket, address = server_socket.accept()
+print(f"Connection from {address} established")
+
+try:
+    # Send synchronization message with 5-second countdown
+    sync_time = time.time() + 5
+    client_socket.send(f"{sync_time}".encode())
+    print(f"Synchronization time sent: {sync_time}")
+    
+    # Wait until it's time to start blinking
+    delay = sync_time - time.time()
+    if delay > 0:
+        print(f"Waiting {delay:.2f} seconds to synchronize...")
+        time.sleep(delay)
+    
+    # Start synchronized blinking
+    print("Starting synchronized blinking!")
+    while True:
+        led.on()
+        time.sleep(1)
+        led.off()
+        time.sleep(1)
+        
+except KeyboardInterrupt:
+    print("Stopping...")
+finally:
+    client_socket.close()
+    server_socket.close()
+    led.off()
+```
+
+#### Step 2: Set Up the Pico W Client
+
+Create a file named `led_sync_client.py` on your Pico W. Make sure you update the `RASPBERRY_PI_IP_ADDRESS`, `YOUR_WIFI_SSID` and `YOUR_WIFI_PASSWORD` fields in the code below:
+
+```python
+import socket
+import time
+import network
+from machine import Pin
+
+# Connect to WiFi
+def connect_to_wifi(ssid, password):
+    wlan = network.WLAN(network.STA_IF)
+    wlan.active(True)
+    wlan.connect(ssid, password)
+    
+    # Wait for connection
+    max_wait = 10
+    while max_wait > 0:
+        if wlan.status() < 0 or wlan.status() >= 3:
+            break
+        max_wait -= 1
+        print('Waiting for connection...')
+        time.sleep(1)
+    
+    if wlan.status() != 3:
+        raise RuntimeError('Network connection failed')
+    else:
+        print('Connected')
+        status = wlan.ifconfig()
+        print('IP:', status[0])
+    
+    return wlan
+
+# WiFi credentials - replace with your network details
+ssid = 'YOUR_WIFI_SSID'
+password = 'YOUR_WIFI_PASSWORD'
+
+# Connect to WiFi
+wlan = connect_to_wifi(ssid, password)
+
+# Set up the LED
+led = Pin("LED", Pin.OUT)
+
+# Set up the client socket
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_address = ('RASPBERRY_PI_IP_ADDRESS', 8000)  # Replace with your Raspberry Pi's IP
+print(f"Connecting to {server_address}...")
+client_socket.connect(server_address)
+print("Connected to server")
+
+try:
+    # Receive synchronization time from server
+    sync_data = client_socket.recv(1024).decode()
+    sync_time = float(sync_data)
+    print(f"Received sync time: {sync_time}")
+    
+    # Wait until it's time to start blinking
+    current_time = time.time()
+    delay = sync_time - current_time
+    if delay > 0:
+        print(f"Waiting {delay:.2f} seconds to synchronize...")
+        time.sleep(delay)
+    
+    # Start synchronized blinking
+    print("Starting synchronized blinking!")
+    while True:
+        led.value(1)  # LED on
+        time.sleep(1)
+        led.value(0)  # LED off
+        time.sleep(1)
+        
+except Exception as e:
+    print(f"Error: {e}")
+finally:
+    client_socket.close()
+    led.value(0)
+```
+
+#### Step 3: Run the Activity
+
+1. Replace the WiFi credentials and Raspberry Pi IP address in the Pico code
+2. Run the server script on your Raspberry Pi first:
+   ```
+   python3 led_sync_server.py
+   ```
+3. Run the client script on your Pico W (using Thonny or your preferred method)
+4. Watch as both LEDs begin blinking in synchronization!
+
+The LEDs should sync and blink one after the other as shown in the video below:
+
+<div class='not-content'>
+  <YouTube id='sos_pJTn-Lw' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
+</div>
+
+:::
+
 ## Method 2: Bluetooth Communication
 
 The Raspberry Pi Pico 2W also has Bluetooth capabilities, allowing for direct device-to-device communication without needing a network infrastructure. While Wi-Fi is suitable for longer range and higher bandwidth applications, Bluetooth offers better power efficiency and direct device-to-device connectivity without requiring a network infrastructure. The Raspberry Pi Pico 2W supports Bluetooth Low Energy (BLE), which is suitable for lower-power applications.
