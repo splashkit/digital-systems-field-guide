@@ -4,13 +4,13 @@ title: Network Analysis with Wireshark
 
 import { YouTube } from 'astro-embed';
 
-# Network Analysis Tools
+In this section, we are going to look at a tool that is used in networking industry to analyse the traffic beyond the browser's developer tool that we have looked at in the previous section.
 
-The basic tools that we use to monitor the messages exchanged between executing protocols and applications are called packet sniffers. A packet sniffer is passive program and it copies (sniffs) messages being sent from and received by your device and it displays the contents of the various protocol fields of these captured messages. It does not send or receive packets itself. Instead, it receives a copy of the packets that are been transferred in your device.  In this section, we'll focus on Wireshark, which is a popular free open source packet sniffer used in the networking industry which will allow us to observe and decode network traffic, providing a window into the communication happening between devices.
+The basic tools that we use to monitor the messages exchanged between executing protocols and applications are called packet sniffers. A packet sniffer is a passive program. It copies (sniffs) messages being sent from and received by your device, and it displays the contents of the various protocol fields of these captured messages. It does not send or receive packets itself. Instead, it receives a copy of the packets that are being transferred in your device.  In this section, we will focus on Wireshark, which is a popular free open source packet sniffer used in the networking industry which will allow us to observe and decode network traffic, providing a window into the communication happening between devices.
 
 ## Introduction to Wireshark
 
-Wireshark is one of the most popular network protocol analyzers in the world. It lets you capture and interactively browse the traffic running on a computer network, providing detailed information about each packet.
+Wireshark is one of the most popular network protocol analysers in the world. It lets you capture and interactively browse the traffic running on a computer network, providing detailed information about each packet.
 
 #### Key Capabilities:
 
@@ -30,10 +30,8 @@ Packet sniffing can raise privacy and security concerns. Always:
 - Never attempt to capture sensitive information like passwords
 - Inform users if you're monitoring a shared network for educational purposes
 
-In educational settings, create controlled environments for network analysis rather than analyzing general traffic.
+In educational settings, create controlled environments for network analysis rather than analysing general traffic.
 :::
-
-
 
 ## Installing Wireshark on Raspberry Pi
 
@@ -152,11 +150,25 @@ If you want to save the capture for later analysis:
 4. Experiment with color coding (View > Coloring Rules) to better visualize different protocols
 :::
 
-:::tip[Activity: Capturing bluetooth traffic]
-In the last module, you connected RPi and Pico via Bluetooth connection and controlled the Pico LED by sending bluetooth commands. Rerun the activity and start capturing the activity on the bluetooth interface.
+:::note[You can install Wireshark in your laptop]
 
-You should see traffic like below. Capture and store the data for further analysis.
+Please visit https://www.wireshark.org/#download to download Wireshark. We use the current stable release of Wireshark which is 3.4.5. Please download the relevant file that is suitable for your operating system and install Wireshark in your device.
+
+More details on the Wireshark and the user guide can be access via https://www.wireshark.org/docs/wsug_html/
+:::
+
+:::tip[Activity: Capturing Bluetooth traffic]
+In the last module, you connected RPi and Pico via Bluetooth connection and controlled the Pico LED by sending Bluetooth commands.
+
+- Rerun the activity and start capturing the activity on the bluetooth interface.
+
+- You should see traffic like below. Capture and store the data for further analysis.
 
 ![Wireshark Bluetooth](./images/wireshark/bluetooth.png)
 _Wireshark Bluetooth Capture_
+
+- What are the different types of protocols used?
+- What are the source and destinations?
+- Can you identify the source and destination addresses?
+  
 :::
