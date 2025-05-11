@@ -4,36 +4,28 @@ title: Network Protocols and Architecture
 
 import { YouTube } from 'astro-embed';
 
-Network communication is inherently complex, involving numerous hardware and software components that need to work together seamlessly. To manage this complexity, networking is organized into layers, with each layer handling specific aspects of communication.
+Computer networks can seem complicated involving numerous hardware and software components that need to work together seamlessly, but so are many systems we encounter every day. To make things easier to understand, let’s begin with something more familiar before diving into the models used in networking and the Internet.
 
-## The Concept of Layered Architecture
+Imagine someone asked you to describe how the airline system works when you travel from your home to another city or country. A clear way to explain it would be to walk through each step in the process from preparing at home to arriving at your destination. Just like a journey through the airline system involves several steps including booking a ticket, checking in, passing through security, boarding the plane, flying, and then going through customs at your destination, baggage claim and clearance, sending information across the Internet follows a sequence of well-defined stages too.
 
-Layered architecture breaks down the complex process of network communication into manageable, modular components. This approach offers several benefits:
+In networking, we use layered models to describe this process. Each layer has a specific role. One layer might break your message into smaller parts, another determines how it should travel across the network, and another ensures it gets to the correct device. These layers work together just like the airline staff, airport infrastructure, and pilots all cooperate to get you safely to your destination.
 
-1. **Simplification**: Complex systems become easier to understand and develop
-2. **Standardization**: Different vendors can create interoperable products
-3. **Modularity**: Layers can evolve independently without affecting others
-4. **Troubleshooting**: Problems can be isolated to specific layers
+When you send a message from your phone or computer, think of it like sending yourself on a trip. It is not just one step, but a whole coordinated journey across systems and checkpoints.
 
-:::note[Think about It: Postal System Analogy]
-The layered networking model is similar to how postal systems work:
+## The Concept of Layered Network Model
 
-- **Physical layer**: The vehicles that transport mail (trucks, planes)
-- **Data link layer**: The sorting facilities that organize mail by region
-- **Network layer**: The addressing system that determines routing
-- **Transport layer**: Packaging (envelopes, boxes) that protects contents
-- **Application layer**: The content of the letter and its formatting
+Layered model/ architecture breaks down the complex process of network communication into manageable and modular components. This approach offers several benefits:
 
-Each layer has its own protocols and standards but works with other layers to deliver the complete message.
-:::
+- **Simplification**: Complex systems become easier to understand and develop
+- **Standardisation**: Different vendors can create interoperable products
+- **Modularity**: Layers can evolve independently without affecting others
+- **Troubleshooting**: Problems can be isolated to specific layers and can be addressed
 
-## Two Major Layered Models
+The two most commonly used models are the OSI (Open Systems Interconnection) model and the TCP/IP (Transmission Control Protocol/Internet Protocol) model.
 
-Two primary models describe network communication layers: the OSI model and the TCP/IP model.
+### OSI Model
 
-### The OSI Model
-
-The Open Systems Interconnection (OSI) model, developed by the International Organization for Standardization (ISO), divides network communication into seven distinct layers.
+The Open Systems Interconnection (OSI) model, developed by the International Organisation for Standardisation (ISO), divides network communication into seven distinct layers, ranging from how data is physically transmitted to how applications interact with the network. The layers and their functions of OSI model are,
 
 | Layer | Name | Function | Example Protocols |
 |-------|------|----------|-------------------|
@@ -45,9 +37,9 @@ The Open Systems Interconnection (OSI) model, developed by the International Org
 | 2 | Data Link | Physical addressing, access to media, error detection | Ethernet, Wi-Fi, PPP |
 | 1 | Physical | Transmission of raw bit streams | USB, Bluetooth, Ethernet physical layer |
 
-### The TCP/IP Model
+### TCP/IP Model
 
-The TCP/IP model (also known as the Internet Protocol Suite) is the foundation of Internet communications. It's a more practical, simplified model with four layers that correspond roughly to the OSI model.
+The TCP/IP model (also known as the Internet Protocol Suite) is the foundation of Internet communications. This model is a more practical, simplified model with four layers (standardised) and there is another commonly used TCP/IP model considered in the literature is a 5-layed TCP/IP model.
 
 | TCP/IP Layer | Corresponds to OSI Layers | Function | Example Protocols |
 |--------------|---------------------------|----------|-------------------|
@@ -56,25 +48,26 @@ The TCP/IP model (also known as the Internet Protocol Suite) is the foundation o
 | Internet | 3 (Network) | Addressing and routing | IP, ICMP |
 | Link | 1-2 (Physical, Data Link) | Physical network connection | Ethernet, Wi-Fi, ARP |
 
+In the 5-layed TCP/IP model, the link layer of 4-layed TCP/Ip model was divided into two layers which are Data link layer and Physical layer. Therefore, whether it is a 4-layer or 5-layer model, the operation of TCP/IP model remain the same.
 
 ![TCP/IP Model vs OSI Model](./images/TCP-IP-models.png)
 _A comparison of the 5 layer TCP/IP model with the 7 layer OSI/ISO reference model_
 
-
 :::note[OSI vs TCP/IP]
-While the OSI model is more comprehensive and used for understanding and discussing network concepts, the TCP/IP model is more practical and is actually implemented in today's networks. Most networking professionals need to understand both models.
+While the OSI model is more comprehensive and used for understanding and discussing network concepts, the TCP/IP model is widely implemented in today's networks including Internet. Therefore, in this chapter, we focus on TCP/IP model.
+:::
+
+:::note [How do the network providers know which protocols to use?]
+Network protocols are like a shared language that devices use to exchange information over a network. These protocols outline the rules and procedures that enable reliable communication between computers and other digital devices. Just like we need to speak the same language to understand each other, devices must follow the same protocol standards to communicate effectively.
+
+To ensure compatibility and smooth communication, these protocols must be standardised. This means organisations around the world agree on how the protocols should work, enabling developers to build systems and applications that can interact seamlessly.
+
+One of the major organisations responsible for these standards is the Internet Engineering Task Force (IETF). They create and publish technical specifications called Requests for Comments (RFCs), which define many core internet protocols such as TCP, IP, and HTTP. There are now thousands of RFCs that guide how the Internet functions today. Other important standardisation bodies include the Institute of Electrical and Electronics Engineers (IEEE)—known for setting standards like Ethernet and Wi-Fi under the IEEE 802 series—and the 3rd Generation Partnership Project (3GPP), which focuses on mobile communication technologies such as 4G and 5G.
 :::
 
 ## TCP/IP Model in Detail
 
-As the foundation of the Internet, the TCP/IP protocol suite deserves special attention.
-
-### Key Characteristics:
-
-- **Open standard**: Not controlled by any single company
-- **Interoperable**: Works across different hardware and operating systems
-- **Scalable**: From small home networks to the global Internet
-- **Robust**: Designed to work despite network failures
+The key characteristics of TCP/IP model are use open standard, works across different hardware and operating systems, and scalable model that can be used from small home networks to the global Internet. 
 
 ### Encapsulation Process
 
@@ -83,7 +76,23 @@ Data travels down through the layers on the sending device and up through the la
 1. **Application layer**: Creates the data to be sent
 2. **Transport layer**: Adds TCP/UDP header (port numbers, sequence information)
 3. **Internet layer**: Adds IP header (source and destination IP addresses)
-4. **Link layer**: Adds Ethernet/Wi-Fi header and trailer (MAC addresses)
+4. **Data Link layer**: Adds Ethernet/Wi-Fi header and trailer (MAC addresses)
+5. **Physical Layer**: Defined how signals are sent over the communication links​
+   
+![TCP/IP Model and Encapsulation](./images/TCPIP.jpg)
+_TCP/IP Model, layers, encapsulation and functions_
+
+:::note[Think about It: Postal system analogy- Another example of layered architecture]
+The layered networking model is similar to how postal systems work:
+
+- **Physical layer**: The vehicles that transport mail (trucks, planes)
+- **Data link layer**: The sorting facilities that organize mail by region
+- **Network layer**: The addressing system that determines routing
+- **Transport layer**: Packaging (envelopes, boxes) that protects contents
+- **Application layer**: The content of the letter and its formatting
+
+Each layer has its own protocols and standards but works with other layers to deliver the complete message.
+:::
 
 ## Common Application Layer Protocols
 
