@@ -36,7 +36,7 @@ In educational settings, create controlled environments for network analysis rat
 The following video provides quick introduction to Wireshark before we walk you through how to install and use Wireshark in RPi.
 
 <div class='not-content'>
-  <YouTube id='lb1Dw0elw0Q&t=68s' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
+  <YouTube id='lb1Dw0elw0Q' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
 </div>
 
 ## Installing Wireshark on Raspberry Pi
@@ -143,18 +143,100 @@ If you want to save the capture for later analysis:
 - **No interfaces shown**: Try running with sudo: `sudo wireshark`
 - **Slow performance**: Limit the capture with display filters to reduce processing load
 - **Raspberry Pi freezing**: Use capture filters to reduce the amount of data captured
-
-**Initial Exploration:**
-
-1. Generate some network traffic by:
-   - Opening a web browser and visiting a simple website
-   - Pinging another device on your network
-   - Running a speed test
-
-2. Observe the different protocols you can see in the capture
-3. Click on a packet to see its details in the middle and bottom panes
-4. Experiment with color coding (View > Coloring Rules) to better visualize different protocols
 :::
+
+## Capturing and Analyzing WiFi Data
+
+:::tip[Activity: Capturing WiFi Data Between RPi and Pico 2W]
+
+In this activity, we'll use Wireshark to capture and analyze the WiFi communication between your Raspberry Pi 4B and Pico 2W during the time-synchronized LED blinking exercise we performed earlier. This will give you insight into what's happening "under the hood" when devices communicate wirelessly.
+
+#### Learning Objectives:
+- Capture real-time WiFi traffic using Wireshark
+- Analyze packet structure and timing in device communication
+- Understand TCP/IP networking principles in practice
+- Visualize the data exchange in a real IoT application
+
+#### Materials Needed:
+- Raspberry Pi 4B with Wireshark installed (from previous setup)
+- Raspberry Pi Pico 2W
+- Both devices configured for the time-synchronized LED blinking activity
+- Both devices connected to the same WiFi network
+
+
+#### Step 1: Prepare for Packet Capture
+
+1. Open Wireshark on your Raspberry Pi (through the menu or terminal)
+2. When Wireshark launches, select the **wlan0** interface
+3. Before starting the capture, let's create a display filter to focus on the relevant traffic:
+   - Click in the filter box at the top of the window
+   - Enter the following filter to show only traffic between your Pi and Pico:
+     ```
+     ip.addr == PICO_IP_ADDRESS
+     ```
+     (Replace PICO_IP_ADDRESS with your Pico 2W's actual IP address)
+   - Click the blue arrow or press Enter to apply the filter
+
+![Wireshark Filter](./images/wireshark/wireshark-filter.png)
+_Setting a Wireshark display filter_
+
+
+#### Step 2: Start Capturing and Run the Time Sync Activity
+
+1. Click the shark fin icon to start capturing packets
+2. Now run the time-synchronized LED activity:
+   - Start the server script on your Raspberry Pi
+   - Start the client script on your Pico W
+   - Observe the LEDs starting to blink in synchronization
+
+![Wireshark Tiem sync](./images/wireshark/wireshark-time-sync.png)
+_Time sync activity_
+
+3. Watch as Wireshark displays the packets being exchanged between the devices
+
+![Wireshark Filter](./images/wireshark/wireshark-filter.png)
+_Setting a Wireshark display filter_
+
+#### Step 3: Analyze the Initial Connection
+
+After a minute or so of capturing, stop the capture by clicking the red square button.
+
+Now let's analyze what happened during the initial connection:
+
+1. Look for the **TCP handshake** that established the connection:
+   - Find three packets showing the TCP three-way handshake (SYN, SYN-ACK, ACK)
+   - Click on each to examine the details in the packet breakdown pane
+
+![TCP Handshake](./images/wireshark/tcp-handshake.png)
+_Example of a TCP handshake in Wireshark_
+
+![Expand](./images/wireshark/wireshark-expand.png)
+_Expanded capture packet_
+
+2. Find the **time synchronization message**:
+   - Look for TCP packets with a length that indicates data transfer
+   - Click on these packets and expand the "Data" section in the packet details
+   - You should see the time when the data was sent from the Pi to the Pico
+
+![Data field for a packet](./images/wireshark/time-sync-wireshark-data.png)
+_Data field for a packet_
+
+#### Discussion Questions:
+
+1. **Protocol Analysis**: What transport layer protocol is used for the time synchronization (TCP or UDP)? Why do you think this protocol was chosen?
+
+2. **Packet Structure**: What information can you find in the packet headers? How does this information help ensure reliable communication?
+
+3. **Timing Analysis**: From the Wireshark capture, estimate the network latency between the devices. How might this affect the LED synchronization?
+
+4. **Data Volume**: How much data was actually transferred during this seemingly simple application? Is it more or less than you expected?
+
+5. **Security Considerations**: What security concerns can you identify by examining the packet contents? Is the data encrypted?
+
+:::
+
+
+{/*
 
 :::note[You can install Wireshark in your laptop]
 
@@ -178,3 +260,5 @@ _Wireshark Bluetooth Capture_
 - Can you identify the source and destination addresses?
   
 :::
+
+*/}

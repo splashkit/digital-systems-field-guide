@@ -201,3 +201,20 @@ To get a clean capture that's easier to analyze, minimize other network traffic 
 :::
 
 In the next section, we'll dive deep into analyzing these captures to understand every layer of the communication process between our devices.
+
+
+
+:::note[Understanding Network Protocols in IoT]
+
+When devices like our Raspberry Pi and Pico W communicate, they rely on a stack of network protocols:
+
+1. **Physical Layer**: The WiFi radio signals (802.11)
+2. **Data Link Layer**: MAC addressing and frames
+3. **Network Layer**: IP addressing and routing (IPv4/IPv6)
+4. **Transport Layer**: TCP/UDP for connection management and data delivery
+5. **Application Layer**: Custom application protocols (like our time sync protocol)
+
+Wireshark lets us observe all of these layers in action. While our simple LED synchronization seems straightforward from a user perspective, the network analysis reveals the complex coordination happening behind the scenes.
+
+This multi-layered approach is fundamental to all Internet of Things applications, where diverse devices need to communicate reliably despite differences in hardware, software, and connectivity.
+:::
