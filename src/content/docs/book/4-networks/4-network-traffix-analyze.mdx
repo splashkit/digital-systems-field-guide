@@ -12,7 +12,7 @@ Let’s explore each layer of the TCP/IP model by examining how data flows throu
 
 ### Application Layer
 
-The main reason we study computer networks is because of the powerful and exciting applications they enable such as browsing the web, streaming videos, or chatting online. Without these kinds of applications, there would be little need for the complex systems and protocols that make networking possible. The rapid pace of innovation in Internet-based tools shows no signs of slowing down. 
+The main reason we study computer networks is because of the powerful and exciting applications they enable such as browsing the web, streaming videos, or chatting online. Without these kinds of applications, there would be little need for the complex systems and protocols that make networking possible. The rapid pace of innovation in Internet-based tools shows no signs of slowing down.
 
 Application layer protocols operate exclusively on end-user devices like laptops, smartphones, and servers and not on intermediary network hardware like routers or switches. These end devices exchange information with one another across the network using the underlying infrastructure of links and networking equipment.
 
@@ -48,8 +48,8 @@ Choosing between TCP and UDP depends on the application's requirements, such as 
 
 We explored how end systems use sockets to exchange messages across a network. Did you think about the following:
 
-- What those messages actually look like? 
-- What kind of information needs to be included-
+- What those messages actually look like?
+- What kind of information needs to be included?
 - How each device knows when to send or process a message? 
 
 :::
@@ -88,9 +88,6 @@ In Wireshark:
 - Take screenshots and notes on your analysis
   
 :::
-
-![HTTP in Wireshark](./images/placeholder.png)
-_HTTP request details in the Application layer_
 
 ### Transport Layer
 
@@ -168,35 +165,48 @@ _IP header showing in Wireshark_
 - Local loopback: 127.0.0.0/8 (typically 127.0.0.1)
 - Link-local: 169.254.0.0/16 (auto-assigned when DHCP fails)
 
-### Link Layer (Data Link and Physical)
+### Data Link Layer
 
-The Link layer in TCP/IP combines the Physical and Data Link layers from the OSI model. It handles the physical connection between devices and local addressing.
+The data-link layer is in charge of moving data between two directly connected devices across a physical communication link. This link might be wired, such as Ethernet or optical fibre, or wireless such as WiFi or cellular technologies (e.g., 5G and 4G). Because links vary in nature, different data-link protocols are used depending on the type of connection. The main services offered by the data-link layer include:
 
-**Key Components:**
-- **MAC Addresses**: 48-bit hardware addresses assigned to network interfaces
-- **Frames**: The basic unit of transmission at this layer
-- **Error Detection**: CRC (Cyclic Redundancy Check) to verify frame integrity
+- Framing: organising data into frames which are the basic unit of transmission at this layer
+- Error detection : identifying transmission errors using techniques such as CRC (Cyclic Redundancy Check) to verify frame integrity
+- flow control (managing data transmission rates),
+- Reliable delivery over the link
+- Multiple access using multiple access control protocols that allow a number of nodes (or users) to access a shared network channel (link) simultaneously
 
-**In Wireshark:**
-- Look at the "Frame" section in the packet details pane
-- Examine Ethernet or IEEE 802.11 (Wi-Fi) headers
-- MAC addresses appear as source and destination
+**LAN and MAC Address**
 
-![MAC Address in Wireshark](./images/placeholder.png)
-_MAC addresses in the Ethernet frame header_
+The data-link layer is responsible for moving data between two devices that are directly connected over the same physical link. These devices often exist within a Local Area Network (LAN), which is a group of interconnected nodes located within a limited area like a home, school, or office. The size and complexity of a LAN can vary depending on the environment. To ensure data is delivered to the correct device within the LAN, the data link layer uses unique identifiers known as MAC addresses also called physical or Ethernet addresses which help identify each device on the network. Mac Address is a 48-bit hardware address assigned to the network interface of a device
 
 :::note[MAC vs. IP Addresses]
-MAC addresses are physical addresses tied to specific hardware, while IP addresses are logical addresses that can be assigned and changed. MAC addresses operate at the Link layer for local delivery, while IP addresses work at the Network layer for internetwork routing.
+
+MAC addresses are physical addresses tied to specific hardware, while IP addresses are logical addresses that can be assigned and changed. MAC addresses operate at the data link layer for local delivery, while IP addresses work at the Network layer for inter-network routing.
 :::
 
+**MAC and IP translation**
 
-## Analyzing Wi-Fi Communication
+Now that we understand the link layer uses MAC addresses and the network layer uses IP addresses, a translation mechanism is needed to bridge these two types of addresses. This is where the Address Resolution Protocol (ARP) comes in. ARP plays a crucial role in local networks by mapping IP addresses to their corresponding MAC addresses, enabling devices to communicate effectively within a LAN. However, ARP has known security weaknesses due to its lack of built-in authentication. These vulnerabilities can be exploited in attacks such as ARP spoofing where a malicious device falsely claims another IP address to intercept traffic and ARP cache poisoning, which involves inserting false information into a device’s ARP table, potentially disrupting normal network communication.
 
-Let's analyze the Wi-Fi communication between our Raspberry Pi and the Pico 2W web server in detail.
+## Physical Layer
 
-:::tip[Activity: Analyzing Wi-Fi Traffic Between Pi and Pico]
+We have learned that the link layer creates and passes frames to physical layer to send over a physical medium. At the physical layer which is the bottom-most layer in the protocol stack, the data must be converted into signals to be transmitted over channels.
 
-In this activity, we'll analyze the captured Wi-Fi traffic between your Raspberry Pi and Pico 2W web server.
+Modern computer networks rely on various types of transmission media to carry signals between devices. These media are generally divided into two main categories:
+
+- Wired (guided media) such as copper cables and fibre-optic cables, where the signals travel along a physical path.
+
+- Wireless (unguided media) including technologies like WiFi, 4G, and 5G, which transmit signals through the air without a fixed path.
+
+Each medium comes with its own set of characteristics, which influence how networks are structured and how efficiently they operate. To understand the signals are transmitted over different medium, we need to go to the fundamentals of electronics and electrical engineering which is not the focus of this study. Therefore, we will wrap our discussion on computer networks by putting what we have learned into practice.
+
+## Analysing Wi-Fi Communication
+
+Let's analyse the Wi-Fi communication between our Raspberry Pi and the Pico 2W web server in detail.
+
+:::tip[Activity: Analysing Wi-Fi Traffic Between Pi and Pico]
+
+In this activity, we will analyse the captured Wi-Fi traffic between your Raspberry Pi and Pico 2W web server.
 
 **Materials Needed:**
 - Wireshark installed on Raspberry Pi
@@ -302,7 +312,7 @@ For a selected HTTP packet, examine each layer:
 **Submit a screenshot of your Wireshark analysis with annotations highlighting the key aspects of the communication.**
 :::
 
-## Analyzing Bluetooth Communication
+## Analysing Bluetooth Communication
 
 Now let's analyze the Bluetooth Low Energy (BLE) communication between our Raspberry Pi and Pico 2W.
 
