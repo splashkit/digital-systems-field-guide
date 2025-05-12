@@ -130,9 +130,6 @@ The following video explains the TCP, its three-way handshake and UDP.
 - Sequence and acknowledgement numbers (if TCP)
 - Flags (SYN, ACK, FIN, etc. for TCP)
 
-![TCP Header in Wireshark](./images/placeholder.png)
-_TCP header showing ports, sequence numbers, and flags_
-
 ### Network Layer
 
 The network layer is responsible for directing and delivering data packets between hosts located in separate networks. It creates a logical communication between host devices. To perform these tasks, it relies on a range of protocols, with the Internet Protocol (IP) being the most fundamental and widely used among them.
@@ -158,14 +155,10 @@ The following video explains IP addressing in details. Note: start watching the 
   <YouTube id='5WfiTHiU4x8' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
 </div>
 
-**In Wireshark:**
-- Look at the "Internet Protocol" section in packet details
-- Source and destination IP addresses
-- Time to Live (TTL) values
-- Fragmentation flags and offsets
+You can check the details of IP header in Wireshark. A sample header structure is shown below.
 
-![IP Header in Wireshark](./images/placeholder.png)
-_IP header showing source and destination addresses_
+![IP Header in Wireshark](./images/IP_Wireshark.png)
+_IP header showing in Wireshark_
 
 **IP Address Ranges:**
 - Private ranges (not routable on the internet):
