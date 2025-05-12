@@ -70,7 +70,17 @@ The following video explains HTTP and its secure counterpart HTTPS where S stand
 
 **DNS**
 
-When you enter a website address into your browser, your device does not immediately understand it—network devices operate using IP addresses, not human-readable names. So, there needs to be a step that translates the website name into its corresponding IP address. This important task is handled by Domain Name System (DNS) servers, which act like the Internet’s phone book, matching web addresses to their numerical IP equivalents. The following video explains DNS.  
+When you enter a website address into your browser, your device does not immediately understand it—network devices operate using IP addresses, not human-readable names. So, there needs to be a step that translates the website name into its corresponding IP address. This important task is handled by Domain Name System (DNS) servers, which act like the Internet’s phone book, matching web addresses to their numerical IP equivalents.
+
+**DNS Resolution Process:**
+1. Client queries local DNS server
+2. If not cached, local DNS server queries root servers
+3. Root servers direct to TLD (Top-Level Domain) servers
+4. TLD servers direct to authoritative name servers
+5. Authoritative servers provide the IP address
+6. Result is cached at various levels
+
+The following video explains DNS.  
 
 <div class='not-content'>
   <YouTube id='mpQZVYPuDGU' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
@@ -103,6 +113,11 @@ Network applications use two main transport layer protocols depending on the req
 
 ![TCP](./images/tcp-connection.png)
 _TCP connection_
+
+**Connection Establishment (Three-Way Handshake):**
+1. SYN: Client sends a synchronization packet
+2. SYN-ACK: Server acknowledges and sends its own synchronisation
+3. ACK: Client acknowledges the server's synchronisation
 
 **UDP (User Datagram Protocol):**
 
@@ -144,7 +159,16 @@ The data plane is responsible for the actual forwarding of packets through route
 - **Routing**: Determining paths through different networks
 - **Fragmentation**: Breaking large packets into smaller ones if needed
 
+**IP Addressing and Subnetting**
+
 IPV4 is 32 bits long address. Example IPV4 address is 192.168.10. 1IPv6, or Internet Protocol version 6, was developed to address the limitations of IPv4, particularly the exhaustion of its 32-bit address space due to the rapid increase in internet-connected devices. To overcome this, IPv6 uses 128-bit addresses, allowing for a vastly larger number of unique IP addresses. A typical IPv6 address looks like this: 2001:0db8:0000:0000:0000:ff00:0370:7334.
+
+Subnetting is a concept that is used to divide IP networks into smaller subnetworks. Quick guide to subnetting:
+- **CIDR Notation**: e.g., 192.168.1.0/24 (the /24 indicates 24 bits for network portion and last 8 bits are used foor host addressing)
+- **Subnet Mask**: e.g., 255.255.255.0 (corresponds to /24)
+- **Network Address**: The first address in a subnet (e.g., 192.168.1.0)
+- **Broadcast Address**: The last address in a subnet (e.g., 192.168.1.255)
+- **Available Hosts**: Number of usable addresses in a subnet
 
 The following video explains IP addressing in details. Note: start watching the video into 1 minute 45 seconds.
 
@@ -200,32 +224,49 @@ Modern computer networks rely on various types of transmission media to carry si
 
 Each medium comes with its own set of characteristics, which influence how networks are structured and how efficiently they operate. To understand the signals are transmitted over different medium, we need to go to the fundamentals of electronics and electrical engineering which is not the focus of this study. Therefore, we will wrap our discussion on computer networks by putting what we have learned into practice.
 
-## Analysing Wi-Fi Communication
 
-Let's analyse the Wi-Fi communication between our Raspberry Pi and the Pico 2W web server in detail.
+:::tip[Activity: Analysing Network Traffic in Wireshark]
 
-:::tip[Activity: Analysing Wi-Fi Traffic Between Pi and Pico]
-
-In this activity, we will analyse the captured Wi-Fi traffic between your Raspberry Pi and Pico 2W web server.
+In this activity, we will analyse the captured traffic in Raspberry Pi.
 
 **Materials Needed:**
 - Wireshark installed on Raspberry Pi
-- Previously captured Wi-Fi traffic file (or create a new capture)
 
-**Step 1: Open your capture file**
+**Step 1: Capture traffic file**
 
 Open Wireshark and load your saved capture file:
-1. Click File > Open
-2. Navigate to your saved capture
-3. Click Open
+
+1. Close your browser
+2. Open Wireshark and start capturing traffic in WiFi network
+3. Open the browser and go to "http://www.bom.gov.au/vic/forecasts/melbourne.shtml" 
+4. Stop packet capture in Wireshark
+5. Save the packet capture and use the capture for the analysis
 
 **Step 2: Apply a display filter to focus on relevant traffic**
 
-If you know the IP address of your Pico 2W, enter a filter like:
-```
-ip.addr == 192.168.1.X
-```
-Replace the IP address with your Pico's actual address.
+For example, use can use "http" to filter out the entries related http protocol.
+By analysing the HTTP responses, you should be able to answer the following questions,
+
+- What is the sequence of HTTP message exchange?
+- What are details you can find in HTTP GET message?
+- What is being served?
+- What is the HTTP version your browser used?
+- Can you identify the IP address of your RPi? 
+- Can you identify the IP address of the server?
+- Check the packet details in the middle Wireshark packet details pane. Can you identify the details in Ethernet II / Internet Protocol Version 4 / Transmission Control Protocol / Hypertext Transfer Protocol frames: 
+  
+1. **Link Layer**
+   - Note the source and destination MAC addresses
+   - What devices do these MAC addresses belong to?
+
+2. **Internet Layer**
+   - Record the source and destination IP addresses
+   - Check the TTL value
+   - Is there any fragmentation?
+
+3. **Transport Layer**
+   - What is the transport layer protocol used?
+   - Note the source and destination ports
 
 **Step 3: Identify the TCP three-way handshake**
 
@@ -240,79 +281,15 @@ Replace the IP address with your Pico's actual address.
 3. Note the IP addresses and ports involved
 4. What do these port numbers tell you about the communication?
 
-**Step 4: Examine HTTP requests and responses**
-
-1. Apply a filter to show only HTTP traffic:
-   ```
-   http
-   ```
-2. Find an HTTP GET request from the Pi to the Pico
-3. Analyze the request details:
-   - Request method and URI
-   - Headers (Host, User-Agent, etc.)
-   - Any query parameters or cookies
-
-4. Find the corresponding HTTP response
-5. Analyze the response:
-   - Status code (200 OK, 404 Not Found, etc.)
-   - Headers (Content-Type, Content-Length, etc.)
-   - Content/payload
-
-**Step 5: Follow the TCP stream**
-
-1. Right-click on one of the HTTP packets
-2. Select Follow > TCP Stream
-3. Review the complete HTTP conversation
-4. Identify the HTML code being served by the Pico
-
-**Step 6: Examine each layer in detail**
-
-For a selected HTTP packet, examine each layer:
-
-1. **Link Layer**
-   - Note the source and destination MAC addresses
-   - What devices do these MAC addresses belong to?
-
-2. **Internet Layer**
-   - Record the source and destination IP addresses
-   - Check the TTL value
-   - Is there any fragmentation?
-
-3. **Transport Layer**
-   - Note the source and destination ports
-   - For TCP packets, examine sequence and acknowledgment numbers
-   - What do the flags indicate?
-
-4. **Application Layer**
-   - What is being requested or served?
-   - Are there any notable headers?
-   - If it's controlling the LED, what parameters are being sent?
-
-**Step 7: Analyze LED control traffic**
-
-1. Apply a filter to find requests that control the LED:
-   ```
-   http contains "lighton" or http contains "lightoff"
-   ```
-2. Examine how the command is transmitted
-3. Find the server's response to these commands
-4. Trace the complete request-response cycle
-
 **Questions to Answer:**
 
-1. What transport protocol is used for communication between the Pi and Pico? Why is this appropriate?
-2. How does the client (Pi) specify which resource it wants from the server (Pico)?
-3. What content type is the Pico serving? How can you tell?
-4. How does the web interface send commands to control the LED?
-5. Does the communication use any encryption? How would this change if HTTPS was used?
-6. What happens at the network level when you refresh the web page?
-7. How does the browser know when it has received all the data?
-8. Can you identify any inefficiencies or potential improvements in the communication?
+- Does the communication use any encryption? How would this change if HTTPS was used?
 
-**Submit a screenshot of your Wireshark analysis with annotations highlighting the key aspects of the communication.**
+**Submit screenshots of your Wireshark analysis with annotations highlighting the key aspects of the communication.**
 :::
 
-## Analysing Bluetooth Communication
+
+{/* ## Analysing Bluetooth Communication
 
 Now let's analyze the Bluetooth Low Energy (BLE) communication between our Raspberry Pi and Pico 2W.
 
@@ -326,6 +303,7 @@ BLE uses a different protocol stack than traditional TCP/IP, but we can still an
 4. **ATT (Attribute Protocol)**: Simple client/server operations
 5. **GATT (Generic Attribute Profile)**: Higher-level service framework
 6. **GAP (Generic Access Profile)**: Device discovery and connection
+
 
 :::tip[Activity: Analyzing Bluetooth Traffic Between Pi and Pico]
 
@@ -402,69 +380,11 @@ Consider how BLE communication differs from the Wi-Fi/HTTP approach:
 7. How is security implemented in the BLE communication?
 8. How would you modify the communication to be more efficient or secure?
 
-**Submit a screenshot of your Wireshark analysis with annotations highlighting the key aspects of the BLE communication.**
+**Take screenshot of your Wireshark analysis with annotations highlighting the key aspects of the BLE communication.**
 :::
+*/}
 
-## Key TCP/IP Concepts in Detail
-
-Now that we've seen TCP/IP in action, let's dive deeper into some key concepts:
-
-### IP Addressing and Subnetting
-
-IP addresses are 32-bit (IPv4) or 128-bit (IPv6) numbers that identify network interfaces. Subnetting divides IP networks into smaller subnetworks.
-
-**Key Concepts:**
-- **CIDR Notation**: e.g., 192.168.1.0/24 (the /24 indicates 24 bits for network portion)
-- **Subnet Mask**: e.g., 255.255.255.0 (corresponds to /24)
-- **Network Address**: The first address in a subnet (e.g., 192.168.1.0)
-- **Broadcast Address**: The last address in a subnet (e.g., 192.168.1.255)
-- **Available Hosts**: Number of usable addresses in a subnet
-
-### DNS Resolution
-
-DNS (Domain Name System) translates human-readable domain names into IP addresses.
-
-**DNS Resolution Process:**
-1. Client queries local DNS server
-2. If not cached, local DNS server queries root servers
-3. Root servers direct to TLD (Top-Level Domain) servers
-4. TLD servers direct to authoritative name servers
-5. Authoritative servers provide the IP address
-6. Result is cached at various levels
-
-**In Wireshark:**
-- DNS queries show the domain being looked up
-- DNS responses contain the IP addresses
-- Both queries and responses include various flags and parameters
-
-![DNS in Wireshark](./images/placeholder.png)
-_DNS query and response in Wireshark_
-
-### TCP Connection Management
-
-TCP establishes, maintains, and terminates connections in an orderly way.
-
-**Connection Establishment (Three-Way Handshake):**
-1. SYN: Client sends a synchronization packet
-2. SYN-ACK: Server acknowledges and sends its own synchronization
-3. ACK: Client acknowledges the server's synchronization
-
-**Connection Termination (Four-Way Handshake):**
-1. FIN: One endpoint sends a finish packet
-2. ACK: Other endpoint acknowledges
-3. FIN: Other endpoint sends its own finish packet
-4. ACK: First endpoint acknowledges
-
-**TCP States:**
-- CLOSED: No connection
-- LISTEN: Server waiting for connections
-- SYN-SENT: Client sent SYN, waiting for SYN-ACK
-- SYN-RECEIVED: Server received SYN, sent SYN-ACK
-- ESTABLISHED: Connection established, data transfer possible
-- FIN-WAIT: Sent FIN, waiting for ACK
-- CLOSE-WAIT: Received FIN, sent ACK
-- TIME-WAIT: Waiting to ensure all packets processed
-
+{/*
 ### ARP (Address Resolution Protocol)
 
 ARP resolves IP addresses to MAC addresses on local networks.
@@ -539,4 +459,6 @@ Wireshark offers several timing features:
 
 These tools help identify latency issues and performance bottlenecks.
 
-In the next section, we'll introduce basic concepts of network security, explaining how the communication we've been analyzing can be protected from various threats.
+In the next section, we'll introduce basic concepts of network security, explaining how the communication we've been analysing can be protected from various threats.
+
+*/}
