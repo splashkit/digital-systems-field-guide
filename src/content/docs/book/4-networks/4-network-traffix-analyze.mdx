@@ -12,7 +12,7 @@ Let’s explore each layer of the TCP/IP model by examining how data flows throu
 
 ### Application Layer
 
-The main reason we study computer networks is because of the powerful and exciting applications they enable such as browsing the web, streaming videos, or chatting online. Without these kinds of applications, there would be little need for the complex systems and protocols that make networking possible. The rapid pace of innovation in Internet-based tools shows no signs of slowing down. 
+The main reason we study computer networks is because of the powerful and exciting applications they enable such as browsing the web, streaming videos, or chatting online. Without these kinds of applications, there would be little need for the complex systems and protocols that make networking possible. The rapid pace of innovation in Internet-based tools shows no signs of slowing down.
 
 Application layer protocols operate exclusively on end-user devices like laptops, smartphones, and servers and not on intermediary network hardware like routers or switches. These end devices exchange information with one another across the network using the underlying infrastructure of links and networking equipment.
 
@@ -48,8 +48,8 @@ Choosing between TCP and UDP depends on the application's requirements, such as 
 
 We explored how end systems use sockets to exchange messages across a network. Did you think about the following:
 
-- What those messages actually look like? 
-- What kind of information needs to be included-
+- What those messages actually look like?
+- What kind of information needs to be included?
 - How each device knows when to send or process a message? 
 
 :::
@@ -88,9 +88,6 @@ In Wireshark:
 - Take screenshots and notes on your analysis
   
 :::
-
-![HTTP in Wireshark](./images/placeholder.png)
-_HTTP request details in the Application layer_
 
 ### Transport Layer
 
@@ -193,7 +190,7 @@ Now that we understand the link layer uses MAC addresses and the network layer u
 
 ## Physical Layer
 
-We have learned that the link layer creates and passes frames to physical layer to send over a physical medium. At the physical layer which is the bottom-most layer in the protocol stack, the data must be converted into signals to be transmitted over channels. 
+We have learned that the link layer creates and passes frames to physical layer to send over a physical medium. At the physical layer which is the bottom-most layer in the protocol stack, the data must be converted into signals to be transmitted over channels.
 
 Modern computer networks rely on various types of transmission media to carry signals between devices. These media are generally divided into two main categories:
 
@@ -203,7 +200,7 @@ Modern computer networks rely on various types of transmission media to carry si
 
 Each medium comes with its own set of characteristics, which influence how networks are structured and how efficiently they operate. To understand the signals are transmitted over different medium, we need to go to the fundamentals of electronics and electrical engineering which is not the focus of this study. Therefore, we will wrap our discussion on computer networks by putting what we have learned into practice.
 
-## Analyzing Wi-Fi Communication
+## Analysing Wi-Fi Communication
 
 Let's analyse the Wi-Fi communication between our Raspberry Pi and the Pico 2W web server in detail.
 
@@ -315,7 +312,7 @@ For a selected HTTP packet, examine each layer:
 **Submit a screenshot of your Wireshark analysis with annotations highlighting the key aspects of the communication.**
 :::
 
-## Analyzing Bluetooth Communication
+## Analysing Bluetooth Communication
 
 Now let's analyze the Bluetooth Low Energy (BLE) communication between our Raspberry Pi and Pico 2W.
 
