@@ -168,35 +168,48 @@ _IP header showing in Wireshark_
 - Local loopback: 127.0.0.0/8 (typically 127.0.0.1)
 - Link-local: 169.254.0.0/16 (auto-assigned when DHCP fails)
 
-### Link Layer (Data Link and Physical)
+### Data Link Layer
 
-The Link layer in TCP/IP combines the Physical and Data Link layers from the OSI model. It handles the physical connection between devices and local addressing.
+The data-link layer is in charge of moving data between two directly connected devices across a physical communication link. This link might be wired, such as Ethernet or optical fibre, or wireless such as WiFi or cellular technologies (e.g., 5G and 4G). Because links vary in nature, different data-link protocols are used depending on the type of connection. The main services offered by the data-link layer include:
 
-**Key Components:**
-- **MAC Addresses**: 48-bit hardware addresses assigned to network interfaces
-- **Frames**: The basic unit of transmission at this layer
-- **Error Detection**: CRC (Cyclic Redundancy Check) to verify frame integrity
+- Framing: organising data into frames which are the basic unit of transmission at this layer
+- Error detection : identifying transmission errors using techniques such as CRC (Cyclic Redundancy Check) to verify frame integrity
+- flow control (managing data transmission rates),
+- Reliable delivery over the link
+- Multiple access using multiple access control protocols that allow a number of nodes (or users) to access a shared network channel (link) simultaneously
 
-**In Wireshark:**
-- Look at the "Frame" section in the packet details pane
-- Examine Ethernet or IEEE 802.11 (Wi-Fi) headers
-- MAC addresses appear as source and destination
+**LAN and MAC Address**
 
-![MAC Address in Wireshark](./images/placeholder.png)
-_MAC addresses in the Ethernet frame header_
+The data-link layer is responsible for moving data between two devices that are directly connected over the same physical link. These devices often exist within a Local Area Network (LAN), which is a group of interconnected nodes located within a limited area like a home, school, or office. The size and complexity of a LAN can vary depending on the environment. To ensure data is delivered to the correct device within the LAN, the data link layer uses unique identifiers known as MAC addresses also called physical or Ethernet addresses which help identify each device on the network. Mac Address is a 48-bit hardware address assigned to the network interface of a device
 
 :::note[MAC vs. IP Addresses]
-MAC addresses are physical addresses tied to specific hardware, while IP addresses are logical addresses that can be assigned and changed. MAC addresses operate at the Link layer for local delivery, while IP addresses work at the Network layer for internetwork routing.
+
+MAC addresses are physical addresses tied to specific hardware, while IP addresses are logical addresses that can be assigned and changed. MAC addresses operate at the data link layer for local delivery, while IP addresses work at the Network layer for inter-network routing.
 :::
 
+**MAC and IP translation**
+
+Now that we understand the link layer uses MAC addresses and the network layer uses IP addresses, a translation mechanism is needed to bridge these two types of addresses. This is where the Address Resolution Protocol (ARP) comes in. ARP plays a crucial role in local networks by mapping IP addresses to their corresponding MAC addresses, enabling devices to communicate effectively within a LAN. However, ARP has known security weaknesses due to its lack of built-in authentication. These vulnerabilities can be exploited in attacks such as ARP spoofing where a malicious device falsely claims another IP address to intercept traffic and ARP cache poisoning, which involves inserting false information into a device’s ARP table, potentially disrupting normal network communication.
+
+## Physical Layer
+
+We have learned that the link layer creates and passes frames to physical layer to send over a physical medium. At the physical layer which is the bottom-most layer in the protocol stack, the data must be converted into signals to be transmitted over channels. 
+
+Modern computer networks rely on various types of transmission media to carry signals between devices. These media are generally divided into two main categories:
+
+- Wired (guided media) such as copper cables and fibre-optic cables, where the signals travel along a physical path.
+
+- Wireless (unguided media) including technologies like WiFi, 4G, and 5G, which transmit signals through the air without a fixed path.
+
+Each medium comes with its own set of characteristics, which influence how networks are structured and how efficiently they operate. To understand the signals are transmitted over different medium, we need to go to the fundamentals of electronics and electrical engineering which is not the focus of this study. Therefore, we will wrap our discussion on computer networks by putting what we have learned into practice.
 
 ## Analyzing Wi-Fi Communication
 
-Let's analyze the Wi-Fi communication between our Raspberry Pi and the Pico 2W web server in detail.
+Let's analyse the Wi-Fi communication between our Raspberry Pi and the Pico 2W web server in detail.
 
-:::tip[Activity: Analyzing Wi-Fi Traffic Between Pi and Pico]
+:::tip[Activity: Analysing Wi-Fi Traffic Between Pi and Pico]
 
-In this activity, we'll analyze the captured Wi-Fi traffic between your Raspberry Pi and Pico 2W web server.
+In this activity, we will analyse the captured Wi-Fi traffic between your Raspberry Pi and Pico 2W web server.
 
 **Materials Needed:**
 - Wireshark installed on Raspberry Pi
