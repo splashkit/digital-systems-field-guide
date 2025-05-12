@@ -7,7 +7,9 @@ import { YouTube } from 'astro-embed';
 
 # Introduction to Network Security
 
-As we've explored network communication in detail, you've likely noticed that much of the traffic we analyzed was transmitted in plain text. This transparency is excellent for learning but presents significant security risks in real-world applications. In this final section, we'll introduce the fundamentals of network security.
+We have learned about the importance of networks and how variety of network protocols and devices forms Internet that we use today. However, those protocols also bring vulnerabilities. As our reliance on digital communication and online services continues to grow, securing computer networks has become more critical than ever. Network security refers to the strategies, technologies, and practices designed to protect data and systems as they are transmitted across or accessed through networks. It ensures the confidentiality, integrity, and availability of information by preventing unauthorised access, misuse, or disruption.
+
+Whether it is protecting personal data on a home WiFi network or securing sensitive information in a large organisation's infrastructure, network security plays a vital role in keeping our digital world safe. This field covers a wide range of areas including firewalls, encryption, authentication protocols, intrusion detection, and more. In this final section, we will briefly look at the fundamentals of network security.
 
 ## Why Network Security Matters
 
@@ -15,7 +17,7 @@ Network security is crucial because:
 
 1. **Data Protection**: Sensitive information should remain private
 2. **Authentication**: Verifying the identity of communicating parties
-3. **Integrity**: Ensuring data hasn't been tampered with
+3. **Integrity**: Ensuring data has not been tampered with
 4. **Availability**: Keeping systems operational despite attack attempts
 5. **Compliance**: Meeting legal and regulatory requirements
 
@@ -57,7 +59,7 @@ Understanding potential threats is the first step in protection:
 
 **What it is**: Overwhelming a system to make it unavailable to legitimate users.
 
-**How it works**: Flooding a target with excessive traffic or exploiting vulnerabilities.
+**How it works**: Flooding a target with excessive traffic or exploiting vulnerabilities. Example: TCP SYN Flood.
 
 **Example**: Distributed Denial of Service (DDoS) attacks using botnets.
 
@@ -76,9 +78,17 @@ Understanding potential threats is the first step in protection:
 
 **What it is**: Inserting malicious packets into an established communication stream.
 
-**How it works**: Exploiting weaknesses in protocols to insert unauthorized commands or data.
+**How it works**: Exploiting weaknesses in protocols to insert unauthorised commands or data.
 
 **Example**: Injecting malicious SQL commands into unprotected web traffic.
+
+:::note[Phishing Attack]
+ Phishing is a tactic used by cybercriminals to deceive you into revealing personal information. This is more related to data security and privacy. It is important to learn how to recognise and guard against suspicious emails, text messages, and social media content designed to trick you.
+:::
+
+:::note[Anomaly Detection in Wireshark]
+ Wireshark can be used to detect anomalies in the network involves identifying unusual or suspicious patterns in network traffic that could indicate issues such as security threats, performance problems, or misconfigurations.
+:::
 
 ## Basic Security Measures
 
@@ -129,7 +139,7 @@ TLS (formerly SSL) secures communication at the transport layer, most commonly s
 - Look for certificate information and cipher suites
 
 
-### Authentication and Authorization
+### Authentication and Authorisation
 
 Security also involves verifying identity and access rights:
 
@@ -139,12 +149,12 @@ Security also involves verifying identity and access rights:
    - Multi-factor authentication (MFA)
    - Biometrics
 
-2. **Authorization Frameworks**:
+2. **Authorisation Frameworks**:
    - Access Control Lists (ACLs)
    - Role-Based Access Control (RBAC)
    - Attribute-Based Access Control (ABAC)
 
-### Firewalls and IDS/IPS
+### Firewalls, IPS (Intrusion Prevention System), and IDS (Intrusion Detection System)
 
 Physical and virtual network protection includes:
 
@@ -157,3 +167,43 @@ Physical and virtual network protection includes:
    - Monitor for suspicious patterns
    - IDS: Detects and alerts
    - IPS: Detects and actively blocks
+
+### Developing Cybersecurity Threat Models
+
+Developing cybersecurity threat models involves systematically identifying and evaluating potential security threats to a system, application, or network. This section provides a high-level guide on how to develop an effective cybersecurity threat model. 
+
+1. Define the system or scope :
+Clearly outline what you are protecting such an application, network infrastructure, or a service and identify components, boundaries, and users.
+
+2. Identify assets: 
+Determine what is valuable and worth protecting such as user data, intellectual property, or credentials and understand where sensitive data resides and flows.
+
+3. Understand the architecture
+Create diagrams of your system, including data flows, user interactions, third-party services, and trust boundaries.
+
+4. Identify threats
+
+Use a structured method like STRIDE to identify different types of threats:
+- Spoofing identity
+- Tampering with data
+- Repudiation
+- Information disclosure
+- Denial of service
+- Elevation of privilege
+
+5. Assess risks
+Prioritise threats based on likelihood and impact and different tools can be used for this.
+
+6. Identify mitigations
+For each threat, consider existing controls and possible mitigations and take users, process, and mitigation technology into account
+
+7. Document and review
+Record the identified threats, risk ratings, and mitigations and update regularly as the system evolves.
+
+:::tip[Activity: Developing a treat model for your classroom]
+
+Consider scenario where your school has a smart classroom setup with a smartboard connected to the school network where
+a teacher’s laptop is used to control the smartboard. Students have access to WiFi, online learning apps, and cloud storage. There is a security camera inside the classroom.
+
+Can you develop a basic threat model to protect this environment?
+:::
