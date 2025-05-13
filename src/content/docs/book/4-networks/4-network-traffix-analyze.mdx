@@ -86,10 +86,11 @@ The following video explains DNS.
   <YouTube id='mpQZVYPuDGU' params='fs=1&modestbranding=1&rel=0&autoplay=1' />
 </div>
 
-:::tip[Activity: Application layer analysis in Wireshark]
+:::tip[Activity: Application layer analysis in Wireshark : You can skip this activity as we are going to do a full analysis of network traffic at the end of this section]
 
 In Wireshark:
 
+- Capture traffic of web application
 - Look at the application protocol-specific section (HTTP, DNS, etc.)
 - Can you identify the entries related to application layer protocols?
 - Check request and response content and their headers and parameters
@@ -137,7 +138,7 @@ The following video explains the TCP, its three-way handshake and UDP.
 
 **In Wireshark:**
 
-- Identify which applications use TCP or UDP
+- You can identify which applications use TCP or UDP and you may need to capture traffic of different applications to analyse.
 - Source and destination ports used
 - Sequence and acknowledgement numbers (if TCP)
 - Flags (SYN, ACK, FIN, etc. for TCP)
@@ -341,7 +342,7 @@ After connection establishment, the Central device discovers the Peripheral's se
 2. Note the services being discovered
 3. Find the GATT service (typically a UART service in our implementation)
 
-**Step 5: Analyze characteristic operations**
+**Step 5: Analyse characteristic operations**
 
 1. Find "Write Request" packets from Pi to Pico
    - These contain commands like "led_on" or "read_temp"
